@@ -4,7 +4,7 @@ Name=ื๗าต2
 Type=0
 Ver=2
 ObjFiles=
-Includes=D:\programs\GitHub\C-Big-Program\lib
+Includes=D:\programs\GitHub\C-big-program-drawing
 Libs=
 PrivateResource=
 ResourceIncludes=
@@ -51,16 +51,6 @@ AutoIncBuildNr=0
 SyncProduct=1
 
 [Unit1]
-FileName=..\code\main.c
-CompileCpp=0
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit2]
 FileName=..\lib\boolean.h
 CompileCpp=0
 Folder=lib
@@ -70,7 +60,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit3]
+[Unit2]
 FileName=..\lib\exceptio.c
 CompileCpp=0
 Folder=lib
@@ -80,8 +70,18 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit4]
+[Unit3]
 FileName=..\lib\exception.h
+CompileCpp=0
+Folder=lib
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit4]
+FileName=..\lib\extgraph.h
 Folder=lib
 Compile=1
 Link=1
@@ -91,16 +91,6 @@ BuildCmd=
 CompileCpp=0
 
 [Unit5]
-FileName=..\lib\extgraph.h
-CompileCpp=0
-Folder=lib
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit6]
 FileName=..\lib\gcalloc.h
 CompileCpp=0
 Folder=lib
@@ -110,7 +100,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit7]
+[Unit6]
 FileName=..\lib\genlib.c
 CompileCpp=0
 Folder=lib
@@ -120,7 +110,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit8]
+[Unit7]
 FileName=..\lib\genlib.h
 CompileCpp=0
 Folder=lib
@@ -130,7 +120,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit9]
+[Unit8]
 FileName=..\lib\graphics.c
 CompileCpp=0
 Folder=lib
@@ -140,8 +130,18 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit10]
+[Unit9]
 FileName=..\lib\graphics.h
+CompileCpp=0
+Folder=lib
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit10]
+FileName=..\lib\imgui.c
 Folder=lib
 Compile=1
 Link=1
@@ -151,16 +151,6 @@ BuildCmd=
 CompileCpp=0
 
 [Unit11]
-FileName=..\lib\imgui.c
-CompileCpp=0
-Folder=lib
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit12]
 FileName=..\lib\imgui.h
 CompileCpp=0
 Folder=lib
@@ -170,8 +160,18 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit13]
+[Unit12]
 FileName=..\lib\linkedlist.c
+CompileCpp=0
+Folder=lib
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit13]
+FileName=..\lib\linkedlist.h
 Folder=lib
 Compile=1
 Link=1
@@ -181,16 +181,6 @@ BuildCmd=
 CompileCpp=0
 
 [Unit14]
-FileName=..\lib\linkedlist.h
-CompileCpp=0
-Folder=lib
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit15]
 FileName=..\lib\random.c
 CompileCpp=0
 Folder=lib
@@ -200,7 +190,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit16]
+[Unit15]
 FileName=..\lib\random.h
 CompileCpp=0
 Folder=lib
@@ -210,7 +200,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit17]
+[Unit16]
 FileName=..\lib\simpio.c
 CompileCpp=0
 Folder=lib
@@ -220,8 +210,18 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit18]
+[Unit17]
 FileName=..\lib\simpio.h
+CompileCpp=0
+Folder=lib
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit18]
+FileName=..\lib\strlib.c
 Folder=lib
 Compile=1
 Link=1
@@ -231,16 +231,6 @@ BuildCmd=
 CompileCpp=0
 
 [Unit19]
-FileName=..\lib\strlib.c
-CompileCpp=0
-Folder=lib
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit20]
 FileName=..\lib\strlib.h
 CompileCpp=0
 Folder=lib
@@ -250,8 +240,18 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+[Unit20]
+FileName=..\debug.c
+CompileCpp=0
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
 [Unit21]
-FileName=..\code\drawing.c
+FileName=..\debug.h
 Folder=
 Compile=1
 Link=1
@@ -261,7 +261,7 @@ BuildCmd=
 CompileCpp=0
 
 [Unit22]
-FileName=..\code\Header.h
+FileName=..\drawing.c
 CompileCpp=0
 Folder=
 Compile=1
@@ -271,7 +271,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit23]
-FileName=..\code\function.c
+FileName=..\drawing.h
 CompileCpp=0
 Folder=
 Compile=1
@@ -281,7 +281,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit24]
-FileName=..\code\function.h
+FileName=..\function.c
 Folder=
 Compile=1
 Link=1
@@ -291,7 +291,7 @@ BuildCmd=
 CompileCpp=0
 
 [Unit25]
-FileName=..\code\debug.c
+FileName=..\function.h
 CompileCpp=0
 Folder=
 Compile=1
@@ -301,7 +301,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit26]
-FileName=..\code\debug.h
+FileName=..\Header.h
 CompileCpp=0
 Folder=
 Compile=1
@@ -311,7 +311,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit27]
-FileName=..\code\drawing.h
+FileName=..\main.c
 Folder=
 Compile=1
 Link=1

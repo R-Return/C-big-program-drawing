@@ -4,11 +4,11 @@
 CPP      = g++.exe -D__DEBUG__
 CC       = gcc.exe -D__DEBUG__
 WINDRES  = windres.exe
-OBJ      = ../code/main.o ../lib/exceptio.o ../lib/genlib.o ../lib/graphics.o ../lib/imgui.o ../lib/linkedlist.o ../lib/random.o ../lib/simpio.o ../lib/strlib.o ../code/drawing.o ../code/function.o ../code/debug.o
-LINKOBJ  = ../code/main.o ../lib/exceptio.o ../lib/genlib.o ../lib/graphics.o ../lib/imgui.o ../lib/linkedlist.o ../lib/random.o ../lib/simpio.o ../lib/strlib.o ../code/drawing.o ../code/function.o ../code/debug.o
+OBJ      = ../lib/exceptio.o ../lib/genlib.o ../lib/graphics.o ../lib/imgui.o ../lib/linkedlist.o ../lib/random.o ../lib/simpio.o ../lib/strlib.o ../debug.o ../drawing.o ../function.o ../main.o
+LINKOBJ  = ../lib/exceptio.o ../lib/genlib.o ../lib/graphics.o ../lib/imgui.o ../lib/linkedlist.o ../lib/random.o ../lib/simpio.o ../lib/strlib.o ../debug.o ../drawing.o ../function.o ../main.o
 LIBS     = -L"D:/Program Files/Dev-Cpp/TDM-GCC-64/lib" -L"D:/Program Files/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/lib" -static-libgcc -mwindows -g3
-INCS     = -I"D:/Program Files/Dev-Cpp/TDM-GCC-64/include" -I"D:/Program Files/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/include" -I"D:/Program Files/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include" -I"D:/programs/GitHub/C-Big-Program/lib"
-CXXINCS  = -I"D:/Program Files/Dev-Cpp/TDM-GCC-64/include" -I"D:/Program Files/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/include" -I"D:/Program Files/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include" -I"D:/Program Files/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include/c++" -I"D:/programs/GitHub/C-Big-Program/lib"
+INCS     = -I"D:/Program Files/Dev-Cpp/TDM-GCC-64/include" -I"D:/Program Files/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/include" -I"D:/Program Files/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include" -I"D:/programs/GitHub/C-big-program-drawing"
+CXXINCS  = -I"D:/Program Files/Dev-Cpp/TDM-GCC-64/include" -I"D:/Program Files/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/include" -I"D:/Program Files/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include" -I"D:/Program Files/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include/c++" -I"D:/programs/GitHub/C-big-program-drawing"
 BIN      = ¾Þ´ó³Ì.exe
 CXXFLAGS = $(CXXINCS) -g3
 CFLAGS   = $(INCS) -g3
@@ -23,9 +23,6 @@ clean: clean-custom
 
 $(BIN): $(OBJ)
 	$(CC) $(LINKOBJ) -o $(BIN) $(LIBS)
-
-../code/main.o: ../code/main.c
-	$(CC) -c ../code/main.c -o ../code/main.o $(CFLAGS)
 
 ../lib/exceptio.o: ../lib/exceptio.c
 	$(CC) -c ../lib/exceptio.c -o ../lib/exceptio.o $(CFLAGS)
@@ -51,11 +48,14 @@ $(BIN): $(OBJ)
 ../lib/strlib.o: ../lib/strlib.c
 	$(CC) -c ../lib/strlib.c -o ../lib/strlib.o $(CFLAGS)
 
-../code/drawing.o: ../code/drawing.c
-	$(CC) -c ../code/drawing.c -o ../code/drawing.o $(CFLAGS)
+../debug.o: ../debug.c
+	$(CC) -c ../debug.c -o ../debug.o $(CFLAGS)
 
-../code/function.o: ../code/function.c
-	$(CC) -c ../code/function.c -o ../code/function.o $(CFLAGS)
+../drawing.o: ../drawing.c
+	$(CC) -c ../drawing.c -o ../drawing.o $(CFLAGS)
 
-../code/debug.o: ../code/debug.c
-	$(CC) -c ../code/debug.c -o ../code/debug.o $(CFLAGS)
+../function.o: ../function.c
+	$(CC) -c ../function.c -o ../function.o $(CFLAGS)
+
+../main.o: ../main.c
+	$(CC) -c ../main.c -o ../main.o $(CFLAGS)
