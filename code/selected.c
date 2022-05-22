@@ -1,31 +1,25 @@
-#define Pi 3.1415926
-static int chose = 0;												//判断点线等是否选中的参数 ，初始置0为未选中
-static double distant_segement;										//储存线段长度
-static double distant_point;
-static double degree_point;
-static double degree_segement;
-static double area;
-
-// static Shape *shead
+#include "selected.h"
 void MouseEventProcess(int x, int y, int button, int event) {
+	/*擦除屏幕*/
+	DisplayClear();
 	uiGetMouse(x, y, button, event);
-	struct Shape *sh_chose;
-	for ( sh_chose = shead; sh_chose != NULL; sh_chose = sh_chose->next ) {				//*shead
+	Shape *sh_chose;
+	for ( sh_chose = head; sh_chose != NULL; sh_chose = sh_chose->next ) {
 		switch (sh_chose->ty) {
 			case 0:
-				Select_Point(x, y, sh_chose->head);
+				Select_Point(x, y, sh_chose->pHead);
 			case 2:
-				Select_Line(x, y, sh_chose->head);
+				Select_Line(x, y, sh_chose->pHead);
 			case 3:
-				Select_Poly(x, y, sh_chose->head);
+				Select_Poly(x, y, sh_chose->pHead);
 		}
-		if (chose) {												//如果有选中的点或线 将struct中的chose变量置1
-			sh_chose->chosen = 1;
+		if (chose) {			//如果有选中的点或线 将struct中的chose变量置1
+			sh_chose->isChosen = 1;
 		}
 		switch (event) {
 			case BUTTON_DOWN:
 				if (button == LEFT_BUTTON && chose)
-					sh_chose->click = -sh_chose->click;
+					sh_chose->isClicked = -sh_chose->isClick;
 				break;
 			case BUTTON_DOUBLECLICK:
 				break;
@@ -36,7 +30,7 @@ void MouseEventProcess(int x, int y, int button, int event) {
 		}
 	}
 
-	switch (button) {												//功能按钮选择
+	switch (button) {						//功能按钮选择
 		case 1:
 			distant_segement = CalculateDistance_segement();
 		case 2:
@@ -71,6 +65,7 @@ void Select_Point(int nowx, int nowy, struct Point *head) {
 		}
 	}*/
 }
+
 //选中线段判断
 //通过比较线段斜率与鼠标所在位置形成的斜率，是否在误差范围之内，来判断是否选中状态
 void Select_Line(int nowx, int nowy, struct Point *head) {
@@ -97,7 +92,7 @@ void Select_Poly(int nowx, int nowy, struct Point *head) {
 }
 
 double CalculateDistance_segement(void) {
-	struct Shape *sort;
+	Shape *sort;
 	double sum = 0;
 	int x1, y1, x2, y2;
 	for ( sort = shead; sort != NULL; sort = sort->next ) {
@@ -119,7 +114,7 @@ double CalculateDistance_segement(void) {
 // 如果sum返回的值不等于0 代表已经选中两个点 并计算距离 （timer时间显示后） 这时将选中参数全部置1 为下一次计算做准备
 // 以下三个函数用相同的方法
 double CalculateDistance_point(void) {
-	struct Shape *sort;
+	Shape *sort;
 	double sum;
 	int x[2], y[2];
 	int count = 0;
@@ -139,7 +134,7 @@ double CalculateDistance_point(void) {
 }
 
 double CalculateDegree_point(void) {
-	struct Shape *sort;
+	Shape *sort;
 	double sum = 0;
 	int x[2], y[2];
 	int count = 0;
@@ -160,7 +155,7 @@ double CalculateDegree_point(void) {
 }
 
 double CalculateDegree_segement(void) {
-	struct Shape *sort;
+	Shape *sort;
 	double sum = 0;
 	double k[2];
 	int count = 0;
@@ -186,7 +181,7 @@ double CalculateDegree_segement(void) {
 }
 
 double Calculatearea_polygon(void) {
-	struct Shape *sort;
+	Shape *sort;
 	double sum = 0;
 	int x[80], y[80];
 	int i;

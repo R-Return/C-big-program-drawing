@@ -17,18 +17,6 @@ void KeyboardEventProcess(int key, int event)
 }
 
 
-void MouseEventProcess(int x, int y, int button, int event)
-{
-	/*擦除屏幕*/
-	DisplayClear();
-
-	/* 获取鼠标状态 */
-	uiGetMouse(x,y,button,event);
-
-	/* 调用显示函数显示内容 */
-	display();
-}
-
 void display()
 {
 	static int d = 1;
@@ -80,15 +68,7 @@ void display()
 		{
 			; 
 		}
-	}
-	if(pageid==3)
-	{
-		DisplayClear();	
-		//calculate();
-		textbox(GenUIID(0), 1, 5, 8, 0.5, str, sizeof(str));
-		if(button(GenUIID(0), 1.5, 1.5, 2, 1, "确认"))
-		{
-			pageid=2;
+		//DisplayClear();	
 		oy=transfery(calculate(str,-4));
 		ox=transferx(-4);
 		MovePen(ox,oy);
@@ -105,7 +85,20 @@ void display()
 			ox=cx;
 			oy=cy;
 		}
+	}
+	if(pageid==3)
+	{
+		DisplayClear();	
+		//calculate();
+		textbox(GenUIID(0), 1, 5, 8, 0.5, str, sizeof(str));
+		if(button(GenUIID(0), 1.5, 1.5, 2, 1, "确认"))
+		{
+			pageid=2;
 		}
+	if(pageid==4)
+	{
+		;
+	}
 	}
 }
 
@@ -120,8 +113,11 @@ void Main()
 	registerMouseEvent(MouseEventProcess);      // 鼠标
 	//registerTimerEvent(TimerEventProcess);      // 定时器
 	centerX=6.1;
-	centerY=2;
+	centerY=4;
 	scale=1;
+	
+	//初始化链表
+	initLinkList();
 	
 	dbgS("开始运行\n");
 }
