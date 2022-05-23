@@ -12,13 +12,12 @@ struct Point {
 };
 
 struct Func {
-    string f[maxFunc];	//a-幂函数, b-指数函数, c-对数函数, d-三角函数, e-反三角函数
-    struct Func *next;
+    string function;	//a-幂函数, b-指数函数, c-对数函数, d-三角函数, e-反三角函数
+    
 };
 
 struct Circle {
     double x, y, r;
-    struct Circle *next;
 };
 
 typedef struct shape{

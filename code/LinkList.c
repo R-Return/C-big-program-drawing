@@ -1,4 +1,5 @@
 #include "LinkList.h"
+#include <math.h>
 void initLinkList(void)
 {
     head = (Shape*)malloc(sizeof(Shape));
@@ -43,10 +44,10 @@ void insertCircle(int i, double x, double y)
     q->ty = 4;
     if(i == 0)
     {
-        r->x = x;
-        r->y = y;
+        r.x = x;
+        r.y = y;
     }else{
-        r->r = pow((pow(x-(r->x),2)+pow(y-(r->y),2)),0.5);
+        r.r = pow((pow(x-(r.x),2)+pow(y-(r.y),2)),0.5);
     }
 }
 
@@ -60,7 +61,7 @@ void insertFunc(char *a)
     q->isChosen = 0;
     q->isClicked = -1;
     q->ty = 5;
-    q->f = a;
+    q->f.function = a;
 }
 
 void deleteList(void)
