@@ -29,7 +29,11 @@ IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=1
 CompilerSettings=0000000000000000001000000
+<<<<<<< Updated upstream
 UnitCount=33
+=======
+UnitCount=27
+>>>>>>> Stashed changes
 
 [VersionInfo]
 Major=1
@@ -80,6 +84,19 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+<<<<<<< Updated upstream
+=======
+[Unit4]
+FileName=..\lib\exception.h
+Folder=lib
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+CompileCpp=0
+
+>>>>>>> Stashed changes
 [Unit5]
 FileName=..\lib\extgraph.h
 CompileCpp=0
@@ -130,18 +147,30 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+<<<<<<< Updated upstream
 [Unit12]
 FileName=..\lib\imgui.h
 CompileCpp=0
+=======
+[Unit10]
+FileName=..\lib\graphics.h
+>>>>>>> Stashed changes
 Folder=lib
 Compile=1
 Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
+CompileCpp=0
 
+<<<<<<< Updated upstream
 [Unit13]
 FileName=..\lib\linkedlist.c
+=======
+[Unit11]
+FileName=..\lib\imgui.c
+CompileCpp=0
+>>>>>>> Stashed changes
 Folder=lib
 Compile=1
 Link=1
@@ -150,8 +179,13 @@ OverrideBuildCmd=0
 BuildCmd=
 CompileCpp=0
 
+<<<<<<< Updated upstream
 [Unit14]
 FileName=..\lib\linkedlist.h
+=======
+[Unit12]
+FileName=..\lib\imgui.h
+>>>>>>> Stashed changes
 CompileCpp=0
 Folder=lib
 Compile=1
@@ -160,18 +194,30 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+<<<<<<< Updated upstream
 [Unit16]
 FileName=..\lib\random.h
 CompileCpp=0
+=======
+[Unit13]
+FileName=..\lib\linkedlist.c
+>>>>>>> Stashed changes
 Folder=lib
 Compile=1
 Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
+CompileCpp=0
 
+<<<<<<< Updated upstream
 [Unit18]
 FileName=..\lib\simpio.h
+=======
+[Unit14]
+FileName=..\lib\linkedlist.h
+CompileCpp=0
+>>>>>>> Stashed changes
 Folder=lib
 Compile=1
 Link=1
@@ -180,8 +226,13 @@ OverrideBuildCmd=0
 BuildCmd=
 CompileCpp=0
 
+<<<<<<< Updated upstream
 [Unit20]
 FileName=..\lib\strlib.h
+=======
+[Unit15]
+FileName=..\lib\random.c
+>>>>>>> Stashed changes
 CompileCpp=0
 Folder=lib
 Compile=1
@@ -190,8 +241,13 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+<<<<<<< Updated upstream
 [Unit22]
 FileName=..\code\Header.h
+=======
+[Unit16]
+FileName=..\lib\random.h
+>>>>>>> Stashed changes
 CompileCpp=0
 Folder=
 Compile=1
@@ -200,8 +256,13 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+<<<<<<< Updated upstream
 [Unit23]
 FileName=..\code\function.c
+=======
+[Unit17]
+FileName=..\lib\simpio.c
+>>>>>>> Stashed changes
 CompileCpp=0
 Folder=
 Compile=1
@@ -210,9 +271,15 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+<<<<<<< Updated upstream
 [Unit24]
 FileName=..\code\function.h
 Folder=
+=======
+[Unit18]
+FileName=..\lib\simpio.h
+Folder=lib
+>>>>>>> Stashed changes
 Compile=1
 Link=1
 Priority=1000
@@ -220,8 +287,13 @@ OverrideBuildCmd=0
 BuildCmd=
 CompileCpp=0
 
+<<<<<<< Updated upstream
 [Unit25]
 FileName=..\code\debug.c
+=======
+[Unit19]
+FileName=..\lib\strlib.c
+>>>>>>> Stashed changes
 CompileCpp=0
 Folder=
 Compile=1
@@ -230,8 +302,13 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+<<<<<<< Updated upstream
 [Unit26]
 FileName=..\code\debug.h
+=======
+[Unit20]
+FileName=..\lib\strlib.h
+>>>>>>> Stashed changes
 CompileCpp=0
 Folder=
 Compile=1
@@ -240,8 +317,13 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+<<<<<<< Updated upstream
 [Unit27]
 FileName=..\code\drawing.h
+=======
+[Unit21]
+FileName=..\code\drawing.c
+>>>>>>> Stashed changes
 Folder=
 Compile=1
 Link=1
@@ -250,8 +332,13 @@ OverrideBuildCmd=0
 BuildCmd=
 CompileCpp=0
 
+<<<<<<< Updated upstream
 [Unit30]
 FileName=..\code\LinkList.h
+=======
+[Unit22]
+FileName=..\code\Header.h
+>>>>>>> Stashed changes
 CompileCpp=0
 Folder=
 Compile=1
@@ -260,8 +347,13 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+<<<<<<< Updated upstream
 [Unit29]
 FileName=..\code\LinkList.c
+=======
+[Unit23]
+FileName=..\code\function.c
+>>>>>>> Stashed changes
 CompileCpp=0
 Folder=
 Compile=1
@@ -270,18 +362,29 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+<<<<<<< Updated upstream
 [Unit28]
 FileName=..\code\selected.c
 CompileCpp=0
+=======
+[Unit24]
+FileName=..\code\function.h
+>>>>>>> Stashed changes
 Folder=
 Compile=1
 Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
+CompileCpp=0
 
+<<<<<<< Updated upstream
 [Unit32]
 FileName=..\code\history.h
+=======
+[Unit25]
+FileName=..\code\debug.c
+>>>>>>> Stashed changes
 CompileCpp=0
 Folder=
 Compile=1
@@ -290,8 +393,13 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+<<<<<<< Updated upstream
 [Unit33]
 FileName=..\code\selected.h
+=======
+[Unit26]
+FileName=..\code\debug.h
+>>>>>>> Stashed changes
 CompileCpp=0
 Folder=
 Compile=1
@@ -300,15 +408,21 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+<<<<<<< Updated upstream
 [Unit34]
 FileName=..\code\drawing.h
 CompileCpp=0
+=======
+[Unit27]
+FileName=..\code\drawing.h
+>>>>>>> Stashed changes
 Folder=
 Compile=1
 Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
+CompileCpp=0
 
 [Unit35]
 FileName=..\code\selected.c
