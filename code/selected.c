@@ -1,4 +1,17 @@
 #include "selected.h"
+
+void MouseEventProcess(int x, int y, int button, int event);
+void Select_Point(int nowx, int nowy, struct Point *head) ;
+void Select_Line(int nowx, int nowy, struct Point *head);
+void Select_Poly(int nowx, int nowy, struct Point *head);
+double CalculateDistance_segement(void);
+double CalculateDistance_point(void);
+double CalculateDegree_point(void);
+double CalculateDegree_segement(void);
+double Calculatearea_polygon(void);
+
+//#include "selected.h"
+
 void MouseEventProcess(int x, int y, int button, int event) {
 	/*²Á³ýÆÁÄ»*/
 	DisplayClear();
