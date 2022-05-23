@@ -1,3 +1,7 @@
+#ifndef HISTORY_H
+#define HISTORY_H
+
+#include "Header.h"
 enum ActionType {
     add, modify, move, del
 };
@@ -6,12 +10,10 @@ typedef struct record {
     enum ActionType ty; 			// add, modify, move, del
 
     // add
-    bool isAddedShape;
     Shape *addedShape;
     struct Function *addedFunc;
 
     // modify
-    bool isModifiedPoint;
     struct Point *modifiedPoint;
     double mpOldX, mpOldY;
 
@@ -23,9 +25,10 @@ typedef struct record {
     double deltaX, deltaY;
 
     // del
-    bool isDelShape;
     Shape *deletedShape;
     struct Func *deletedFunc;
 
     struct record *next;
 }Record;
+
+#endif	//HISTORY_H

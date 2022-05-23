@@ -1,4 +1,4 @@
-#include "Header.h"
+#include "debug.h"
 
 FILE *fdebug;
 

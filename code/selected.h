@@ -2,7 +2,7 @@
 #define SELECTED_H
 
 #define Pi 3.1415926
-#include "LinkList.h"
+#include "Header.h"
 static int chose = 0;				//判断点线等是否选中的参数 ，初始置0为未选中
 static double distant_segement;		//储存线段长度
 static double distant_point;

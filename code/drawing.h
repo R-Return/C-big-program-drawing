@@ -1,5 +1,8 @@
 #ifndef DRAWING_H
 #define DRAWING_H
+
+#include "Header.h"
+
 void DrawRectangle(double px, double py, double qx, double qy);
 void FillRectangle(double px, double py, double qx, double qy);
 void drawedge();

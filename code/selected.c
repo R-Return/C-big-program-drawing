@@ -1,5 +1,4 @@
 #include "selected.h"
-#include <math.h>
 void MouseEventProcess(int x, int y, int button, int event) {
 	/*²Á³ıÆÁÄ»*/
 	DisplayClear();

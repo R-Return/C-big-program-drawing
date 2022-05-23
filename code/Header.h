@@ -18,11 +18,14 @@ extern int pageid;
 #include "simpio.h"
 #include "genlib.h"
 #include "gcalloc.h" 
+#include <math.h>
 
 #include "debug.h"
 #include "function.h"
 #include "drawing.h"
 #include "LinkList.h"
+//#include "history.h"
+#include "selected.h"
 #define maxFunc 100	//函数字符串最大长度
 
 double centerX, centerY, scale;

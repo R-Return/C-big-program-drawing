@@ -1,6 +1,8 @@
 #ifndef DEBUG_H
 #define DEBUG_H
 
+#include "Header.h"
+
 void initDebug();
 void dbgI(int x);
 void dbgC(char x);
