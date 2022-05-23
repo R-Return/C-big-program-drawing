@@ -1,4 +1,5 @@
 #include "selected.h"
+#include <math.h>
 void MouseEventProcess(int x, int y, int button, int event) {
 	/*²Á³ýÆÁÄ»*/
 	DisplayClear();
@@ -19,7 +20,7 @@ void MouseEventProcess(int x, int y, int button, int event) {
 		switch (event) {
 			case BUTTON_DOWN:
 				if (button == LEFT_BUTTON && chose)
-					sh_chose->isClicked = -sh_chose->isClick;
+					sh_chose->isClicked = -sh_chose->isClicked;
 				break;
 			case BUTTON_DOUBLECLICK:
 				break;
@@ -86,19 +87,32 @@ void Select_Line(int nowx, int nowy, struct Point *head) {
 void Select_Poly(int nowx, int nowy, struct Point *head) {
 	int x[80], y[80];
 	struct Point *temp;
-	int count = 0;
-
-
+	int count = 0, i = 0;
+	for( temp = head; temp != NULL; temp = temp->next )
+	{
+		x[i] = temp->x;
+		y[i] = temp->y;
+		i++;
+	}
+	int j;
+	for( j = 0; j < i; j = j+2 )
+	{
+		if( (( x[j] > nowx ) != ( x[j+1] > nowx)) 
+		   && (nowx > ( x[j+1] - x[j]) * (nowy - y[j]) / (y[j+1] - y[j]) + x[j]) )
+		   count++;
+	}
+	if( count % 2 != 0)
+		chose = 1;
 }
 
 double CalculateDistance_segement(void) {
 	Shape *sort;
 	double sum = 0;
 	int x1, y1, x2, y2;
-	for ( sort = shead; sort != NULL; sort = sort->next ) {
+	for ( sort = head; sort != NULL; sort = sort->next ) {
 		struct Point *temp;
-		if (sort->chosen == 1 && sort->ty == 2) {
-			temp = sort->head;
+		if (sort->isChosen == 1 && sort->ty == 2) {
+			temp = sort->pHead;
 			x1 = temp->x;
 			y1 = temp->y;
 			temp = temp->next;
@@ -118,12 +132,12 @@ double CalculateDistance_point(void) {
 	double sum;
 	int x[2], y[2];
 	int count = 0;
-	for ( sort = shead; sort != NULL; sort = sort->next ) {
+	for ( sort = head; sort != NULL; sort = sort->next ) {
 		struct Point *temp;
-		if (sort->click == 1 && sort->ty == 0) {
-			temp = sort->head;
-			x[count] = head->x;
-			y[count] = head->y;
+		if (sort->isClicked == 1 && sort->ty == 0) {
+			temp = sort->pHead;
+			x[count] = temp->x;
+			y[count] = temp->y;
 			count++;
 		}
 	}
@@ -138,17 +152,17 @@ double CalculateDegree_point(void) {
 	double sum = 0;
 	int x[2], y[2];
 	int count = 0;
-	for ( sort = shead; sort != NULL; sort = sort->next ) {
+	for ( sort = head; sort != NULL; sort = sort->next ) {
 		struct Point *temp;
-		if ( sort->click == 1 && sort->ty == 0 ) {
-			temp = sort->head;
+		if ( sort->isClicked == 1 && sort->ty == 0 ) {
+			temp = sort->pHead;
 			x[count] = temp->x;
 			y[count] = temp->y;
 			count++;
 		}
 	}
 	if ( x[0] != 0 && x[1] != 0 ) {
-		int k = (y2 - y1) / (x2 - x1);
+		int k = (y[1] - y[0]) / (x[1] - x[0]);
 		sum = atan(k) * 180 / Pi;
 	}
 	return sum;
@@ -160,10 +174,10 @@ double CalculateDegree_segement(void) {
 	double k[2];
 	int count = 0;
 	int x1, y1, x2, y2;
-	for ( sort = shead; sort != NULL; sort = sort->next ) {
+	for ( sort = head; sort != NULL; sort = sort->next ) {
 		struct Point *temp;
-		if ( sort->click == 1 && sort->ty == 2) {
-			temp = sort->head;
+		if ( sort->isClicked == 1 && sort->ty == 2) {
+			temp = sort->pHead;
 			x1 = temp->x;
 			y1 = temp->y;
 			temp = temp->next;
@@ -174,8 +188,8 @@ double CalculateDegree_segement(void) {
 		}
 	}
 	if ( k[0] != 0 && k[1] != 0) {
-		int k = fabs(k[1] - k[0]);
-		sum = atan(k) * 180 / Pi;
+		int temp_k = fabs(k[1] - k[0]);
+		sum = atan(temp_k) * 180 / Pi;
 	}
 	return sum;
 }
@@ -185,10 +199,10 @@ double Calculatearea_polygon(void) {
 	double sum = 0;
 	int x[80], y[80];
 	int i;
-	for ( sort = shead; sort != NULL; sort = sort->next ) {
+	for ( sort = head; sort != NULL; sort = sort->next ) {
 		struct Point *temp;
-		if ( sort->click == 1 && sort->ty == 3 ) {
-			temp = sort->head;
+		if ( sort->isClicked == 1 && sort->ty == 3 ) {
+			temp = sort->pHead;
 			for (i = 0; i <= 80 && temp != NULL; i++) {
 				x[i] = temp->x;
 				y[i] = temp->y;
@@ -197,7 +211,8 @@ double Calculatearea_polygon(void) {
 			break;
 		}
 	}
-	for (int j = 0; j <= i; j++) {
+	int j;
+	for (j = 0; j <= i; j++) {
 		if (j == i)
 			j = -1;
 		sum = sum + x[j] * y[j + 1] - x[j + 1] * y[j];
