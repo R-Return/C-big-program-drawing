@@ -1,17 +1,21 @@
 #include "drawing.h"
  
 void DrawRectangle(double px,double py,double qx,double qy){
+	dbgS("开始绘制矩形\n");
 	MovePen(px,py);
 	DrawLine(qx-px,0);
 	DrawLine(0,qy-py);
 	DrawLine(px-qx,0);
 	DrawLine(0,py-qy);
+	dbgS("矩形绘制完成\n");
 }
 void FillRectangle(double px,double py,double qx,double qy){
+	dbgS("开始绘制填充矩形\n");
 	MovePen(px,py);
 	StartFilledRegion(1);
 	DrawRectangle(px,py,qx,qy);
 	EndFilledRegion();
+	dbgS("填充矩形绘制完成\n");
 }
 //void calculate()
 
@@ -25,9 +29,11 @@ void FillRectangle(double px,double py,double qx,double qy){
 
 void drawedge()
 {
+	dbgS("开始绘制边框\n");
 	//SetPenColor(Timecolor);
 	DrawRectangle(3,7,9.2,0.5);
 	SetPenColor("Blue");
+	dbgS("边框绘制完成\n");
 }
 
 double transferx(double X)

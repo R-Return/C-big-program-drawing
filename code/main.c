@@ -16,13 +16,61 @@ void KeyboardEventProcess(int key, int event)
 	display(); /*更新显示*/
 }
 
+void MouseEventProcess(int x, int y, int button, int event) {
+	uiGetMouse(x, y, button, event);
+	Shape *sh_chose;
+	for ( sh_chose = head; sh_chose != NULL; sh_chose = sh_chose->next ) {
+		switch (sh_chose->ty) {
+			case 0:
+				Select_Point(x, y, sh_chose->pHead);
+			case 2:
+				Select_Line(x, y, sh_chose->pHead);
+			case 3:
+				Select_Poly(x, y, sh_chose->pHead);
+		}
+		if (chose) {			//如果有选中的点或线 将struct中的chose变量置1
+			sh_chose->isChosen = 1;
+			display();
+		}
+		switch (event) {
+			case BUTTON_DOWN:
+				if (button == LEFT_BUTTON && chose)
+					sh_chose->isClicked = -sh_chose->isClicked;
+					display();
+				break;
+			case BUTTON_DOUBLECLICK:
+				break;
+			case BUTTON_UP:
+				break;
+			case MOUSEMOVE:
+				break;
+		}
+	}
+
+//	switch (button) {						//功能按钮选择
+//		case 1:
+//			distant_segement = CalculateDistance_segement();
+//		case 2:
+//			distant_point = CalculateDistance_point();
+////		case 3:
+////			degree_point = CalculateDegree_point();
+//		case 3:
+//			degree_segement = CalculateDegree_segement();
+//		case 4:
+//			area = Calculatearea_polygon();
+//	}
+//
+//	display();
+}
 
 void display()
 {
+	//DisplayClear();	
 	static int d = 1;
 	static double j;
 	if(pageid==1)
 	{
+		dbgS("开始绘制窗口1\n");
 		MovePen(4,5);
 		SetPointSize(50);
 		DrawTextString("几何画板");
@@ -35,9 +83,11 @@ void display()
 		{
 			exit(-1);
 		}	
+		dbgS("窗口1绘制完成\n");
 	}
 	if(pageid==2)
 	{
+		dbgS("开始绘制窗口2\n");
 		DisplayClear();	
 		static char * menuListFile[] = {"文件",
 		                                "打开   | Ctrl-O", // 快捷键必须采用[Ctrl-X]格式，放在字符串的结尾
@@ -108,6 +158,7 @@ void Main()
 	InitGraphics();
 	initDebug();
 	SetWindowTitle("几何画板");
+	dbgS("开始运行\n");
 	registerCharEvent(CharEventProcess);        // 字符
 	registerKeyboardEvent(KeyboardEventProcess);// 键盘
 	registerMouseEvent(MouseEventProcess);      // 鼠标
@@ -115,10 +166,11 @@ void Main()
 	centerX=6.1;
 	centerY=4;
 	scale=1;
-	
+	dbgS("全局变量初始化完成\n");
+	display();
 	//初始化链表
-	initLinkList();
+	//initLinkList();
 	
-	dbgS("开始运行\n");
+	
 }
 

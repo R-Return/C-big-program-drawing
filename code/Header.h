@@ -93,7 +93,6 @@ double centerX, centerY, scale;
 //main.cº¯ÊıÉùÃ÷
 void CharEventProcess(char ch);
 void KeyboardEventProcess(int key, int event);
-void MouseEventProcess(int x, int y, int button, int event);
 void display();
 
 #endif //HEADER_H
