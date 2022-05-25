@@ -12,37 +12,35 @@ double Calculatearea_polygon(void);
 
 //#include "selected.h"
 
-//void MouseEventProcess(int x, int y, int button, int event) {
-//	/*擦除屏幕*/
-//	DisplayClear();
-//	uiGetMouse(x, y, button, event);
-//	Shape *sh_chose;
-//	for ( sh_chose = head; sh_chose != NULL; sh_chose = sh_chose->next ) {
-//		switch (sh_chose->ty) {
-//			case 0:
-//				Select_Point(x, y, sh_chose->pHead);
-//			case 2:
-//				Select_Line(x, y, sh_chose->pHead);
-//			case 3:
-//				Select_Poly(x, y, sh_chose->pHead);
-//		}
-//		if (chose) {			//如果有选中的点或线 将struct中的chose变量置1
-//			sh_chose->isChosen = 1;
-//		}
-//		switch (event) {
-//			case BUTTON_DOWN:
-//				if (button == LEFT_BUTTON && chose)
-//					sh_chose->isClicked = -sh_chose->isClicked;
-//				break;
-//			case BUTTON_DOUBLECLICK:
-//				break;
-//			case BUTTON_UP:
-//				break;
-//			case MOUSEMOVE:
-//				break;
-//		}
-//	}
-//
+void MouseEventProcess(int x, int y, int button, int event) {
+	uiGetMouse(x, y, button, event);
+/*	Shape *sh_chose;
+	for ( sh_chose = head->next; sh_chose != end; sh_chose = sh_chose->next ) {
+		switch (sh_chose->ty) {
+			case 0:
+				Select_Point(x, y, sh_chose->pHead);
+			case 2:
+				Select_Line(x, y, sh_chose->pHead);
+			case 3:
+				Select_Poly(x, y, sh_chose->pHead);
+		}
+		if (chose) {			//如果有选中的点或线 将struct中的chose变量置1
+			sh_chose->isChosen = 1;
+		}
+		switch (event) {
+			case BUTTON_DOWN:
+				if (button == LEFT_BUTTON && chose)
+					sh_chose->isClicked = -sh_chose->isClicked;
+				break;
+			case BUTTON_DOUBLECLICK:
+				break;
+			case BUTTON_UP:
+				break;
+			case MOUSEMOVE:
+				break;
+		}
+	}
+*/
 //	switch (button) {						//功能按钮选择
 //		case 1:
 //			distant_segement = CalculateDistance_segement();
@@ -56,8 +54,8 @@ double Calculatearea_polygon(void);
 //			area = Calculatearea_polygon();
 //	}
 //
-//	display();
-//}
+	display();
+}
 
 //函数：选中点判断
 //通过比较鼠标所在位置是否在点所在的误差范围之内，来判断是否选中状态

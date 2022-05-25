@@ -7,18 +7,26 @@ enum ShapeType {
 };
 
 struct Point {
-    double x, y;
+    double x;
+	double y;
     struct Point *next;
 };
 
-struct Func {
-    string function;	//a-幂函数, b-指数函数, c-对数函数, d-三角函数, e-反三角函数
-    
+struct Function{
+//	double x
+//	double y;
+//	int i;
+//	struct Function *next;
+	char func[maxFunc];
 };
 
+
 struct Circle {
-    double x, y, r;
+    double x;
+	double y;
+	double r;
 };
+
 
 typedef struct shape{
     enum ShapeType ty;		// point, line, segment, poly, circle; function
@@ -26,18 +34,17 @@ typedef struct shape{
     int isClicked;
     struct Point *pHead;		// point list, for point, line, segment, poly
     struct Circle c;
-    struct Func f;
+    struct Function f;
     struct shape *before;
     struct shape *next;
 }Shape;
 
-Shape *head, *end;
+extern Shape *head, *end;
 
-//函数声名
 void initLinkList(void);
 void insertPoint(int i, int ty, double x, double y);
 void insertCircle(int i, double x, double y);
-void insertFunc(char *a);
+void insertFunc(char a[]);
 void deleteList(void);
 
 #endif	//_LINKLIST_H_

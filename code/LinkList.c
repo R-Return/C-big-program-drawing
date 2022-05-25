@@ -1,13 +1,15 @@
 #include "LinkList.h"
 #include <math.h>
+Shape *head, *end;
 void initLinkList(void)
 {
-    dbgS("开始链表初始化。\n");
+    dbgS("开始链表初始化\n");
 	head = (Shape*)malloc(sizeof(Shape));
     end = (Shape*)malloc(sizeof(Shape));
     end->next = NULL;
+    end->before = head;
     head->next = end;
-    dbgS("链表初始化完成。\n");
+    dbgS("链表初始化完成\n");
 }
 
 void insertPoint(int i, int ty, double x, double y) //i控制插入状态，第一个点是0，后面插入为1；ty表示类型
@@ -57,18 +59,23 @@ void insertCircle(int i, double x, double y)
     dbgS("圆节点插入完成\n");
 }
 
-void insertFunc(char *a)
+void insertFunc(char a[])
 {
     dbgS("开始插入函数\n");
-	Shape *p, *q;
-    p = end->before;
+	Shape *q;
+    //p = end->before;
     q = (Shape*)malloc(sizeof(Shape));
-    p->next = q;
+    //dbgS("shape指针空间分配完成\n");
+    end->before->next = q;
+    q->before = end->before;
     q->next = end;
+    end->before = q;
     q->isChosen = 0;
     q->isClicked = -1;
     q->ty = 5;
-    q->f.function = a;
+    //dbgS("开始拷贝函数\n");
+    strcpy(q->f.function, a);
+    dbgS("函数拷贝完成：");dbgS(q->f.function);dbgC('\n');
     dbgS("函数插入完成\n");
 }
 
