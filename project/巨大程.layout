@@ -6,11 +6,11 @@ LeftChar=1
 [Editors]
 <<<<<<< Updated upstream
 Order=18,24,19,23,25,26,27,28,29,22,0
-Focused=27
+Focused=19
 [Editor_0]
-CursorCol=15
-CursorRow=98
-TopLine=96
+CursorCol=14
+CursorRow=24
+TopLine=1
 =======
 Order=0
 Focused=0
@@ -23,13 +23,13 @@ TopLine=91
 LeftChar=1
 [Editor_29]
 CursorCol=1
-CursorRow=4
+CursorRow=3
 TopLine=1
 LeftChar=1
 [Editor_27]
-CursorCol=3
-CursorRow=13
-TopLine=1
+CursorCol=17
+CursorRow=17
+TopLine=161
 LeftChar=1
 [Editor_30]
 CursorCol=9
@@ -72,9 +72,9 @@ CursorRow=1
 TopLine=1
 LeftChar=1
 [Editor_19]
-CursorCol=2
-CursorRow=4
-TopLine=1
+CursorCol=18
+CursorRow=99
+TopLine=70
 LeftChar=1
 [Editor_20]
 CursorCol=29
@@ -94,7 +94,7 @@ LeftChar=1
 [Editor_26]
 CursorCol=20
 CursorRow=15
-TopLine=14
+TopLine=1
 LeftChar=1
 [Editor_24]
 CursorCol=1
@@ -107,8 +107,8 @@ CursorRow=1
 TopLine=1
 LeftChar=1
 [Editor_18]
-CursorCol=9
-CursorRow=3
+CursorCol=49
+CursorRow=19
 TopLine=1
 LeftChar=1
 [Editor_23]
