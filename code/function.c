@@ -16,6 +16,8 @@ typedef struct {
 	int top;
 } Stack2;
 
+int change;
+
 //操作符相关操作
 void InitStack1 (Stack1 *s) {
 	s->top = -1;
@@ -90,7 +92,11 @@ double PopStack2(Stack2 *s) {
 double GetStack2(Stack2 *s) {
 	double x;
 	if (!Empty_Stack2(s))
+	{
+		dbgS("stack 2 empty!");dbgC('\n');
 		return 0;
+	}
+		
 	else
 		x = s->data[s->top];
 	return x;
@@ -218,9 +224,7 @@ double Operate(double m, double n, char x) {
 	}
 	if (x == '^')
 		result = pow(m, n);
-	dbgS("计算结果是：");
-	dbgD(result);
-	dbgC('\n');
+	//dbgS("计算结果是：");dbgD(result);dbgC('\n');
 	return result;
 }
 double Function(char x, double m) {
@@ -229,13 +233,29 @@ double Function(char x, double m) {
 	if (x == 'b')
 		return cos(m);
 	if (x == 'c')
-		return tan(m);
+	{
+		if((m-PI/2) / (PI/2) == 0)
+		{
+			change = 1;
+			return 0;
+		}
+		else return tan(m);
+	}
 	if (x == 'd')
-		return log(m);
+	{
+		if(m <= 0)
+		{
+			change = 1;
+			return 0;
+		}
+		else return log(m);
+	}
 }
 
 double calculate(char a[], double x) {
-	dbgS("现在进行运算：");
+	//dbgS("现在进行运算\n");
+	//dbgS("现在传入函数为：");dbgS(a);dbgC('\n');
+	//dbgS("现在传入x：");dbgD(x);dbgC('\n');
 	Stack1 operater;
 	Stack2 operand;
 	char c, o;
@@ -245,9 +265,11 @@ double calculate(char a[], double x) {
 	InitStack1(&operater);
 	InitStack2(&operand);
 	PushStack1(&operater, '#');
-	while ((c = a[i]) != '\0' && (Empty_Stack1(&operater))) {
-		dbgC(c);
-		dbgC('\n');
+	while ((c = a[i]) != '\0' 
+			&& (Empty_Stack1(&operater))
+			&& !change) 
+	{
+		//dbgC(c);dbgC('\n');
 		//数字部分
 		t = 0;
 		k = 0;
@@ -263,30 +285,33 @@ double calculate(char a[], double x) {
 				k = k * 0.1;
 			}
 			c = a[++i];
-			dbgC(c);
-			dbgC('\n');
+			//dbgC(c);dbgC('\n');
 		}//while
 		if (k) {
 			if (PushStack2(&operand, t) == 0)
-				dbgS( "溢出");
-			dbgC('\n');
+			{
+				dbgS( "溢出");dbgC('\n');
+			}
 		}//if
 		if (c == 'x') {
 			if (PushStack2(&operand, x) == 0)
-				dbgS( "溢出");
-			dbgC('\n');
+			{
+				dbgS( "溢出");dbgC('\n');
+			}
 			i++;
 		}//if
 		if (c == 'p') {
 			if (PushStack2(&operand, PI) == 0)
-				dbgS( "溢出");
-			dbgC('\n');
+			{
+				dbgS( "溢出");dbgC('\n');
+			}
 			i++;
 		}//if
 		if (c == 'e') {
 			if (PushStack2(&operand, e) == 0)
-				dbgS( "溢出");
-			dbgC('\n');
+			{
+				dbgS( "溢出");dbgC('\n');
+			}
 			i++;
 		}//if
 		//操作数部分
@@ -309,9 +334,11 @@ double calculate(char a[], double x) {
 				i++;
 				break;
 		}
-	}
-	return GetStack2(&operand);
-	dbgS( "-----------------------------运算结束");
-	dbgC('\n');
+	}//while
+	double result;
+	if(change) result = 0;
+	else result = GetStack2(&operand);
+	//dbgS( "---------运算结束，结果为：");dbgD(result);dbgC('\n');
+	return result;
 }
 

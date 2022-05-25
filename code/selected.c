@@ -13,11 +13,9 @@ double Calculatearea_polygon(void);
 //#include "selected.h"
 
 void MouseEventProcess(int x, int y, int button, int event) {
-	/*擦除屏幕*/
-	DisplayClear();
 	uiGetMouse(x, y, button, event);
-	Shape *sh_chose;
-	for ( sh_chose = head; sh_chose != NULL; sh_chose = sh_chose->next ) {
+/*	Shape *sh_chose;
+	for ( sh_chose = head->next; sh_chose != end; sh_chose = sh_chose->next ) {
 		switch (sh_chose->ty) {
 			case 0:
 				Select_Point(x, y, sh_chose->pHead);
@@ -42,20 +40,20 @@ void MouseEventProcess(int x, int y, int button, int event) {
 				break;
 		}
 	}
-
-	switch (button) {						//功能按钮选择
-		case 1:
-			distant_segement = CalculateDistance_segement();
-		case 2:
-			distant_point = CalculateDistance_point();
-		case 3:
-			degree_point = CalculateDegree_point();
-		case 4:
-			degree_segement = CalculateDegree_segement();
-		case 5:
-			area = Calculatearea_polygon();
-	}
-
+*/
+//	switch (button) {						//功能按钮选择
+//		case 1:
+//			distant_segement = CalculateDistance_segement();
+//		case 2:
+//			distant_point = CalculateDistance_point();
+//		case 3:
+//			degree_point = CalculateDegree_point();
+//		case 4:
+//			degree_segement = CalculateDegree_segement();
+//		case 5:
+//			area = Calculatearea_polygon();
+//	}
+//
 	display();
 }
 
