@@ -39,28 +39,42 @@ void drawedge()
 	//dbgS("横坐标绘制完成\n");
 	MovePen(centerX, 0.5);
 	DrawLine(0,6.5);
+	MovePen(centerX+0.04, centerY-0.16);
+	DrawTextString("0");
 	SetPenColor("Blue");
 	//dbgS("边框绘制完成\n");
 }
 
-double transfer(char *a,double x)
-{
-	dbgS("当前函数：");dbgS(a);dbgS("现在传入x：");dbgD(x);dbgC('\n');
-	double y, Function_y;
-	static double Function_origion_y;
-	Function_y = calculate(a,((x-centerX)/scale));
-	dbgS("Function_y的值为：");dbgD(Function_y);dbgC('\n');
-	if(x <= 3.03) Function_origion_y = Function_y;
-	if(Function_y*Function_origion_y < -100) change = 1;
-	Function_origion_y = Function_y;
-	y = scale*(Function_y+centerY);
-	dbgS("y的值为：");dbgD(y);dbgC('\n');
-	return y;
-}
-//double transfery(double Y)
+//double transfer(char *a,double x)
 //{
-//	dbgS("现在传入y：");dbgD(Y);dbgC('\n');
-//	double Y2;
-//	Y2=Y*scale+centerY;
-//	return Y2;
+//	dbgS("当前函数：");dbgS(a);dbgS("现在传入x：");dbgD(x);dbgC('\n');
+//	double y, Function_y;
+//	static double Function_origion_y;
+//	Function_y = calculate(a,((x-centerX)/scale));
+//	dbgS("Function_y的值为：");dbgD(Function_y);dbgC('\n');
+//	if(x <= 3.03) Function_origion_y = Function_y;
+//	if(Function_y*Function_origion_y < -100) change = 1;
+//	Function_origion_y = Function_y;
+////	y = scale*(Function_y+centerY);
+////	dbgS("y的值为：");dbgD(y);dbgC('\n');
+//	return y;
 //}
+double transferx(double x)
+{
+	//dbgS("现在传入x：");dbgD(x);
+	return (x*scale+centerX);
+}
+
+double transfery(double y)
+{
+	//dbgS("现在传入y：");dbgD(y);dbgC('\n');
+	return (y*scale+centerY);
+}
+
+void DrawTo(double x, double y)
+{
+	double ox, oy;
+	ox = GetCurrentX();
+	oy = GetCurrentY();
+	DrawLine(x-ox, y-oy);
+}

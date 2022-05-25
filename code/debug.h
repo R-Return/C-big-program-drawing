@@ -8,5 +8,6 @@ void dbgI(int x);
 void dbgC(char x);
 void dbgD(double x);
 void dbgS(char *x);
+void dbgP(void *x);
 
 #endif //DEBUG_H

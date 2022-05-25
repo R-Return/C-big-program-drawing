@@ -17,6 +17,7 @@
 #include "simpio.h"
 #include "genlib.h"
 #include "gcalloc.h" 
+#include "boolean.h"
 #include <math.h>
 
 #include "debug.h"
@@ -28,7 +29,7 @@
 #define maxFunc 100	//函数字符串最大长度
 
 extern double centerX, centerY, scale;
-
+extern int insert_point_state, insert_segment_state, insert_polygon_state;
 extern char str[maxFunc];
 
 #endif //HEADER_H

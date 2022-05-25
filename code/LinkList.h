@@ -9,17 +9,24 @@ enum ShapeType {
 struct Point {
     double x;
 	double y;
+	int connect;
+//	struct Point *before;
     struct Point *next;
 };
 
-struct Function{
+//struct Function{
 //	double x
 //	double y;
-//	int i;
+//	int i;		//判断是否与前一个点连接，连接则为1，不连接则为0；
+//	struct Function *before;
 //	struct Function *next;
-	char func[maxFunc];
-};
+////	char func[maxFunc];
+//};
 
+struct Func_expression{
+	char func[maxFunc];
+	struct Func_expression *next;
+};
 
 struct Circle {
     double x;
@@ -34,15 +41,15 @@ typedef struct shape{
     int isClicked;
     struct Point *pHead;		// point list, for point, line, segment, poly
     struct Circle c;
-    struct Function f;
     struct shape *before;
     struct shape *next;
 }Shape;
 
 extern Shape *head, *end;
+extern struct Func_expression *fHead, *fEnd;
 
 void initLinkList(void);
-void insertPoint(int i, int ty, double x, double y);
+void insertPoint(int i, int ty, int connect, double x, double y);
 void insertCircle(int i, double x, double y);
 void insertFunc(char a[]);
 void deleteList(void);

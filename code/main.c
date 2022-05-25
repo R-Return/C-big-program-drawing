@@ -1,6 +1,8 @@
 #include "Header.h"
 #define maxFunc 100	//函数字符串最大长度
+#define point_r 0.05
 int pageid=1;
+int insert_point_state = 0, insert_segment_state = 0, insert_polygon_state = 0;
 double centerX=6.1, centerY=4, scale=1;
 char str[maxFunc] = "";
 char *Function_Color[]={"Dark Gray", "Red", "Green",  
@@ -19,7 +21,7 @@ void display()
 		SetPointSize(20); 
 		if(button(GenUIID(0), 2, 1.5, 2, 1, "开始使用"))
 		{
-			dbgS("选择“开始使用”按钮\n");
+			dbgS("开始使用\n");
 			pageid=2;
 		}
 		if(button(GenUIID(0), 6, 1.5, 2, 1 , "退出"))
@@ -51,68 +53,76 @@ void display()
 		
 		if(button(GenUIID(0), 0.2, 5, 1, 0.5, "点"))
 		{
-			; 
+			insert_point_state = 1; 
 		}
-		if(button(GenUIID(0), 0.2, 4, 1, 0.5, "直线"))
+		if(button(GenUIID(0), 0.2, 4, 1, 0.5, "线段"))
 		{
-			; 
+			insert_point_state = 1; 
 		}
 		if(button(GenUIID(0), 0.2, 3, 1, 0.5, "多边形"))
 		{
-			; 
+			insert_point_state = 1; 
 		}
 		//DisplayClear();	
 		
 		//绘制
 		Shape *p;
+		struct Point *cp;
 		int FuncColor;
+		int opposite = 0;
 		FuncColor = 0;
 		for(p = head->next;p != end; p = p->next)
 		{
+			//绘制点
+			if(p->ty == 0)
+			{
+				SetPenColor("Red");
+				MovePen(p->pHead->next->x, p->pHead->next->y);
+				StartFilledRegion(0.8);
+				DrawArc(point_r, 0, 360);
+				EndFilledRegion();
+				dbgS("点绘制完成\n");
+			}
+			
 			//绘制函数
 			if(p->ty == 5)
 			{
-				double oy,cy;
-				int interupt = 0;
+				double x,y;
 				SetPenColor(Function_Color[FuncColor % 7]);
-				d = 1;
-				for(j=3;j<9.2;j+=0.05)
-				{ 
-					//dbgS( "绘画次数：");dbgI(d);dbgC('\n');
-					change = 0;
-					cy = transfer(p->f.function,j);
-					if(change)
+				int d = 1;
+				
+				for(cp = p->pHead->next; cp->next; cp = cp->next)
+				{
+					if(!cp->connect)
 					{
-						oy = cy;
-						interupt = 1;
-						continue;
-					} 
-					if((cy <= 0.5 || cy >= 7))
-					{
-						oy = cy;
-						interupt = 1;
-						continue;
+						opposite = 1;
 					}
-					if(d == 1 || interupt == 1)
+					x = transferx(cp->x);
+					y = transfery(cp->y);
+					if(x < 3 || x >9.2 || y < 0.5 || y > 7) continue;
+					if(opposite == 1)	
 					{
-						oy = cy;
-						MovePen(j,cy);
-						interupt = 0;
+						MovePen(x, y);
+						opposite = 0;
 					}
-					else
+					else if(d == 1)	MovePen(x, y);
+					else	
 					{
-						DrawLine(0.05,cy-oy);
+						DrawTo(x, y);
 					}
-					dbgS( "完成绘画次数：");dbgI(d);dbgC('\n');
-					d++;
-					oy=cy;
-				}
+					d ++;
+				}//for
 				FuncColor ++;
 				SetPenColor("Blue");
-			}
-		}
+				dbgS("绘制完成次数：");dbgI(d);dbgC('\n');
+			}//if 函数绘制结束
+			
+			//绘制函数表达式
+//			MovePen(0.5,0.5);
+//			DrawTextString(fHead->next->func);
+		}//for
 		
-	}
+	}//if
 	if(pageid==3)
 	{
 		DisplayClear();	

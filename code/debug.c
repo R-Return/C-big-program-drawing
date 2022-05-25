@@ -27,3 +27,9 @@ void dbgS(char *x)
 	fprintf(fdebug, "%s", x);
 	fclose(fdebug);
 }
+void dbgP(void *x)
+{
+	fdebug = fopen("debug.txt","a");
+	fprintf(fdebug, "%p", x);
+	fclose(fdebug);
+}
