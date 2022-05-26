@@ -23,10 +23,6 @@ struct Point {
 ////	char func[MAX];
 //};
 
-struct Func_expression{
-	char func[MAX];
-	struct Func_expression *next;
-};
 
 struct Circle {
     double x;
@@ -46,7 +42,6 @@ typedef struct shape{
 }Shape;
 
 extern Shape *head, *end;
-extern struct Func_expression *fHead, *fEnd;
 
 void initLinkList(void);
 void insertPoint(int i, int ty, int connect, double x, double y);

@@ -91,12 +91,12 @@ double PopStack2(Stack2 *s) {
 
 double GetStack2(Stack2 *s) {
 	double x;
-	if (!Empty_Stack2(s))
-	{
-		dbgS("stack 2 empty!");dbgC('\n');
+	if (!Empty_Stack2(s)) {
+		dbgS("stack 2 empty!");
+		dbgC('\n');
 		return 0;
 	}
-		
+
 	else
 		x = s->data[s->top];
 	return x;
@@ -232,24 +232,43 @@ double Function(char x, double m) {
 		return sin(m);
 	if (x == 'b')
 		return cos(m);
-	if (x == 'c')
-	{
-		if((m-PI/2) / (PI/2) == 0)
-		{
+	if (x == 'c') {
+		if ((m - PI / 2) / (PI / 2) == 0) {
 			change = 1;
 			return 0;
-		}
-		else return tan(m);
+		} else
+			return tan(m);
 	}
-	if (x == 'd')
-	{
-		if(m <= 0)
-		{
+	if (x == 'd') {
+		if (m <= 0) {
 			change = 1;
 			return 0;
-		}
-		else return log(m);
+		} else
+			return log(m);
 	}
+}
+
+char GetC(char a[], int *i) {
+	char c;
+	if (a[*i] == 's' && a[*i + 1] == 'i' && a[*i + 2] == 'n') {
+		c = 'a';
+		(*i) += 3;
+	} else if (a[*i] == 'c' && a[*i + 1] == 'o' && a[*i + 2] == 's') {
+		c = 'b';
+		(*i) += 3;
+	} else if (a[*i] == 't' && a[*i + 1] == 'a' && a[*i + 2] == 'n') {
+		c = 'c';
+		(*i) += 3;
+	} else if (a[*i] == 'l' && a[*i + 1] == 'n') {
+		c = 'd';
+		(*i) += 2;
+	} else if (a[*i] == '\0') {
+		c = a[*i];
+	} else {
+		c = a[*i];
+		(*i)++;
+	}
+	return c;
 }
 
 double calculate(char a[], double x) {
@@ -265,10 +284,11 @@ double calculate(char a[], double x) {
 	InitStack1(&operater);
 	InitStack2(&operand);
 	PushStack1(&operater, '#');
-	while ((c = a[i]) != '\0' 
-			&& (Empty_Stack1(&operater))
-			&& !change) 
-	{
+	c = GetC(a, &i);
+	//dbgS("当前i：");dbgI(i);dbgC('\n');
+	while (c != '\0'
+	        && (Empty_Stack1(&operater))
+	        && !change) {
 		//dbgC(c);dbgC('\n');
 		//数字部分
 		t = 0;
@@ -284,42 +304,49 @@ double calculate(char a[], double x) {
 				t = t + (c - '0') * k;
 				k = k * 0.1;
 			}
-			c = a[++i];
+			c = GetC(a, &i);
 			//dbgC(c);dbgC('\n');
 		}//while
 		if (k) {
-			if (PushStack2(&operand, t) == 0)
-			{
-				dbgS( "溢出");dbgC('\n');
+			if (PushStack2(&operand, t) == 0) {
+				dbgS( "溢出");
+				dbgC('\n');
 			}
 		}//if
 		if (c == 'x') {
-			if (PushStack2(&operand, x) == 0)
-			{
-				dbgS( "溢出");dbgC('\n');
+			//dbgS("读到x\n");
+			if (PushStack2(&operand, x) == 0) {
+				dbgS( "溢出");
+				dbgC('\n');
 			}
-			i++;
+			c = GetC(a, &i);
 		}//if
-		if (c == 'p') {
-			if (PushStack2(&operand, PI) == 0)
-			{
-				dbgS( "溢出");dbgC('\n');
+		if (c == 'P' || c == 'p') {
+			if (PushStack2(&operand, PI) == 0) {
+				dbgS( "溢出");
+				dbgC('\n');
 			}
 			i++;
+			c = GetC(a, &i);
 		}//if
 		if (c == 'e') {
-			if (PushStack2(&operand, e) == 0)
-			{
-				dbgS( "溢出");dbgC('\n');
+			if (PushStack2(&operand, e) == 0) {
+				dbgS( "溢出");
+				dbgC('\n');
 			}
-			i++;
+			c = GetC(a, &i);
 		}//if
 		//操作数部分
-		c = a[i];
+		//dbgS("待处理操作数：");dbgC(c);dbgC('\n');
+		//dbgS("操作数栈顶：");dbgC(GetStack1(&operater));dbgC('\n');
 		switch (Precede(o = GetStack1(&operater), c)) {
 			case '<':   //继续存放
 				PushStack1(&operater, c);
-				i++;
+				//dbgS("继续存放的操作数：");dbgC(c);dbgC('\n');
+				//dbgS("当前i：");dbgI(i);dbgC('\n');
+				c = GetC(a, &i);
+				//dbgS("当前i：");dbgI(i);dbgC('\n');
+				//dbgS("新读取操作数：");dbgC(c);dbgC('\n');
 				break;
 			case '>':   //计算
 				if (isOptr(o) == 4)
@@ -331,13 +358,15 @@ double calculate(char a[], double x) {
 				break;
 			case '=':
 				PopStack1(&operater);
-				i++;
+				c = GetC(a, &i);
 				break;
-		}
+		}//switch
 	}//while
 	double result;
-	if(change) result = 0;
-	else result = GetStack2(&operand);
+	if (change)
+		result = 0;
+	else
+		result = GetStack2(&operand);
 	//dbgS( "---------运算结束，结果为：");dbgD(result);dbgC('\n');
 	return result;
 }

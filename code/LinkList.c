@@ -1,7 +1,6 @@
 #include "LinkList.h"
 #include <math.h>
 Shape *head, *end;
-struct Func_expression *fHead, *fEnd;
 
 struct Point *e;	//点池尾结点
 void initLinkList(void)
@@ -12,10 +11,7 @@ void initLinkList(void)
     end->next = NULL;
     end->before = head;
     head->next = end;
-    
-//    fHead = (struct Func_expression*)malloc(sizeof(struct Func_expression));
-//    fHead->next = NULL;
-//    fEnd = fHead;
+
     dbgS("链表初始化完成\n");
 }
 
@@ -53,7 +49,7 @@ void insertPoint(int i, int ty, int connect, double x, double y) //i控制插入状态
 //    dbgI(2);
     e = r;
 //    dbgS("当前尾结点地址：");dbgP(e);dbgC('\n');
-    dbgS("点节点插入完成\n");
+    //dbgS("点节点插入完成\n");
 }
 
 void insertCircle(int i, double x, double y)
@@ -81,20 +77,12 @@ void insertCircle(int i, double x, double y)
 void insertFunc(char a[])
 {
     dbgS("开始插入函数\n");
-	//插入表达式
-	struct Func_expression *fp, *fend;
-	fp = (struct Func_expression*)malloc(sizeof(struct Func_expression));
-	strcpy(fp->func, a);
-	fEnd->next = fp;
-	fp->next = NULL;
-	fEnd = fp;
-	
+
     double y;
 	int d = 1, interrupt = 0;
 	double j;
 	double Last_y;
-//	struct Function *p;
-	for(j=-5;j<5;j+=0.01)
+	for(j=-9;j<=9;j+=0.01)
 	{ 
 		//dbgS( "计算函数点次数：");dbgI(d);dbgC('\n');
 		change = 0;
@@ -113,16 +101,16 @@ void insertFunc(char a[])
 			insertPoint(1, 5, 0, j, y);
 			interrupt = 0;
 		}
-		else if(Last_y * y <-100)
+		else if(Last_y * y <-800)
 		{
 			insertPoint(1, 5, 0, j, y);
-//			dbgS("y的值为：");dbgD(y);dbgC('\n');
+			//dbgS("y的值为：");dbgD(y);dbgC('\n');
 		}
 		else
 		{
 			insertPoint(1, 5, 1, j, y);
 		}
-		//dbgS( "完成计算函数点次数：");dbgI(d);dbgC('\n');
+		//dbgS( "完成计算函数点次数：");dbgI(d);dbgS( "函数纵坐标为：");dbgD(y);dbgC('\n');
 		d++;
 		Last_y = y;
 	}
@@ -133,20 +121,13 @@ void deleteList(void)
 {
     dbgS("开始删除节点\n");
 	Shape *p = head;
-	struct Func_expression *fp = fHead, *fo;
     while(p != end)
     {
 		if (p->isClicked == 1) 
 		{
 			p->before->next = p->next;
 			p->next->before = p->before;
-			if(p->ty == 5)fo->next = fp->next;
 			break;
-		}
-		if(p->ty == 5) 
-		{
-			fo = fp;
-			fp = fp->next;
 		}
         p = p->next;
     }

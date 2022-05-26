@@ -32,14 +32,14 @@ void drawedge()
 {
 	//dbgS("开始绘制边框\n");
 	//SetPenColor(Timecolor);
-	DrawRectangle(3,7,9.2,0.5);
+	DrawRectangle(Left_x, Left_y, Right_x, Right_y);
 	//dbgS("开始绘制坐标轴\n");
 	SetPenColor("Gray");
-	MovePen(3, centerY);
-	DrawLine(6.2,0);
+	MovePen(Left_x, centerY);
+	DrawLine(Right_x-Left_x,0);
 	//dbgS("横坐标绘制完成\n");
-	MovePen(centerX, 0.5);
-	DrawLine(0,6.5);
+	MovePen(centerX, Left_y);
+	DrawLine(0,Right_y-Left_y);
 	MovePen(centerX+0.04, centerY-0.16);
 	DrawTextString("0");
 	SetPenColor("Blue");

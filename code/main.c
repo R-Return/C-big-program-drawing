@@ -3,7 +3,8 @@
 #define point_r 0.05
 int pageid=1;
 int insert_state = -1;
-double centerX=6.1, centerY=4, scale=1;
+double Left_x = 4, Left_y = 1.5, Right_x = 14, Right_y = 11.5;
+double centerX, centerY, scale=1;
 char str[MAX] = "";
 char *Function_Color[]={"Dark Gray", "Red", "Green",  
 						"Cyan", "Blue", "Magenta"};
@@ -53,7 +54,15 @@ void display()
 		
 		if(button(GenUIID(0), 0.2, 5, 1, 0.5, "点"))
 		{
-			insert_state = 0; 
+			 
+			if(insert_state == 0)
+			{
+				insert_state = -1;
+			}
+			else
+			{
+				insert_state = 0;
+			}
 		}
 		if(button(GenUIID(0), 0.2, 4, 1, 0.5, "线段"))
 		{
@@ -79,7 +88,8 @@ void display()
 				DrawPoint(p->pHead->next->x, p->pHead->next->y);
 				//dbgS("点绘制完成\n");
 			}
-			else if(p->ty == 2)
+			//绘制线段
+			else if(p->ty == 2)	
 			{
 				cp = p->pHead->next;
 				if(cp->next)
@@ -93,36 +103,31 @@ void display()
 				}
 				//dbgS("线段绘制完成\n");
 			}
-			else if(p->ty == 3)
+			//绘制多边形
+			else if(p->ty == 3)	
 			{
-				cp = p->pHead->next;
-				while(cp->next)
+				
+				for(cp = p->pHead->next; cp; cp = cp->next)
 				{
 					if(cp->connect == 0)	DrawPoint(cp->x, cp->y);
-					else
+					else if(cp->connect == 1)
 					{
 						DrawTo(cp->x, cp->y);
+						DrawPoint(cp->x, cp->y);
 					}
-					cp = cp->next;
+					else if(cp->connect == 2)
+					{
+						DrawTo(cp->x, cp->y);
+						DrawPoint(cp->x, cp->y);
+						DrawTo(p->pHead->next->x, p->pHead->next->y);
+						dbgS("绘制封闭线\n");
+					}
 				}
-				if(cp->connect == 2)
-				{
-					DrawTo(cp->x, cp->y);
-					DrawPoint(cp->x, cp->y);
-					DrawTo(p->pHead->next->x, p->pHead->next->y);
-				}
-				else if(cp->connect == 0)
-				{
-					DrawPoint(cp->x, cp->y);
-				}
-				else
-				{
-					DrawTo(cp->x, cp->y);
-					DrawPoint(cp->x, cp->y);
+				
 //					SetPenColor("White");
 //					DrawTo(cp->x, cp->y);
 //					SetPenColor("Blue");
-				}
+				
 			}
 			//绘制函数
 			else if(p->ty == 5)
@@ -139,7 +144,7 @@ void display()
 					}
 					x = transferx(cp->x);
 					y = transfery(cp->y);
-					if(x < 3 || x >9.2 || y < 0.5 || y > 7) continue;
+					if(x < Left_x || x > Right_x || y < Left_y || y > Right_y) continue;
 					if(opposite == 1)	
 					{
 						MovePen(x, y);
@@ -148,13 +153,14 @@ void display()
 					else if(d == 1)	MovePen(x, y);
 					else	
 					{
-						DrawTo(x, y);
+						DrawTo(cp->x, cp->y);
 					}
 					d ++;
+					//dbgS("绘制完成次数：");dbgI(d);dbgC('\n');
 				}//for
 				FuncColor ++;
 				SetPenColor("Blue");
-				dbgS("绘制完成次数：");dbgI(d);dbgC('\n');
+				//dbgS("绘制完成次数：");dbgI(d);dbgC('\n');
 			}//if 函数绘制结束
 			
 			//绘制函数表达式
@@ -196,6 +202,7 @@ void KeyboardEventProcess(int key, int event)
 void Main()
 {
 	//初始化窗口和图形系统
+	SetWindowSize(15, 12);
 	InitGraphics();
 	initDebug();
 	SetWindowTitle("几何画板");
@@ -204,10 +211,8 @@ void Main()
 	registerKeyboardEvent(KeyboardEventProcess);// 键盘
 	registerMouseEvent(MouseEventProcess);      // 鼠标
 	//registerTimerEvent(TimerEventProcess);      // 定时器
-//	centerX=6.1;
-//	centerY=4;
-//	scale=1;
-	str[0]='\0';
+	centerX=(Left_x +Right_x)/2;
+	centerY=(Left_y +Right_y)/2;
 	dbgS("全局变量初始化完成\n");
 	display();
 	//初始化链表

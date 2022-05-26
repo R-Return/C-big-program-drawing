@@ -1,4 +1,5 @@
 #include "selected.h"
+#define point_r 0.05
 
 void MouseEventProcess(int x, int y, int button, int event);
 void Select_Point(int nowx, int nowy, struct Point *head) ;
@@ -25,13 +26,13 @@ void MouseEventProcess(int x, int y, int button, int event) {
 			//dbgS("检测选中\n");
 			switch (sh_chose->ty) {
 				case 0:
-					Select_Point(mouse_x, mouse_y, sh_chose->pHead);
+					Select_Point((mouse_x-centerX)/scale, (mouse_y-centerY)/scale, sh_chose->pHead);
 					break;
 				case 2:
-					Select_Line(mouse_x, mouse_y, sh_chose->pHead);
+					Select_Line((mouse_x-centerX)/scale, (mouse_y-centerY)/scale, sh_chose->pHead);
 					break;
 				case 3:
-					Select_Poly(mouse_x, mouse_y, sh_chose->pHead);
+					Select_Poly((mouse_x-centerX)/scale, (mouse_y-centerY)/scale, sh_chose->pHead);
 					break;
 			}
 			if (chose) {			//如果有选中的点或线 将struct中的chose变量置1
@@ -54,54 +55,58 @@ void MouseEventProcess(int x, int y, int button, int event) {
 		switch(event)
 		{
 			case BUTTON_DOWN:
-				if(insert_state == 0 && button == LEFT_BUTTON) 
+				if(mouse_x >= Left_x && mouse_x <= Right_x 
+					&& mouse_y >= Left_y && mouse_y <= Right_y)
 				{
-					insertPoint(0, 0, 0, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
-					insert_state = -1;
-					hasAdded = 0;
-					dbgS("插点完成\n");
-				}
-				else if(insert_state == 2 && button == LEFT_BUTTON) 
-				{
-					if(hasAdded)
+						if(insert_state == 0 && button == LEFT_BUTTON) 
 					{
-						insertPoint(1, 2, 1, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
+						insertPoint(0, 0, 0, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
+						
+						hasAdded = 0;
+						dbgS("插点完成\n");
+					}
+					else if(insert_state == 2 && button == LEFT_BUTTON) 
+					{
+						if(hasAdded)
+						{
+							insertPoint(1, 2, 1, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
+							insert_state = -1;
+							hasAdded = 0;
+							dbgS("线段插入完成\n");
+						}
+						else
+						{
+							insertPoint(0, 2, 0, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
+							hasAdded = 1;
+						}
+					}
+					else if(insert_state == 3 && button == LEFT_BUTTON)
+					{
+						if(hasAdded)
+						{
+							dbgS("准备插入多边形内端点\n");
+							insertPoint(1, 3, 1, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
+							dbgS("多边形内端点插入完成\n");
+						}
+						else
+						{
+							dbgS("准备插入多边形头端点\n");
+							insertPoint(0, 3, 0, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
+							hasAdded = 1;
+							dbgS("多边形头端点插入完成\n");
+						}
+					}
+					else if(insert_state == 3 && button == RIGHT_BUTTON)
+					{
+						dbgS("准备插入多边形尾端点\n");
+						insertPoint(0, 3, 2, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
 						insert_state = -1;
 						hasAdded = 0;
-						dbgS("线段插入完成\n");
+						dbgS("多边形尾端点插入完成\n");
 					}
-					else
-					{
-						insertPoint(0, 2, 0, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
-						hasAdded = 1;
-					}
+					else break;
 				}
-				else if(insert_state == 3 && button == LEFT_BUTTON)
-				{
-					if(hasAdded)
-					{
-						dbgS("准备插入多边形内端点\n");
-						insertPoint(1, 3, 1, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
-						dbgS("多边形内端点插入完成\n");
-					}
-					else
-					{
-						dbgS("准备插入多边形头端点\n");
-						insertPoint(0, 3, 0, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
-						hasAdded = 1;
-						dbgS("多边形头端点插入完成\n");
-					}
-				}
-				else if(insert_state == 3 && button == RIGHT_BUTTON)
-				{
-					dbgS("准备插入多边形尾端点\n");
-					insertPoint(0, 3, 2, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
-					insert_state = -1;
-					hasAdded = 0;
-					dbgS("多边形尾端点插入完成\n");
-				}
-				else;
-				break;
+				else break;
 			default:
 				break;
 		}
@@ -126,19 +131,18 @@ void MouseEventProcess(int x, int y, int button, int event) {
 //函数：选中点判断
 //通过比较鼠标所在位置是否在点所在的误差范围之内，来判断是否选中状态
 void Select_Point(int nowx, int nowy, struct Point *head) {
-	dbgS("选中点判断\n");
-	int r_point = 0.01;												//选中点的范围
+	//dbgS("选中点判断\n");										//选中点的范围
 	int d; 															//鼠标与遍历到点的距离
-	d = pow( nowx - head->x, 2 ) + pow( nowy - head->y, 2);
-	if ( pow(d, 0.5) <= r_point ) {
+	d = pow( nowx - head->next->x, 2 ) + pow( nowy - head->next->y, 2);
+	if ( pow(d, 0.5) <= point_r ) {
 		chose = 1;												//sh->chosen
 	}
-	dbgS("选中点判断完成\n");
+	//dbgS("选中点判断完成\n");
 	/*struct Point *point_ptr;
 	for ( point_ptr = head; point_ptr != NULL; point_ptr = point_ptr->next)
 	{
 		d = pow( nowx - point_ptr->x, 2 ) + pow( nowy - point_ptr->y, 2);
-		if ( pow(d, 0.5) <= r_point )
+		if ( pow(d, 0.5) <= point_r )
 		{
 			point_ptr->chose = 1;
 		}
@@ -148,20 +152,30 @@ void Select_Point(int nowx, int nowy, struct Point *head) {
 //选中线段判断
 //通过比较线段斜率与鼠标所在位置形成的斜率，是否在误差范围之内，来判断是否选中状态
 void Select_Line(int nowx, int nowy, struct Point *head) {
-	dbgS("选中线段判断\n");
+	//dbgS("选中线段判断\n");
 	double slope, nowslope, error = 0.001;							//选取容许误差
 	int x1, y1, x2, y2;												//线段两个端点的坐标
-	x1 = head->x;
-	y1 = head->y;
-	head = head->next;
-	x2 = head->x;
-	y2 = head->y;
-	slope = (y2 - y1) / (x2 - x1);									//当前线段的斜率
-	nowslope = (nowy - y1) / (nowx - x1);								//鼠标所在位置与端点形成斜率
-	if ( (nowslope = slope + error) && (nowslope = slope - error) ) {
-		chose = 1;
+	struct Point *p;
+	p = head->next;
+	x1 = p->x;
+	y1 = p->y;
+	if(p->next)
+	{
+		p = p->next;
+		x2 = p->x;
+		y2 = p->y;
+		dbgS("坐标计算完成\n");
+	//	slope = (y2 - y1) / (x2 - x1);									//当前线段的斜率
+	//	nowslope = (nowy - y1) / (nowx - x1);								//鼠标所在位置与端点形成斜率
+		if ( ((nowx - x1) * (y2 - y1) <= ((nowy - y1) * (x2 - x1) + error)) 
+			&& ((nowx - x1) * (y2 - y1) >= ((nowy - y1) * (x2 - x1) - error))) 
+		{
+			chose = 1;
+		}
 	}
-	dbgS("选中线段判断完成\n");
+	else;
+	
+	//dbgS("选中线段判断完成\n");
 }
 
 void Select_Poly(int nowx, int nowy, struct Point *head) {
@@ -169,7 +183,7 @@ void Select_Poly(int nowx, int nowy, struct Point *head) {
 	int x[80], y[80];
 	struct Point *temp;
 	int count = 0, i = 0;
-	for( temp = head; temp != NULL; temp = temp->next )
+	for( temp = head->next; temp; temp = temp->next )
 	{
 		x[i] = temp->x;
 		y[i] = temp->y;
@@ -179,7 +193,7 @@ void Select_Poly(int nowx, int nowy, struct Point *head) {
 	for( j = 0; j < i; j = j+2 )
 	{
 		if( (( x[j] > nowx ) != ( x[j+1] > nowx)) 
-		   && (nowx > ( x[j+1] - x[j]) * (nowy - y[j]) / (y[j+1] - y[j]) + x[j]) )
+		   && ((nowx - x[j]) * (y[j+1] - y[j]) >= ( x[j+1] - x[j]) * (nowy - y[j])))
 		   count++;
 	}
 	if( count % 2 != 0)
@@ -188,14 +202,14 @@ void Select_Poly(int nowx, int nowy, struct Point *head) {
 }
 
 double CalculateDistance_segement(void) {
-	dbgS("开始计算线段距离\n");
+	dbgS("开始计算线段长度\n");
 	Shape *sort;
 	double sum = 0;
 	int x1, y1, x2, y2;
-	for ( sort = head; sort != NULL; sort = sort->next ) {
+	for ( sort = head->next; sort; sort = sort->next ) {
 		struct Point *temp;
-		if (sort->isChosen == 1 && sort->ty == 2) {
-			temp = sort->pHead;
+		if (sort->isClicked == 1 && sort->ty == 2) {
+			temp = sort->pHead->next;
 			x1 = temp->x;
 			y1 = temp->y;
 			temp = temp->next;
@@ -217,10 +231,10 @@ double CalculateDistance_point(void) {
 	double sum;
 	int x[2], y[2];
 	int count = 0;
-	for ( sort = head; sort != NULL; sort = sort->next ) {
+	for ( sort = head->next; sort; sort = sort->next ) {
 		struct Point *temp;
 		if (sort->isClicked == 1 && sort->ty == 0) {
-			temp = sort->pHead;
+			temp = sort->pHead->next;
 			x[count] = temp->x;
 			y[count] = temp->y;
 			count++;
@@ -263,10 +277,10 @@ double CalculateDegree_segement(void) {
 	double k[2];
 	int count = 0;
 	int x1, y1, x2, y2;
-	for ( sort = head; sort != NULL; sort = sort->next ) {
+	for ( sort = head->next; sort; sort = sort->next ) {
 		struct Point *temp;
 		if ( sort->isClicked == 1 && sort->ty == 2) {
-			temp = sort->pHead;
+			temp = sort->pHead->next;
 			x1 = temp->x;
 			y1 = temp->y;
 			temp = temp->next;
@@ -277,8 +291,7 @@ double CalculateDegree_segement(void) {
 		}
 	}
 	if ( k[0] != 0 && k[1] != 0) {
-		int temp_k = fabs(k[1] - k[0]);
-		sum = atan(temp_k) * 180 / Pi;
+		int sum = fabs(atan(k[1]) * 180 / Pi - atan(k[0]) * 180 / Pi);
 	}
 	dbgS("角度计算完成：");dbgD(sum);dbgC('\n');
 	return sum;
@@ -290,24 +303,22 @@ double Calculatearea_polygon(void) {
 	double sum = 0;
 	int x[80], y[80];
 	int i;
-	for ( sort = head; sort != NULL; sort = sort->next ) {
+	for ( sort = head->next; sort; sort = sort->next ) {
 		struct Point *temp;
 		if ( sort->isClicked == 1 && sort->ty == 3 ) {
-			temp = sort->pHead;
-			for (i = 0; i <= 80 && temp != NULL; i++) {
+			temp = sort->pHead->next;
+			for (i = 0; i <= 80 && temp; i++, temp = temp->next) {
 				x[i] = temp->x;
 				y[i] = temp->y;
-				temp = temp->next;
 			}
 			break;
 		}
 	}
 	int j;
-	for (j = 0; j <= i; j++) {
-		if (j == i)
-			j = -1;
+	for (j = 0; j <= i-1; j++) {
 		sum = sum + x[j] * y[j + 1] - x[j + 1] * y[j];
 	}
+	sum = sum + x[i] * y[0] - x[0] * y[i];
 	sum = 0.5 * fabs(sum);
 	dbgS("多边形面积计算完成：");dbgD(sum);dbgC('\n');
 	return sum;
