@@ -14,84 +14,98 @@ double Calculatearea_polygon(void);
 
 void MouseEventProcess(int x, int y, int button, int event) {
 	double mouse_x = 0, mouse_y = 0;
-	int hasAdded = 0;
+	static int hasAdded = 0;
 	uiGetMouse(x, y, button, event);
 	mouse_x = ScaleXInches(x);
 	mouse_y = ScaleYInches(y);
-	Shape *sh_chose;
-	for ( sh_chose = head->next; sh_chose != end; sh_chose = sh_chose->next ) 
-	{
-		dbgS("检测选中\n");
-		switch (sh_chose->ty) {
-			case 0:
-				Select_Point(mouse_x, mouse_y, sh_chose->pHead);
-			case 2:
-				Select_Line(mouse_x, mouse_y, sh_chose->pHead);
-			case 3:
-				Select_Poly(mouse_x, mouse_y, sh_chose->pHead);
-		}
-		if (chose) {			//如果有选中的点或线 将struct中的chose变量置1
-			sh_chose->isChosen = 1;
-		}
-		switch (event) {
+	
+		Shape *sh_chose;
+		for ( sh_chose = head->next; sh_chose != end; sh_chose = sh_chose->next ) 
+		{
+			//dbgS("检测选中\n");
+			switch (sh_chose->ty) {
+				case 0:
+					Select_Point(mouse_x, mouse_y, sh_chose->pHead);
+					break;
+				case 2:
+					Select_Line(mouse_x, mouse_y, sh_chose->pHead);
+					break;
+				case 3:
+					Select_Poly(mouse_x, mouse_y, sh_chose->pHead);
+					break;
+			}
+			if (chose) {			//如果有选中的点或线 将struct中的chose变量置1
+				sh_chose->isChosen = 1;
+			}
+			switch (event) {
+				case BUTTON_DOWN:
+					if (button == LEFT_BUTTON && chose)
+						sh_chose->isClicked = -sh_chose->isClicked;
+					break;
+				case BUTTON_DOUBLECLICK:
+					break;
+				case BUTTON_UP:
+					break;
+				case MOUSEMOVE:
+					break;
+			}
+		}//for
+		//绘制点、线、多边形
+		switch(event)
+		{
 			case BUTTON_DOWN:
-				if (button == LEFT_BUTTON && chose)
-					sh_chose->isClicked = -sh_chose->isClicked;
+				if(insert_state == 0 && button == LEFT_BUTTON) 
+				{
+					insertPoint(0, 0, 0, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
+					insert_state = -1;
+					hasAdded = 0;
+					dbgS("插点完成\n");
+				}
+				else if(insert_state == 2 && button == LEFT_BUTTON) 
+				{
+					if(hasAdded)
+					{
+						insertPoint(1, 2, 1, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
+						insert_state = -1;
+						hasAdded = 0;
+						dbgS("线段插入完成\n");
+					}
+					else
+					{
+						insertPoint(0, 2, 0, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
+						hasAdded = 1;
+					}
+				}
+				else if(insert_state == 3 && button == LEFT_BUTTON)
+				{
+					if(hasAdded)
+					{
+						dbgS("准备插入多边形内端点\n");
+						insertPoint(1, 3, 1, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
+						dbgS("多边形内端点插入完成\n");
+					}
+					else
+					{
+						dbgS("准备插入多边形头端点\n");
+						insertPoint(0, 3, 0, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
+						hasAdded = 1;
+						dbgS("多边形头端点插入完成\n");
+					}
+				}
+				else if(insert_state == 3 && button == RIGHT_BUTTON)
+				{
+					dbgS("准备插入多边形尾端点\n");
+					insertPoint(0, 3, 2, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
+					insert_state = -1;
+					hasAdded = 0;
+					dbgS("多边形尾端点插入完成\n");
+				}
+				else;
 				break;
-			case BUTTON_DOUBLECLICK:
-				break;
-			case BUTTON_UP:
-				break;
-			case MOUSEMOVE:
+			default:
 				break;
 		}
-	}//for
-	//绘制点、线、多边形
-	switch(event)
-	{
-		case BUTTON_DOWN:
-			if(insert_point_state == 1 && button == LEFT_BUTTON) 
-			{
-				insertPoint(0, 0, 0, mouse_x, mouse_y);
-				insert_point_state = 0;
-				dbgS("插点完成\n");
-			}
-			else if(insert_segment_state == 1 && button == LEFT_BUTTON) 
-			{
-				if(hasAdded)
-				{
-					insertPoint(1, 2, 1, mouse_x, mouse_y);
-					insert_segment_state = 0;
-					hasAdded = 0;
-				}
-				else
-				{
-					insertPoint(0, 2, 0, mouse_x, mouse_y);
-					hasAdded = 1;
-				}
-			}
-			else if(insert_polygon_state == 1 && button == LEFT_BUTTON)
-			{
-				if(hasAdded)
-				{
-					insertPoint(1, 2, 1, mouse_x, mouse_y);
-				}
-				else
-				{
-					insertPoint(0, 2, 0, mouse_x, mouse_y);
-					hasAdded = 1;
-				}
-			}
-			else ;
-			break;
-		case BUTTON_DOUBLECLICK:
-			if(insert_polygon_state == 1 && button == LEFT_BUTTON)
-			{
-				insert_polygon_state = 0;
-				hasAdded = 0;
-			}
-			break;
-	}
+	
 
 //	switch (button) {						//功能按钮选择
 //		case 1:
@@ -151,7 +165,7 @@ void Select_Line(int nowx, int nowy, struct Point *head) {
 }
 
 void Select_Poly(int nowx, int nowy, struct Point *head) {
-	dbgS("选中多边形判断\n");
+	//dbgS("选中多边形判断\n");
 	int x[80], y[80];
 	struct Point *temp;
 	int count = 0, i = 0;
@@ -170,7 +184,7 @@ void Select_Poly(int nowx, int nowy, struct Point *head) {
 	}
 	if( count % 2 != 0)
 		chose = 1;
-		dbgS("选中多边形判断完成\n");
+	//dbgS("选中多边形判断完成\n");
 }
 
 double CalculateDistance_segement(void) {

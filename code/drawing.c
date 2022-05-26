@@ -1,4 +1,5 @@
 #include "drawing.h"
+#define point_r 0.03
  
 void DrawRectangle(double px,double py,double qx,double qy){
 	//dbgS("开始绘制矩形\n");
@@ -76,5 +77,25 @@ void DrawTo(double x, double y)
 	double ox, oy;
 	ox = GetCurrentX();
 	oy = GetCurrentY();
-	DrawLine(x-ox, y-oy);
+	DrawLine(transferx(x)-ox, transfery(y)-oy);
+}
+
+void DrawPoint(double x, double y)
+{
+	MovePen((x+centerX)*scale, (y+centerY)*scale);
+	SetPenColor("Blue");
+	StartFilledRegion(1);
+	DrawArc(point_r, 0, 360);
+	EndFilledRegion();
+	MovePen((x+centerX)*scale, (y+centerY)*scale);
+	//dbgS("点绘制完成\n");
+}
+
+void DrawSegment(double a, double b, double c, double d)	//绘制一个端点加线段
+{
+	SetPenColor("Blue");
+//	MovePen((a+centerX)*scale, (b+centerY)*scale);
+	DrawLine((c-a)*scale, (d-b)*scale);
+	DrawPoint(c, d);
+	//dbgS("线段绘制完成\n");
 }

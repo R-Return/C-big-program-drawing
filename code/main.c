@@ -1,10 +1,10 @@
 #include "Header.h"
-#define maxFunc 100	//函数字符串最大长度
+#define MAX 100	//函数字符串最大长度
 #define point_r 0.05
 int pageid=1;
-int insert_point_state = 0, insert_segment_state = 0, insert_polygon_state = 0;
+int insert_state = -1;
 double centerX=6.1, centerY=4, scale=1;
-char str[maxFunc] = "";
+char str[MAX] = "";
 char *Function_Color[]={"Dark Gray", "Red", "Green",  
 						"Cyan", "Blue", "Magenta"};
 
@@ -53,15 +53,15 @@ void display()
 		
 		if(button(GenUIID(0), 0.2, 5, 1, 0.5, "点"))
 		{
-			insert_point_state = 1; 
+			insert_state = 0; 
 		}
 		if(button(GenUIID(0), 0.2, 4, 1, 0.5, "线段"))
 		{
-			insert_point_state = 1; 
+			insert_state = 2;  
 		}
 		if(button(GenUIID(0), 0.2, 3, 1, 0.5, "多边形"))
 		{
-			insert_point_state = 1; 
+			insert_state = 3; 
 		}
 		//DisplayClear();	
 		
@@ -76,16 +76,56 @@ void display()
 			//绘制点
 			if(p->ty == 0)
 			{
-				SetPenColor("Red");
-				MovePen(p->pHead->next->x, p->pHead->next->y);
-				StartFilledRegion(0.8);
-				DrawArc(point_r, 0, 360);
-				EndFilledRegion();
-				dbgS("点绘制完成\n");
+				DrawPoint(p->pHead->next->x, p->pHead->next->y);
+				//dbgS("点绘制完成\n");
 			}
-			
+			else if(p->ty == 2)
+			{
+				cp = p->pHead->next;
+				if(cp->next)
+				{
+					DrawPoint(cp->x, cp->y);
+					DrawSegment(cp->x, cp->y, cp->next->x, cp->next->y);
+				}
+				else
+				{
+					DrawPoint(cp->x, cp->y);
+				}
+				//dbgS("线段绘制完成\n");
+			}
+			else if(p->ty == 3)
+			{
+				cp = p->pHead->next;
+				while(cp->next)
+				{
+					if(cp->connect == 0)	DrawPoint(cp->x, cp->y);
+					else
+					{
+						DrawTo(cp->x, cp->y);
+					}
+					cp = cp->next;
+				}
+				if(cp->connect == 2)
+				{
+					DrawTo(cp->x, cp->y);
+					DrawPoint(cp->x, cp->y);
+					DrawTo(p->pHead->next->x, p->pHead->next->y);
+				}
+				else if(cp->connect == 0)
+				{
+					DrawPoint(cp->x, cp->y);
+				}
+				else
+				{
+					DrawTo(cp->x, cp->y);
+					DrawPoint(cp->x, cp->y);
+//					SetPenColor("White");
+//					DrawTo(cp->x, cp->y);
+//					SetPenColor("Blue");
+				}
+			}
 			//绘制函数
-			if(p->ty == 5)
+			else if(p->ty == 5)
 			{
 				double x,y;
 				SetPenColor(Function_Color[FuncColor % 7]);

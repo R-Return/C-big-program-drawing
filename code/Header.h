@@ -26,10 +26,10 @@
 #include "LinkList.h"
 //#include "history.h"
 #include "selected.h"
-#define maxFunc 100	//函数字符串最大长度
+#define MAX 100	//函数字符串最大长度
 
 extern double centerX, centerY, scale;
-extern int insert_point_state, insert_segment_state, insert_polygon_state;
-extern char str[maxFunc];
+extern int insert_state;
+extern char str[MAX];
 
 #endif //HEADER_H

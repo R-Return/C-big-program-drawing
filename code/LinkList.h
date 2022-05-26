@@ -1,7 +1,7 @@
 #ifndef _LINKLIST_H_
 #define _LINKLIST_H_
 #include "Header.h"
-#define maxFunc 100	//函数字符串最大长度
+#define MAX 100	//函数字符串最大长度
 enum ShapeType {
     point, line, segment, poly, circle, function
 };
@@ -20,11 +20,11 @@ struct Point {
 //	int i;		//判断是否与前一个点连接，连接则为1，不连接则为0；
 //	struct Function *before;
 //	struct Function *next;
-////	char func[maxFunc];
+////	char func[MAX];
 //};
 
 struct Func_expression{
-	char func[maxFunc];
+	char func[MAX];
 	struct Func_expression *next;
 };
 

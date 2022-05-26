@@ -13,9 +13,9 @@ void initLinkList(void)
     end->before = head;
     head->next = end;
     
-    fHead = (struct Func_expression*)malloc(sizeof(struct Func_expression));
-    fHead->next = NULL;
-    fEnd = fHead;
+//    fHead = (struct Func_expression*)malloc(sizeof(struct Func_expression));
+//    fHead->next = NULL;
+//    fEnd = fHead;
     dbgS("链表初始化完成\n");
 }
 
@@ -53,7 +53,7 @@ void insertPoint(int i, int ty, int connect, double x, double y) //i控制插入状态
 //    dbgI(2);
     e = r;
 //    dbgS("当前尾结点地址：");dbgP(e);dbgC('\n');
-    //dbgS("点节点插入完成\n");
+    dbgS("点节点插入完成\n");
 }
 
 void insertCircle(int i, double x, double y)
