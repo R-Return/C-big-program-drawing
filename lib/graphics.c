@@ -17,6 +17,7 @@
 #include <time.h>
 #include <wincon.h>
 #include <Windows.h>
+#include <Commdlg.h>
 
 #include "genlib.h"
 #include "gcalloc.h"
@@ -214,8 +215,8 @@ static bool initialized = FALSE;
 static bool pauseOnExit = TRUE;
 
 static HWND consoleWindow, graphicsWindow;
-static HDC gdc, osdc;
-static HBITMAP osBits;
+static HDC gdc, osdc,bgdc;
+static HBITMAP osBits,bgBits;
 static HPEN drawPen, erasePen, nullPen;
 static COLORREF drawColor, eraseColor;
 static PAINTSTRUCT ps;
@@ -298,8 +299,8 @@ static double Radians(double degrees);
 static int Round(double x);
 static double InchesX(int x);
 static double InchesY(int y);
-static int PixelsX(double x);
-static int PixelsY(double y);
+int PixelsX(double x);
+int PixelsY(double y);
 static int ScaleX(double x);
 static int ScaleY(double y);
 static int Min(int x, int y);
@@ -588,6 +589,9 @@ void DefineColor(string name,
         if (nColors == MaxColors) Error("DefineColor: Too many colors");
         cindex = nColors++;
     }
+    else if (previousColor == cindex) {
+        previousColor = -1;
+    }
     colorTable[cindex].name = CopyString(name);
     colorTable[cindex].red = red;
     colorTable[cindex].green = green;
@@ -727,7 +731,10 @@ double GetXResolution(void)
     if (initialized) return (xResolution);
     desktop = GetDesktopWindow();
     dc = GetDC(desktop);
-    xdpi = GetDeviceCaps(dc, LOGPIXELSX);
+//    xdpi = GetDeviceCaps(dc, LOGPIXELSX);
+    int screenHorzPixels = GetDeviceCaps(dc, HORZRES);
+    int physicalScreenWidth = GetDeviceCaps(dc, HORZSIZE);
+    xdpi = 25.4 * screenHorzPixels / physicalScreenWidth;
     ReleaseDC(desktop, dc);
     return (xdpi);
 }
@@ -741,7 +748,10 @@ double GetYResolution(void)
     if (initialized) return (yResolution);
     desktop = GetDesktopWindow();
     dc = GetDC(desktop);
-    ydpi = GetDeviceCaps(dc, LOGPIXELSY);
+//    ydpi = GetDeviceCaps(dc, LOGPIXELSY);
+    int screenVertPixels = GetDeviceCaps(dc, VERTRES);
+    int physicalScreenHeight = GetDeviceCaps(dc, VERTSIZE);
+    ydpi = 25.4 * screenVertPixels / physicalScreenHeight;
     ReleaseDC(desktop, dc);
     return (ydpi);
 }
@@ -866,7 +876,7 @@ static void InitDisplay(void)
     wndcls.lpfnWndProc = GraphicsEventProc;
     wndcls.lpszClassName = "Graphics Window";
     wndcls.lpszMenuName = NULL;
-    wndcls.style = CS_HREDRAW | CS_VREDRAW;
+    wndcls.style = CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS;
     
     RegisterClass(&wndcls);
     
@@ -1072,9 +1082,9 @@ static LONG FAR PASCAL GraphicsEventProc(HWND hwnd, UINT msg,
 {
     switch(msg)
     {
-		// 刘新国：使用了double buffer, 手动清屏，
-		//         忽略擦除背景消息，避免闪烁
-		//         感谢18级石蒙同学，提供这个方法解决刷新闪烁问题
+		// ???1????????double buffer, ?????????
+		//         ???????????????????????
+		//         ??л18???????????????????????????????
 		case WM_ERASEBKGND: 
 			return 0; 
 
@@ -1225,6 +1235,64 @@ static void DoUpdate(void)
     EndPaint(graphicsWindow, &ps);
 }
 
+void DrawImage(const char* path,int xSrc, int ySrc, int wSrc, int hSrc, int xDest, int yDest, int wDest, int hDest)
+{
+    if(!bgdc){//如果bgdc没有内容，先填充为白
+        bgdc = CreateCompatibleDC(gdc);
+        bgBits = CreateCompatibleBitmap(gdc,pixelWidth,pixelHeight);
+        SelectObject(bgdc,bgBits);
+        BitBlt(bgdc,0,0,pixelWidth,pixelHeight,NULL,0,0,WHITENESS);
+    }
+
+    HBITMAP hBitmap = (HBITMAP)LoadImage(NULL, path, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);//读取图片至缓存
+    HDC tmp = CreateCompatibleDC(gdc);
+    SelectObject(tmp,hBitmap);
+    StretchBlt(bgdc,xDest,yDest,wDest,hDest,tmp,xSrc,ySrc,wSrc,hSrc,SRCCOPY);
+    DeleteDC(tmp);//删除缓存
+
+    BitBlt(osdc,0,0,pixelWidth,pixelHeight,bgdc,0,0,SRCCOPY);//从bgdc贴图到osdc
+}
+
+void ClearImageRegion(int xSrc, int ySrc, int wSrc, int hSrc) {
+    if(bgdc){
+        BitBlt(bgdc, xSrc, ySrc, wSrc, hSrc, NULL, 0, 0, WHITENESS);//将bgdc设为全白
+        BitBlt(osdc,0,0,pixelWidth,pixelHeight,bgdc,0,0,SRCCOPY);//从bgdc贴图到osdc
+    }
+}
+
+bool OpenFileDialog(const char* filter,char filename[]){
+    OPENFILENAME ofn = {0};
+    ofn.lStructSize = sizeof(OPENFILENAME);
+    ofn.hwndOwner = NULL;
+    if(!filter)
+        ofn.lpstrFilter = TEXT("files\0*.*");
+    else
+        ofn.lpstrFilter = filter;
+    ofn.nFilterIndex = 1;
+    ofn.lpstrFile = filename;
+    ofn.nMaxFile = MAX_PATH;
+    ofn.lpstrInitialDir = NULL;
+    ofn.lpstrTitle = NULL;
+    ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY;
+    bool e = GetOpenFileName(&ofn);
+    return e;
+}
+
+bool SaveFileDialog(const char* filter,char filename[]){
+    OPENFILENAME ofn = {0};
+    ofn.lStructSize = sizeof(OPENFILENAME);
+    ofn.hwndOwner = NULL;
+    ofn.lpstrFilter = filter;
+    ofn.nFilterIndex = 1;
+    ofn.lpstrFile = filename;
+    ofn.nMaxFile = MAX_PATH;
+    ofn.lpstrInitialDir = NULL;
+    ofn.lpstrTitle = NULL;
+    ofn.Flags = OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT;
+    bool e = GetSaveFileName(&ofn);
+    return e;
+}
+
 /*
  * Function: DisplayClear
  * Usage: DisplayClear();
@@ -1239,7 +1307,9 @@ void DisplayClear(void)
     SetRect(&r, 0, 0, pixelWidth, pixelHeight);
     InvalidateRect(graphicsWindow, &r, TRUE);
     BitBlt(osdc, 0, 0, pixelWidth, pixelHeight, NULL, 0, 0, WHITENESS);
+
 }
+
 
 /*
  * Function: PrepareToDraw
@@ -1871,12 +1941,12 @@ static double InchesY(int y)
  * These functions convert distances measured in inches to pixels.
  */
 
-static int PixelsX(double x)
+int PixelsX(double x)
 {
     return (Round(x * xResolution + Epsilon));
 }
 
-static int PixelsY(double y)
+int PixelsY(double y)
 {
     return (Round(y * yResolution + Epsilon));
 }
@@ -1997,8 +2067,9 @@ double ScaleXInches(int x) /*x coordinate from pixels to inches*/
 {
  	  return (double)x/GetXResolution();
 }
-	   
+
 double ScaleYInches(int y)/*y coordinate from pixels to inches*/
 {
  	  return GetWindowHeight()-(double)y/GetYResolution();
-} 	   
+}
+

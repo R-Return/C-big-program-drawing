@@ -1,8 +1,9 @@
 #include "LinkList.h"
 #include <math.h>
+#include <string.h>
 Shape *head, *end;
 
-struct Point *e;	//点池尾结点
+struct Point *e, *be;	//点池尾结点
 void initLinkList(void)
 {
     dbgS("开始链表初始化\n");
@@ -15,17 +16,23 @@ void initLinkList(void)
     dbgS("链表初始化完成\n");
 }
 
+/*
+*i控制插入状态，第一个点是0，后面插入为1；ty表示类型，
+*connect表示连接度，0为不与前相连，1为与前连的确认点，2为多边形尾结点，3为未确认点
+*多边形的pHead的connect为-1时，表示多边形构建完成
+*/
 void insertPoint(int i, int ty, int connect, double x, double y) //i控制插入状态，第一个点是0，后面插入为1；ty表示类型
 {
     //dbgS("开始插入点节点\n");
 	Shape *q;
 	struct Point *r;    //点链表当前位置
+	char a[MAX];
     r = (struct Point*)malloc(sizeof(struct Point));
     r->x = x;
     r->y = y;
     r->connect = connect;
     r->next = NULL;
-//    dbgS("新节点建立完成\n");
+    //dbgS("新节点建立完成\n");
     if(i == 0)
     {
         //点链表初始化
@@ -40,43 +47,97 @@ void insertPoint(int i, int ty, int connect, double x, double y) //i控制插入状态
 	    q->isClicked = -1;
 	    q->ty = ty;
 	    
-//        q->pHead->next = q->pHead;
         e = q->pHead;
     }
-//    dbgS("当前尾结点地址：");dbgP(e);dbgC('\n');
-    e->next = r;
-//    r->next = q->pHead;
-//    dbgI(2);
-    e = r;
-//    dbgS("当前尾结点地址：");dbgP(e);dbgC('\n');
-    //dbgS("点节点插入完成\n");
+//绘制动画
+	if(e->connect == 3)
+	{
+		be->next = r;
+		e = r;
+	}
+	else
+	{
+		e->next = r;
+		be = e;
+		e = r;
+	}
+	if(connect == 2 && ty == 3)
+	{
+		q->pHead->connect = -1;
+		dbgS("尾结点设立，头节点connect置-1\n");
+	}
+	
+	if (ty == 0) {
+		sprintf(a, "(%.2f , %.2f)", x, y);
+		strcpy(q->expression, a);
+		dbgS(q->expression);
+		dbgC('\n');
+	} else if (ty == 2 && connect == 1) {
+		//dbgS("准备计算表达式\n");
+		q = end->before;
+		if ((q->pHead->next->x) != (r->x) && (q->pHead->next->y) != (r->y)) {
+			//dbgS("准备计算斜率\n");
+			double slope;
+			slope = (r->y - q->pHead->next->y) / (r->x - q->pHead->next->x);
+			//dbgS("斜率计算完成\n");
+			sprintf(a, "y = %.2f x + %.2f", slope, r->y - slope * r->x);
+		} else if ((q->pHead->next->x) == (r->x)) {
+			sprintf(a, "x = %.2f", r->x);
+		} else if ((q->pHead->next->x) == (r->x)) {
+			sprintf(a, "y = %.2f", r->y);
+		}
+		strcpy(q->expression, a);
+		dbgS(q->expression);
+		dbgC('\n');
+	}
+	//dbgS("点节点插入完成\n");
 }
 
-void insertCircle(int i, double x, double y)
+//confirm确认是否为最终圆
+void insertCircle(int i, int confirm, double x, double y)
 {
-    dbgS("开始插入圆节点\n");
-	Shape *p, *q;
-    struct Circle r;
-    p = end->before;
-    q = (Shape*)malloc(sizeof(Shape));
-    p->next = q;
-    q->next = end;
-    q->isChosen = 0;
-    q->isClicked = -1;
-    q->ty = 4;
-    if(i == 0)
-    {
-        r.x = x;
-        r.y = y;
-    }else{
-        r.r = pow((pow(x-(r.x),2)+pow(y-(r.y),2)),0.5);
-    }
-    dbgS("圆节点插入完成\n");
+    //dbgS("开始插入圆节点\n");
+	Shape *q;
+	char a[MAX];
+	
+	if(!i)
+	{
+		q = (Shape *)malloc(sizeof(Shape));
+
+		end->before->next = q;
+		q->before = end->before;
+		q->next = end;
+		end->before = q;
+		q->isChosen = 0;
+		q->isClicked = -1;
+		q->ty = 4;
+	}
+	else
+	{
+		q = end->before;
+	}
+	if (i == 0) {
+		q->c.x = x;
+		q->c.y = y;
+		q->c.confirm = 0;
+		//dbgS("当前圆心：");dbgD(q->c.x);dbgC(' ');dbgD(q->c.y);dbgC('\n');
+	} else {
+		q->c.confirm = confirm;
+		q->c.r = pow((pow(x - (q->c.x), 2) + pow(y - (q->c.y), 2)), 0.5);
+	}
+	
+	if (i && confirm) {
+		sprintf(a, "(x %.2f)^2 + (y %.2f)^2 = %.2f", -1 * q->c.x, -1 * q->c.y, pow(q->c.r, 2));
+		strcpy(q->expression, a);
+		dbgS(q->expression);
+		dbgC('\n');
+	}
+	//dbgS("圆节点插入完成\n");
 }
 
 void insertFunc(char a[])
 {
-    dbgS("开始插入函数\n");
+    //dbgS("开始插入函数\n");
 
     double y;
 	int d = 1, interrupt = 0;
@@ -114,7 +175,7 @@ void insertFunc(char a[])
 		d++;
 		Last_y = y;
 	}
-    dbgS("函数插入完成\n");
+    //dbgS("函数插入完成\n");
 }
 
 void deleteList(void)

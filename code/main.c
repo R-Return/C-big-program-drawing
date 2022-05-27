@@ -1,4 +1,5 @@
 #include "Header.h"
+#include "extgraph.h"
 #define MAX 100	//函数字符串最大长度
 #define point_r 0.05
 int pageid=1;
@@ -18,6 +19,7 @@ void display()
 		//dbgS("开始绘制窗口1\n");
 		MovePen(4,5);
 		SetPointSize(50);
+		DrawImage("..\\1.bmp", 0, 0, 879, 526, 0,0, PixelsX(GetWindowWidth()), PixelsY(GetWindowHeight()));
 		DrawTextString("几何画板");
 		SetPointSize(20); 
 		if(button(GenUIID(0), 2, 1.5, 2, 1, "开始使用"))
@@ -52,7 +54,7 @@ void display()
 			pageid=3;
 		}
 		
-		if(button(GenUIID(0), 0.2, 5, 1, 0.5, "点"))
+		if(button(GenUIID(0), 0.2, 8, 1, 0.5, "点"))
 		{
 			 
 			if(insert_state == 0)
@@ -64,13 +66,25 @@ void display()
 				insert_state = 0;
 			}
 		}
-		if(button(GenUIID(0), 0.2, 4, 1, 0.5, "线段"))
+		if(button(GenUIID(0), 0.2, 7, 1, 0.5, "直线"))
+		{
+			insert_state = 1; 
+		}
+		if(button(GenUIID(0), 0.2, 6, 1, 0.5, "线段"))
 		{
 			insert_state = 2;  
 		}
-		if(button(GenUIID(0), 0.2, 3, 1, 0.5, "多边形"))
+		if(button(GenUIID(0), 0.2, 5, 1, 0.5, "多边形"))
 		{
 			insert_state = 3; 
+		}
+		if(button(GenUIID(0), 0.2, 4, 1, 0.5, "圆"))
+		{
+			insert_state = 4; 
+		}
+		if(button(GenUIID(0), 0.2, 3, 1, 0.5, "函数"))
+		{
+			pageid = 3;
 		}
 		//DisplayClear();	
 		
@@ -107,27 +121,77 @@ void display()
 			else if(p->ty == 3)	
 			{
 				
-				for(cp = p->pHead->next; cp; cp = cp->next)
+				double hx, hy;
+				if(p->pHead->connect == -1)
 				{
-					if(cp->connect == 0)	DrawPoint(cp->x, cp->y);
-					else if(cp->connect == 1)
+					dbgS("准备绘制已成立的多边形\n");
+					StartFilledRegion(0.5);
+					dbgS("进入填充状态\n");
+					for(cp = p->pHead->next; cp; cp = cp->next)
 					{
-						DrawTo(cp->x, cp->y);
-						DrawPoint(cp->x, cp->y);
+						dbgS("进入绘制循环\n");
+						dbgS("connect:");dbgI(cp->connect);dbgC('\n');
+						if(cp->connect == 0)	
+						{
+							dbgS("准备绘制多边形头节点\n");
+							hx = cp->x;
+							hy = cp->y;
+							MovePen(transferx(hx),transfery(hy));
+						//	DrawPoint(cp->x, cp->y);
+						//	dbgS("多边形头节点绘制完成\n");
+						}
+						else if(cp->connect == 1)
+						{
+							DrawTo(cp->x, cp->y);
+						//	DrawPoint(cp->x, cp->y);
+							dbgS("多边形中间节点绘制完成\n");
+						}
+						else if(cp->connect == 2)
+						{
+							DrawTo(cp->x, cp->y);
+						//	DrawPoint(cp->x, cp->y);
+							//dbgS("多边形头节点坐标：");dbgD(hx);dbgD(hy);dbgC('\n');
+							DrawTo(hx, hy);
+							dbgS("绘制封闭线\n");
+							EndFilledRegion();
+						}
 					}
-					else if(cp->connect == 2)
+					
+				}
+				else
+				{
+					for(cp = p->pHead->next; cp; cp = cp->next)
 					{
-						DrawTo(cp->x, cp->y);
-						DrawPoint(cp->x, cp->y);
-						DrawTo(p->pHead->next->x, p->pHead->next->y);
-						dbgS("绘制封闭线\n");
+						if(cp->connect == 0)	
+						{
+						//	dbgS("准备绘制多边形头节点\n");
+							hx = cp->x;
+							hy = cp->y;
+							DrawPoint(cp->x, cp->y);
+						//	dbgS("多边形头节点绘制完成\n");
+						}
+						else if(cp->connect == 1)
+						{
+							DrawTo(cp->x, cp->y);
+							DrawPoint(cp->x, cp->y);
+						//	dbgS("多边形中间节点绘制完成\n");
+						}
+						else if(cp->connect == 3)
+						{
+							DrawTo(cp->x, cp->y);
+							DrawPoint(cp->x, cp->y);
+						//	dbgS("多边形待定中间节点绘制完成\n");
+						}
 					}
 				}
 				
-//					SetPenColor("White");
-//					DrawTo(cp->x, cp->y);
-//					SetPenColor("Blue");
-				
+			}
+			//绘制圆
+			else if(p->ty == 4)
+			{
+				MovePen(transferx(p->c.x + p->c.r * scale), transfery(p->c.y));
+				DrawArc(p->c.r * scale, 0, 360);
+				//dbgS("圆绘制完成\n");
 			}
 			//绘制函数
 			else if(p->ty == 5)

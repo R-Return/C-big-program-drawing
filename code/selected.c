@@ -15,7 +15,7 @@ double Calculatearea_polygon(void);
 
 void MouseEventProcess(int x, int y, int button, int event) {
 	double mouse_x = 0, mouse_y = 0;
-	static int hasAdded = 0;
+	static int hasAdded = 0, modify = 0;
 	uiGetMouse(x, y, button, event);
 	mouse_x = ScaleXInches(x);
 	mouse_y = ScaleYInches(y);
@@ -42,12 +42,15 @@ void MouseEventProcess(int x, int y, int button, int event) {
 				case BUTTON_DOWN:
 					if (button == LEFT_BUTTON && chose)
 						sh_chose->isClicked = -sh_chose->isClicked;
+						modify = 1;
 					break;
 				case BUTTON_DOUBLECLICK:
 					break;
 				case BUTTON_UP:
+					if(button == LEFT_BUTTON)modify = 0;
 					break;
 				case MOUSEMOVE:
+//					if(modify == 1)
 					break;
 			}
 		}//for
@@ -60,6 +63,11 @@ void MouseEventProcess(int x, int y, int button, int event) {
 				{
 						if(insert_state == 0 && button == LEFT_BUTTON) 
 					{
+//						if(hasAdded == 1)
+//						{
+//							end->before->before->next = end;
+//							end->before = end->before->before;
+//						}
 						insertPoint(0, 0, 0, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
 						
 						hasAdded = 0;
@@ -104,9 +112,42 @@ void MouseEventProcess(int x, int y, int button, int event) {
 						hasAdded = 0;
 						dbgS("多边形尾端点插入完成\n");
 					}
+					else if(insert_state == 4 && button == LEFT_BUTTON)
+					{
+						dbgS("准备插入圆\n");
+						if(hasAdded)
+						{
+							insertCircle(1, 1, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
+							insert_state = -1;
+							hasAdded = 0;
+							dbgS("圆插入完成\n");
+						}
+						else
+						{
+							insertCircle(0, 1, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
+							hasAdded = 1;
+						}
+						
+					}
 					else break;
 				}
 				else break;
+			case MOUSEMOVE:
+				if(insert_state == 2 && hasAdded == 1)	//线段
+				{
+					insertPoint(1, 2, 3, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
+				}
+				else if(insert_state == 3 && hasAdded == 1)	//多边形
+				{
+					insertPoint(1, 3, 3, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
+				}
+				else if(insert_state == 4 && hasAdded == 1)	//圆
+				{
+					insertCircle(1, 0, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
+//					dbgS("暂时圆插入完成\n");
+				}
+				
+				break;
 			default:
 				break;
 		}
@@ -164,7 +205,7 @@ void Select_Line(int nowx, int nowy, struct Point *head) {
 		p = p->next;
 		x2 = p->x;
 		y2 = p->y;
-		dbgS("坐标计算完成\n");
+		//dbgS("坐标计算完成\n");
 	//	slope = (y2 - y1) / (x2 - x1);									//当前线段的斜率
 	//	nowslope = (nowy - y1) / (nowx - x1);								//鼠标所在位置与端点形成斜率
 		if ( ((nowx - x1) * (y2 - y1) <= ((nowy - y1) * (x2 - x1) + error)) 
