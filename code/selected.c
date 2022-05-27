@@ -1,5 +1,4 @@
 #include "selected.h"
-#define point_r 0.05
 
 void MouseEventProcess(int x, int y, int button, int event);
 void Select_Point(int nowx, int nowy, struct Point *head) ;
@@ -38,6 +37,7 @@ void MouseEventProcess(int x, int y, int button, int event) {
 			if (chose) {			//如果有选中的点或线 将struct中的chose变量置1
 				sh_chose->isChosen = 1;
 			}
+			else sh_chose->isChosen = 0;
 			switch (event) {
 				case BUTTON_DOWN:
 					if (button == LEFT_BUTTON && chose)
@@ -71,7 +71,22 @@ void MouseEventProcess(int x, int y, int button, int event) {
 						insertPoint(0, 0, 0, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
 						
 						hasAdded = 0;
-						dbgS("插点完成\n");
+						//dbgS("插点完成\n");
+					}
+					else if(insert_state == 1 && button == LEFT_BUTTON) 
+					{
+						if(hasAdded)
+						{
+							insertPoint(1, 1, 1, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
+							insert_state = -1;
+							hasAdded = 0;
+							//dbgS("直线插入完成\n");
+						}
+						else
+						{
+							insertPoint(0, 1, 0, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
+							hasAdded = 1;
+						}
 					}
 					else if(insert_state == 2 && button == LEFT_BUTTON) 
 					{
@@ -80,7 +95,7 @@ void MouseEventProcess(int x, int y, int button, int event) {
 							insertPoint(1, 2, 1, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
 							insert_state = -1;
 							hasAdded = 0;
-							dbgS("线段插入完成\n");
+							//dbgS("线段插入完成\n");
 						}
 						else
 						{
@@ -92,35 +107,35 @@ void MouseEventProcess(int x, int y, int button, int event) {
 					{
 						if(hasAdded)
 						{
-							dbgS("准备插入多边形内端点\n");
+							//dbgS("准备插入多边形内端点\n");
 							insertPoint(1, 3, 1, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
-							dbgS("多边形内端点插入完成\n");
+							//dbgS("多边形内端点插入完成\n");
 						}
 						else
 						{
-							dbgS("准备插入多边形头端点\n");
+							//dbgS("准备插入多边形头端点\n");
 							insertPoint(0, 3, 0, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
 							hasAdded = 1;
-							dbgS("多边形头端点插入完成\n");
+							//dbgS("多边形头端点插入完成\n");
 						}
 					}
 					else if(insert_state == 3 && button == RIGHT_BUTTON)
 					{
-						dbgS("准备插入多边形尾端点\n");
+						//dbgS("准备插入多边形尾端点\n");
 						insertPoint(0, 3, 2, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
 						insert_state = -1;
 						hasAdded = 0;
-						dbgS("多边形尾端点插入完成\n");
+						//dbgS("多边形尾端点插入完成\n");
 					}
 					else if(insert_state == 4 && button == LEFT_BUTTON)
 					{
-						dbgS("准备插入圆\n");
+						//dbgS("准备插入圆\n");
 						if(hasAdded)
 						{
 							insertCircle(1, 1, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
 							insert_state = -1;
 							hasAdded = 0;
-							dbgS("圆插入完成\n");
+							//dbgS("圆插入完成\n");
 						}
 						else
 						{
@@ -136,6 +151,10 @@ void MouseEventProcess(int x, int y, int button, int event) {
 				if(insert_state == 2 && hasAdded == 1)	//线段
 				{
 					insertPoint(1, 2, 3, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
+				}
+				else if(insert_state == 1 && hasAdded == 1)	//直线
+				{
+					insertPoint(1, 1, 3, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
 				}
 				else if(insert_state == 3 && hasAdded == 1)	//多边形
 				{

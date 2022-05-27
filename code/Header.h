@@ -27,11 +27,11 @@
 //#include "history.h"
 #include "selected.h"
 #define MAX 100	//函数字符串最大长度
-#define point_r 0.05
 
 extern double Left_x, Left_y, Right_x, Right_y;
 extern double centerX, centerY, scale;
 extern int insert_state;
 extern char str[MAX];
+extern double point_r;
 
 #endif //HEADER_H

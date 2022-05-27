@@ -1,7 +1,7 @@
 #include "Header.h"
 #include "extgraph.h"
 #define MAX 100	//函数字符串最大长度
-#define point_r 0.05
+double point_r = 0.05;
 int pageid=1;
 int insert_state = -1;
 double Left_x = 4, Left_y = 1.5, Right_x = 14, Right_y = 11.5;
@@ -19,7 +19,7 @@ void display()
 		//dbgS("开始绘制窗口1\n");
 		MovePen(4,5);
 		SetPointSize(50);
-		DrawImage("..\\1.bmp", 0, 0, 879, 526, 0,0, PixelsX(GetWindowWidth()), PixelsY(GetWindowHeight()));
+		//DrawImage("..\\1.bmp", 0, 0, 879, 526, 0,0, PixelsX(GetWindowWidth()), PixelsY(GetWindowHeight()));
 		DrawTextString("几何画板");
 		SetPointSize(20); 
 		if(button(GenUIID(0), 2, 1.5, 2, 1, "开始使用"))
@@ -99,8 +99,61 @@ void display()
 			//绘制点
 			if(p->ty == 0)
 			{
+				if(p->isChosen)
+				{
+					point_r = 0.08;
+					SetPenColor("Red");
+				}
 				DrawPoint(p->pHead->next->x, p->pHead->next->y);
+				SetPenColor("Blue");
+				point_r = 0.05;
 				//dbgS("点绘制完成\n");
+			}
+			//绘制直线
+			else if(p->ty == 1)	
+			{
+				cp = p->pHead->next;
+				double i, cy, b;
+				
+				if(!(cp->next)) 
+				{
+					DrawPoint(cp->x, cp->y);
+					//dbgS("单个点情况\n");
+				}
+				else
+				{
+					DrawPoint(cp->x, cp->y);
+					DrawPoint(cp->next->x, cp->next->y);
+					if ((cp->y) == (cp->next->y)) {
+						MovePen(Left_x,transferx(cp->y));
+						DrawLine(0,10);
+					}else if ((cp->x) == (cp->next->x)) {
+						MovePen(transfery(cp->x),Left_y);
+						DrawLine(10,0);
+					} 
+					else 
+					{
+						//dbgS("准备计算斜率\n");
+						double slope;
+						slope = (cp->next->y - cp->y) / (cp->next->x - cp->x);
+						b = cp->y - slope * cp->x;
+						//dbgS("斜率计算完成\n");
+						int d = 1;
+						for(i = -5/scale; i <= 5/scale; i += 0.05)
+						{
+							cy = i * slope + b;
+							if(transfery(cy) < Left_y || transfery(cy) > Right_y) continue;
+							if(d == 1)
+							{
+								MovePen(transferx(i), transfery(cy));
+							}
+							else DrawTo(i, cy);
+							d++;
+						}
+					} 
+					
+				}
+				
 			}
 			//绘制线段
 			else if(p->ty == 2)	
@@ -122,44 +175,44 @@ void display()
 			{
 				
 				double hx, hy;
-				if(p->pHead->connect == -1)
-				{
-					dbgS("准备绘制已成立的多边形\n");
-					StartFilledRegion(0.5);
-					dbgS("进入填充状态\n");
-					for(cp = p->pHead->next; cp; cp = cp->next)
-					{
-						dbgS("进入绘制循环\n");
-						dbgS("connect:");dbgI(cp->connect);dbgC('\n');
-						if(cp->connect == 0)	
-						{
-							dbgS("准备绘制多边形头节点\n");
-							hx = cp->x;
-							hy = cp->y;
-							MovePen(transferx(hx),transfery(hy));
-						//	DrawPoint(cp->x, cp->y);
-						//	dbgS("多边形头节点绘制完成\n");
-						}
-						else if(cp->connect == 1)
-						{
-							DrawTo(cp->x, cp->y);
-						//	DrawPoint(cp->x, cp->y);
-							dbgS("多边形中间节点绘制完成\n");
-						}
-						else if(cp->connect == 2)
-						{
-							DrawTo(cp->x, cp->y);
-						//	DrawPoint(cp->x, cp->y);
-							//dbgS("多边形头节点坐标：");dbgD(hx);dbgD(hy);dbgC('\n');
-							DrawTo(hx, hy);
-							dbgS("绘制封闭线\n");
-							EndFilledRegion();
-						}
-					}
-					
-				}
-				else
-				{
+//				if(p->pHead->connect == -1)
+//				{
+//					dbgS("准备绘制已成立的多边形\n");
+//					StartFilledRegion(0.5);
+//					dbgS("进入填充状态\n");
+//					for(cp = p->pHead->next; cp; cp = cp->next)
+//					{
+//						dbgS("-1进入绘制循环\n");
+//						dbgS("connect:");dbgI(cp->connect);dbgC('\n');
+//						if(cp->connect == 0)	
+//						{
+//							dbgS("-1准备绘制多边形头节点\n");
+//							hx = cp->x;
+//							hy = cp->y;
+//							MovePen(transferx(hx),transfery(hy));
+//						//	DrawPoint(cp->x, cp->y);
+//						//	dbgS("多边形头节点绘制完成\n");
+//						}
+//						else if(cp->connect == 1)
+//						{
+//							DrawTo(cp->x, cp->y);
+//						//	DrawPoint(cp->x, cp->y);
+//							dbgS("-1多边形中间节点绘制完成\n");
+//						}
+//						else if(cp->connect == 2)
+//						{
+//							DrawTo(cp->x, cp->y);
+//						//	DrawPoint(cp->x, cp->y);
+//							//dbgS("多边形头节点坐标：");dbgD(hx);dbgD(hy);dbgC('\n');
+//							DrawTo(hx, hy);
+//							dbgS("-1绘制封闭线\n");
+//							EndFilledRegion();
+//						}
+//					}
+//					
+//				}
+//				else
+//				{
 					for(cp = p->pHead->next; cp; cp = cp->next)
 					{
 						if(cp->connect == 0)	
@@ -174,7 +227,7 @@ void display()
 						{
 							DrawTo(cp->x, cp->y);
 							DrawPoint(cp->x, cp->y);
-						//	dbgS("多边形中间节点绘制完成\n");
+							//dbgS("多边形中间节点绘制完成\n");
 						}
 						else if(cp->connect == 3)
 						{
@@ -182,8 +235,15 @@ void display()
 							DrawPoint(cp->x, cp->y);
 						//	dbgS("多边形待定中间节点绘制完成\n");
 						}
+						else if(cp->connect == 2)
+						{
+							DrawTo(cp->x, cp->y);
+							DrawPoint(cp->x, cp->y);
+							//dbgS("多边形头节点坐标：");dbgD(hx);dbgD(hy);dbgC('\n');
+							DrawTo(hx, hy);
+						}
 					}
-				}
+//				}
 				
 			}
 			//绘制圆

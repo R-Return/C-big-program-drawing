@@ -1,5 +1,5 @@
 #include "drawing.h"
-#define point_r 0.05
+
  
 void DrawRectangle(double px,double py,double qx,double qy){
 	//dbgS("开始绘制矩形\n");

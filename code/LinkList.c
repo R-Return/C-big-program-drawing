@@ -61,18 +61,18 @@ void insertPoint(int i, int ty, int connect, double x, double y) //i控制插入状态
 		be = e;
 		e = r;
 	}
-	if(connect == 2 && ty == 3)
-	{
-		q->pHead->connect = -1;
-		dbgS("尾结点设立，头节点connect置-1\n");
-	}
+//	if(connect == 2 && ty == 3)
+//	{
+//		q->pHead->connect = -1;
+//		dbgS("尾结点设立，头节点connect置-1\n");
+//	}
 	
 	if (ty == 0) {
 		sprintf(a, "(%.2f , %.2f)", x, y);
 		strcpy(q->expression, a);
 		dbgS(q->expression);
 		dbgC('\n');
-	} else if (ty == 2 && connect == 1) {
+	} else if ((ty == 2 || ty == 1)&& connect == 1) {
 		//dbgS("准备计算表达式\n");
 		q = end->before;
 		if ((q->pHead->next->x) != (r->x) && (q->pHead->next->y) != (r->y)) {
@@ -83,7 +83,7 @@ void insertPoint(int i, int ty, int connect, double x, double y) //i控制插入状态
 			sprintf(a, "y = %.2f x + %.2f", slope, r->y - slope * r->x);
 		} else if ((q->pHead->next->x) == (r->x)) {
 			sprintf(a, "x = %.2f", r->x);
-		} else if ((q->pHead->next->x) == (r->x)) {
+		} else if ((q->pHead->next->y) == (r->y)) {
 			sprintf(a, "y = %.2f", r->y);
 		}
 		strcpy(q->expression, a);
@@ -92,6 +92,7 @@ void insertPoint(int i, int ty, int connect, double x, double y) //i控制插入状态
 	}
 	//dbgS("点节点插入完成\n");
 }
+
 
 //confirm确认是否为最终圆
 void insertCircle(int i, int confirm, double x, double y)
