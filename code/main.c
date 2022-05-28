@@ -23,6 +23,7 @@ void display()
 		SetPenColor("Navy");
 		DrawTextString("几何画板");
 		SetPointSize(25); 
+		DrawImage("..\\5.bmp", 0, 0, 800, 533, 0,0, PixelsX(GetWindowWidth()), PixelsY(GetWindowHeight()));
 		setButtonColors("Lightblue", "Slategray", "Lightblue", "Slategray", 1);
 		if(button(GenUIID(0), 3, 5, 2.5, 1, "开始使用"))
 		{
@@ -42,6 +43,50 @@ void display()
 		DisplayClear();
 		SetPointSize(15);
 		setMenuColors("Lightblue", "Navy", "Lightblue", "Slategray", 1);
+		if(button(GenUIID(0), 0.2, 9.7, 1, 0.5, "放大"))
+		{
+			scale += 0.02;
+		}
+		if(button(GenUIID(0), 0.2, 10.5, 1, 0.5, "缩小"))
+		{
+			scale-=0.02;
+			if(scale <= 0.2)
+			{
+				scale = 0.2;
+			}
+		}
+		if(button(GenUIID(0), 1.4, 10.1, 0.5, 0.5, "Left"))
+		{
+			centerX-=0.02;
+			if(centerX <= Left_x)
+			{
+				centerX = Left_x;
+			}
+		}
+		if(button(GenUIID(0), 2.0, 10.6, 0.5, 0.5, "Up"))
+		{
+			centerY+=0.02;
+			if(centerY >= Right_y)
+			{
+				centerY = Right_y;
+			}
+		}
+		if(button(GenUIID(0), 2.6, 10.1, 0.5, 0.5, "Right"))
+		{
+			centerX+=0.02;
+			if(centerX >= Right_x)
+			{
+				centerX = Right_x;
+			}
+		}
+		if(button(GenUIID(0), 2.0, 9.6, 0.5, 0.5, "Down"))
+		{
+			centerY-=0.02;
+			if(centerY <= Left_y)
+			{
+				centerY = Left_y;
+			}
+		}
 		static char * menuListFile[] = {"文件",
 		                                "打开   | Ctrl-O", // 快捷键必须采用[Ctrl-X]格式，放在字符串的结尾
 		                                "保存",
@@ -92,6 +137,7 @@ void display()
 		{
 			pageid = 3;
 		}
+		
 		drawtext();
 		SetPenColor("Slategray");
 		switch (insert_state) {
@@ -127,15 +173,20 @@ void display()
 			//绘制点
 			if(p->ty == 0)
 			{
-				if(p->isChosen || p->isClicked)
+				SetPenColor("Blue");
+				if(p->isChosen || p->isClicked == 1)
 				{
 					point_r = 0.08;
+					dbgS("大小调整完成\n");
 					SetPenColor("Red");
+					dbgS("颜色调整完成\n");
 				}
+				
 				DrawPoint(p->pHead->next->x, p->pHead->next->y);
-				SetPenColor("Blue");
+
 				point_r = 0.05;
 				//dbgS("点绘制完成\n");
+				SetPenColor("Blue");
 			}
 			//绘制直线
 			else if(p->ty == 1)	
@@ -190,7 +241,8 @@ void display()
 				if(cp->next)
 				{
 					DrawPoint(cp->x, cp->y);
-					DrawSegment(cp->x, cp->y, cp->next->x, cp->next->y);
+					DrawTo(cp->next->x, cp->next->y);
+					DrawPoint(cp->next->x, cp->next->y);
 				}
 				else
 				{
