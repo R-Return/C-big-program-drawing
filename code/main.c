@@ -17,26 +17,30 @@ void display()
 	if(pageid==1)
 	{
 		//dbgS("开始绘制窗口1\n");
-		MovePen(4,5);
-		SetPointSize(50);
-		//DrawImage("..\\1.bmp", 0, 0, 879, 526, 0,0, PixelsX(GetWindowWidth()), PixelsY(GetWindowHeight()));
+		MovePen(5.2, 8);
+		SetPointSize(70);
+		SetPenColor("Navy");
 		DrawTextString("几何画板");
-		SetPointSize(20); 
-		if(button(GenUIID(0), 2, 1.5, 2, 1, "开始使用"))
+		SetPointSize(25); 
+		setButtonColors("Lightblue", "Slategray", "Lightblue", "Slategray", 1);
+		if(button(GenUIID(0), 3, 5, 2.5, 1, "开始使用"))
 		{
 			dbgS("开始使用\n");
 			pageid=2;
 		}
-		if(button(GenUIID(0), 6, 1.5, 2, 1 , "退出"))
+		setButtonColors("Lightblue", "Navy", "Lightblue", "Slategray", 1);
+		if(button(GenUIID(0), 9.5, 5, 2.5, 1 , "退出"))
 		{
 			exit(-1);
-		}	
+		}		
 		//dbgS("窗口1绘制完成\n");
 	}
 	if(pageid==2)
 	{
 		//dbgS("开始绘制窗口2\n");
 		DisplayClear();
+		SetPointSize(15);
+		setMenuColors("Lightblue", "Navy", "Lightblue", "Slategray", 1);
 		static char * menuListFile[] = {"文件",
 		                                "打开   | Ctrl-O", // 快捷键必须采用[Ctrl-X]格式，放在字符串的结尾
 		                                "保存",
@@ -46,15 +50,15 @@ void display()
 		                                "函数",
 		                                "帮助 | Ctrl-T"
 		                               };
-		int selection  = menuList(GenUIID(0), 0, GetWindowHeight()-0.3 , 1, 1.5, 0.3, menuListFile,sizeof(menuListFile)/sizeof(menuListFile[0]));
-		int selection2 = menuList(GenUIID(0), 1, GetWindowHeight()-0.3, 1, 1.5, 0.3, menuListTool,sizeof(menuListTool)/sizeof(menuListTool[0]));
+		int selection  = menuList(GenUIID(0), 0, GetWindowHeight()-0.6, 1.5, 2.5, 0.6, menuListFile,sizeof(menuListFile)/sizeof(menuListFile[0]));
+		int selection2 = menuList(GenUIID(0), 1.5, GetWindowHeight()-0.6, 1.5, 2.5, 0.6, menuListTool,sizeof(menuListTool)/sizeof(menuListTool[0]));
 		drawedge();
 		if(selection2==1)
 		{
 			pageid=3;
 		}
-		
-		if(button(GenUIID(0), 0.2, 8, 1, 0.5, "点"))
+		setButtonColors("Lightblue", "Navy", "Lightblue", "Slategray", 1);
+		if(button(GenUIID(0), 4, 0.6, 1, 0.5, "点"))
 		{
 			 
 			if(insert_state == 0)
@@ -66,26 +70,27 @@ void display()
 				insert_state = 0;
 			}
 		}
-		if(button(GenUIID(0), 0.2, 7, 1, 0.5, "直线"))
+		if(button(GenUIID(0), 5.8, 0.6, 1, 0.5, "直线"))
 		{
 			insert_state = 1; 
 		}
-		if(button(GenUIID(0), 0.2, 6, 1, 0.5, "线段"))
+		if(button(GenUIID(0), 7.8, 0.6, 1, 0.5, "线段"))
 		{
 			insert_state = 2;  
 		}
-		if(button(GenUIID(0), 0.2, 5, 1, 0.5, "多边形"))
+		if(button(GenUIID(0), 9.8, 0.6, 1, 0.5, "多边形"))
 		{
 			insert_state = 3; 
 		}
-		if(button(GenUIID(0), 0.2, 4, 1, 0.5, "圆"))
+		if(button(GenUIID(0), 11.8, 0.6, 1, 0.5, "圆"))
 		{
 			insert_state = 4; 
 		}
-		if(button(GenUIID(0), 0.2, 3, 1, 0.5, "函数"))
+		if(button(GenUIID(0), 13.8, 0.6, 1, 0.5, "函数"))
 		{
 			pageid = 3;
 		}
+		drawtext();
 		//DisplayClear();	
 		
 		//绘制
@@ -99,7 +104,7 @@ void display()
 			//绘制点
 			if(p->ty == 0)
 			{
-				if(p->isChosen)
+				if(p->isChosen || p->isClicked)
 				{
 					point_r = 0.08;
 					SetPenColor("Red");
@@ -297,8 +302,9 @@ void display()
 	{
 		DisplayClear();	
 		//calculate();
-		textbox(GenUIID(0), 1, 5, 8, 0.5, str, sizeof(str));
-		if(button(GenUIID(0), 1.5, 1.5, 2, 1, "确认"))
+		setTextBoxColors("Rosered", "Rosered", "Salmon", "Rosered", 0);
+		textbox(GenUIID(0), 3.5, 8, 8, 1, str, sizeof(str));
+		if(button(GenUIID(0), 6.5, 6, 2, 1, "确认"))
 		{
 			insertFunc(str);
 			str[0] = '\0';
@@ -323,12 +329,25 @@ void KeyboardEventProcess(int key, int event)
 	display(); /*更新显示*/
 }
 
+void InitColor()
+{
+	DefineColor("Salmon", 0.99607, 0.84705, 0.705882);
+	DefineColor("Navy", 0.086274, 0.207843, 0.341176);
+	DefineColor("Cyan", 0.733333, 0.854901, 0.862745);
+	DefineColor("Slategray", 0.203921, 0.51372, 0.58039);
+	DefineColor("Lightyellow", 0.98039, 0.95686, 0.71372);
+	DefineColor("Rosered", 0.8, 0.47058, 0.47058);
+	DefineColor("Pink", 0.98823, 0.70980, 0.62352);
+	DefineColor("Lightblue", 0.90588, 0.95686, 0.95294);
+}
+
 void Main()
 {
 	//初始化窗口和图形系统
 	SetWindowSize(15, 12);
 	InitGraphics();
 	initDebug();
+	InitColor();
 	SetWindowTitle("几何画板");
 	dbgS("开始运行\n");
 	registerCharEvent(CharEventProcess);        // 字符

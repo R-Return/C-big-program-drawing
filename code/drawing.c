@@ -46,6 +46,13 @@ void drawedge()
 	//dbgS("边框绘制完成\n");
 }
 
+void drawtext()
+{
+	//dbgs("开始绘制输出框\n")
+	SetPenColor("Salmon");
+	DrawRectangle(0.5, 1, 3.5, 9.5); 
+}
+
 //double transfer(char *a,double x)
 //{
 //	dbgS("当前函数：");dbgS(a);dbgS("现在传入x：");dbgD(x);dbgC('\n');
@@ -83,6 +90,7 @@ void DrawTo(double x, double y)
 void DrawPoint(double x, double y)
 {
 	MovePen((x+centerX)*scale + point_r, (y+centerY)*scale);
+//	if()
 	SetPenColor("Blue");
 	StartFilledRegion(1);
 	DrawArc(point_r, 0, 360);

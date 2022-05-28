@@ -1,4 +1,7 @@
 #include "selected.h"
+#include <math.h> 
+#include <string.h>
+#include "LinkList.h"
 
 void MouseEventProcess(int x, int y, int button, int event);
 void Select_Point(int nowx, int nowy, struct Point *head) ;
@@ -194,8 +197,8 @@ void Select_Point(int nowx, int nowy, struct Point *head) {
 	//dbgS("选中点判断\n");										//选中点的范围
 	int d; 															//鼠标与遍历到点的距离
 	d = pow( nowx - head->next->x, 2 ) + pow( nowy - head->next->y, 2);
-	if ( pow(d, 0.5) <= point_r ) {
-		chose = 1;												//sh->chosen
+	if ( pow(d, 0.5) <= 0.01 ) {
+		chose = 1;											
 	}
 	//dbgS("选中点判断完成\n");
 	/*struct Point *point_ptr;
