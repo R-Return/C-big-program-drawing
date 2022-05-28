@@ -33,5 +33,6 @@ extern double centerX, centerY, scale;
 extern int insert_state;
 extern char str[MAX];
 extern double point_r;
+extern void store();
 
 #endif //HEADER_H
