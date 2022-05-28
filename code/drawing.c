@@ -70,7 +70,7 @@ void drawedge()
 
 void drawtext()
 {
-	//dbgs("开始绘制输出框\n")
+	//dbgS("开始绘制输出框\n");
 	SetPenColor("Salmon");
 	DrawRectangle(0.5, 1, 3.5, 9.5);
 	Shape *p;
@@ -83,6 +83,7 @@ void drawtext()
 		drawLabel(0.7, 9.2 - count * 0.4, p->expression);
 		count ++;
 	} 
+	//dbgS("开始绘制输出框\n");
 }
 
 //double transfer(char *a,double x)

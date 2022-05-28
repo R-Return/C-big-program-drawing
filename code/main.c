@@ -173,13 +173,11 @@ void display()
 			//绘制点
 			if(p->ty == 0)
 			{
-				SetPenColor("Blue");
+				SetPenColor("Navy");
 				if(p->isChosen || p->isClicked == 1)
 				{
 					point_r = 0.08;
-					dbgS("大小调整完成\n");
-					SetPenColor("Red");
-					dbgS("颜色调整完成\n");
+					SetPenColor("Shiningred");
 				}
 				
 				DrawPoint(p->pHead->next->x, p->pHead->next->y);
@@ -193,7 +191,7 @@ void display()
 			{
 				cp = p->pHead->next;
 				double i, cy, b;
-				
+				SetPenColor("Navy");
 				if(!(cp->next)) 
 				{
 					DrawPoint(cp->x, cp->y);
@@ -201,6 +199,11 @@ void display()
 				}
 				else
 				{
+					if(p->isChosen || p->isClicked == 1)
+					{
+						point_r = 0.08;
+						SetPenColor("Shiningred");
+					}
 					DrawPoint(cp->x, cp->y);
 					DrawPoint(cp->next->x, cp->next->y);
 					if ((cp->y) == (cp->next->y)) {
@@ -218,7 +221,7 @@ void display()
 						b = cp->y - slope * cp->x;
 						//dbgS("斜率计算完成\n");
 						int d = 1;
-						for(i = -5/scale; i <= 5/scale; i += 0.05)
+						for(i = -5/scale; i <= 5/scale; i += 0.1)
 						{
 							cy = i * slope + b;
 							if(transfery(cy) < Left_y || transfery(cy) > Right_y) continue;
@@ -228,6 +231,7 @@ void display()
 							}
 							else DrawTo(i, cy);
 							d++;
+							dbgS("绘制直线次数：");dbgI(d);dbgC('\n');
 						}
 					} 
 					
@@ -422,6 +426,7 @@ void InitColor()
 	DefineColor("Rosered", 0.8, 0.47058, 0.47058);
 	DefineColor("Pink", 0.98823, 0.70980, 0.62352);
 	DefineColor("Lightblue", 0.90588, 0.95686, 0.95294);
+	DefineColor("Shiningred", 0.890196, 0.145098, 0.2470588);
 }
 
 void Main()
