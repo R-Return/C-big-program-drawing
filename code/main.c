@@ -92,6 +92,27 @@ void display()
 			pageid = 3;
 		}
 		drawtext();
+		SetPenColor("Slategray");
+		switch (insert_state) {
+			case 0:
+				drawLabel(4, 0.3, "在绘制区中按鼠标左键即可绘制点；点绘制完成后，请再次点击按钮，退出绘制点的功能");
+				break;
+			case 1:
+				drawLabel(4, 0.3, "在绘制区中点击一次鼠标左键确定直线上一点，再次点击确定斜率，绘制直线；再次绘制需重新点击按钮");
+				break;
+			case 2:
+				drawLabel(4, 0.3, "在绘制区中点击一次鼠标左键绘制线段一个端点，第二次点击绘制第二个端点并连接；再次绘制需重新点击按钮");
+				break;
+			case 3:
+				drawLabel(4, 0.3, "在绘制区中点击一次鼠标左键绘制多边形的一个顶点，点击鼠标右键闭合多边形；再次绘制需重新点击按钮");
+				break;
+			case 4:
+				drawLabel(4, 0.3, "在绘制区中点击一次鼠标左键确定圆的圆心，拉动鼠标确定半径，第二次点击绘制圆；再次绘制需重新点击按钮");
+				break;
+			case -1:
+				drawLabel(4, 0.3, "点击相应的按钮进行绘制");
+				break;
+		}
 		//DisplayClear();	
 		
 		//绘制
@@ -305,6 +326,13 @@ void display()
 		//calculate();
 		setTextBoxColors("Rosered", "Rosered", "Salmon", "Rosered", 0);
 		textbox(GenUIID(0), 3.5, 8, 8, 1, str, sizeof(str));
+		
+		SetPenColor("Navy");
+		drawLabel(2, 5,"仅支持一元函数，未知量请输入x");
+		drawLabel(2, 4.5,"支持常用的运算符输入，如： *   /   +   - ");
+		drawLabel(2, 4,"字符之间不能存在空格");
+		drawLabel(2, 3.5,"支持 π ,e，但 π 需要用Pi 或者 pi来表示");
+		drawLabel(2, 3,"不支持 * 省略，需要使用2*x，2*( )等");
 		if(button(GenUIID(0), 6.5, 6, 2, 1, "确认"))
 		{
 			insertFunc(str);
@@ -316,6 +344,7 @@ void display()
 		;
 	}
 	}
+	
 }
 
 void CharEventProcess(char ch)

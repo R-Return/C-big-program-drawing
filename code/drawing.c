@@ -55,6 +55,8 @@ void drawtext()
 	int count = 0;
 	for(p = head->next;p != end; p = p->next)
 	{
+		if(p->ty == 3)
+			continue;
 		SetPenColor("Slategray");
 		drawLabel(0.7, 9 - count * 0.5, p->expression);
 		count ++;

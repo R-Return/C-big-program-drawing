@@ -139,7 +139,11 @@ void insertCircle(int i, int confirm, double x, double y)
 void insertFunc(char a[])
 {
     //dbgS("开始插入函数\n");
-
+	int tmp;
+	tmp = strlen(a);
+	a[tmp] = '#';
+	a[tmp + 1] = '\0'; 
+	dbgS("当前函数式为：");dbgS(a);dbgC('\n');
     double y;
 	int d = 1, interrupt = 0;
 	double j;
@@ -176,7 +180,17 @@ void insertFunc(char a[])
 		d++;
 		Last_y = y;
 	}
-    //dbgS("函数插入完成\n");
+	Shape *p;
+	p = end->before;
+	p->expression[0] = 'y';
+	p->expression[1] = ' ';
+	p->expression[2] = '=';
+	p->expression[3] = ' ';
+	p->expression[4] = '\0';
+	a[strlen(a) - 1] = '\0';
+	strcat( p->expression, a );
+	
+    dbgS("函数插入完成\n");
 }
 
 void deleteList(void)
