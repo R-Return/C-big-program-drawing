@@ -16,9 +16,10 @@ void store()
 //    struct shape *next;
 //}Shape;
 
-	while(temp->next!=NULL)
+	while(temp!=end)
 	{
 		fprintf(fp,"%d %d %d",temp->isChosen,temp->isClicked,temp->ty); //status
+		fprintf(fp,"%s",temp->expression);
 		dbgS("end 1");
 		if(temp->ty!=3)
 		{
@@ -26,6 +27,7 @@ void store()
 			while(ptemp->next!=NULL)
 			{
 				fprintf(fp,"%f %f %d",ptemp->x,ptemp->y,ptemp->connect);
+				
 				ptemp=ptemp->next;
 				dbgS("end 1");
 			}
