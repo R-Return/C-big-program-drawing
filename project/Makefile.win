@@ -4,11 +4,11 @@
 CPP      = g++.exe -D__DEBUG__
 CC       = gcc.exe -D__DEBUG__
 WINDRES  = windres.exe
-OBJ      = ../code/main.o ../lib/exceptio.o ../lib/genlib.o ../lib/graphics.o ../lib/imgui.o ../lib/linkedlist.o ../lib/random.o ../lib/simpio.o ../lib/strlib.o ../code/drawing.o ../code/function.o ../code/debug.o ../code/LinkList.o ../code/selected.o
-LINKOBJ  = ../code/main.o ../lib/exceptio.o ../lib/genlib.o ../lib/graphics.o ../lib/imgui.o ../lib/linkedlist.o ../lib/random.o ../lib/simpio.o ../lib/strlib.o ../code/drawing.o ../code/function.o ../code/debug.o ../code/LinkList.o ../code/selected.o
-LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib" -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc -mwindows -g3
-INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"../lib"
-CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++" -I"../lib"
+OBJ      = ../code/main.o ../lib/exceptio.o ../lib/genlib.o ../lib/graphics.o ../lib/imgui.o ../lib/linkedlist.o ../lib/random.o ../lib/simpio.o ../lib/strlib.o ../code/drawing.o ../code/function.o ../code/debug.o ../code/LinkList.o ../code/selected.o ../../../../Desktop/C-big-program-drawing-main/code/file.o
+LINKOBJ  = ../code/main.o ../lib/exceptio.o ../lib/genlib.o ../lib/graphics.o ../lib/imgui.o ../lib/linkedlist.o ../lib/random.o ../lib/simpio.o ../lib/strlib.o ../code/drawing.o ../code/function.o ../code/debug.o ../code/LinkList.o ../code/selected.o ../../../../Desktop/C-big-program-drawing-main/code/file.o
+LIBS     = -L"D:/Dev-Cpp/MinGW64/lib" -L"D:/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc -mwindows -g3
+INCS     = -I"D:/Dev-Cpp/MinGW64/include" -I"D:/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"D:/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"../lib"
+CXXINCS  = -I"D:/Dev-Cpp/MinGW64/include" -I"D:/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"D:/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"D:/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++" -I"../lib"
 BIN      = ¾Þ´ó³Ì.exe
 CXXFLAGS = $(CXXINCS) -g3
 CFLAGS   = $(INCS) -g3
@@ -65,3 +65,6 @@ $(BIN): $(OBJ)
 
 ../code/selected.o: ../code/selected.c
 	$(CC) -c ../code/selected.c -o ../code/selected.o $(CFLAGS)
+
+../../../../Desktop/C-big-program-drawing-main/code/file.o: ../../../../Desktop/C-big-program-drawing-main/code/file.c
+	$(CC) -c ../../../../Desktop/C-big-program-drawing-main/code/file.c -o ../../../../Desktop/C-big-program-drawing-main/code/file.o $(CFLAGS)
