@@ -50,7 +50,15 @@ void drawtext()
 {
 	//dbgs("开始绘制输出框\n")
 	SetPenColor("Salmon");
-	DrawRectangle(0.5, 1, 3.5, 9.5); 
+	DrawRectangle(0.5, 1, 3.5, 9.5);
+	Shape *p;
+	int count = 0;
+	for(p = head->next;p != end; p = p->next)
+	{
+		SetPenColor("Slategray");
+		drawLabel(0.7, 9 - count * 0.5, p->expression);
+		count ++;
+	} 
 }
 
 //double transfer(char *a,double x)

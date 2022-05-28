@@ -1,5 +1,6 @@
 #include "Header.h"
 #include "extgraph.h"
+#include "selected.h"
 #define MAX 100	//函数字符串最大长度
 double point_r = 0.05;
 int pageid=1;
