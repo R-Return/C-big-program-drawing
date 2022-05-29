@@ -1,0 +1,70 @@
+# Project: 作业2
+# Makefile created by Dev-C++ 5.11
+
+CPP      = g++.exe -D__DEBUG__
+CC       = gcc.exe -D__DEBUG__
+WINDRES  = windres.exe
+OBJ      = ../code/main.o ../lib/exceptio.o ../lib/genlib.o ../lib/graphics.o ../lib/imgui.o ../lib/linkedlist.o ../lib/random.o ../lib/simpio.o ../lib/strlib.o ../code/drawing.o ../code/function.o ../code/debug.o ../code/LinkList.o ../code/selected.o ../code/file.o
+LINKOBJ  = ../code/main.o ../lib/exceptio.o ../lib/genlib.o ../lib/graphics.o ../lib/imgui.o ../lib/linkedlist.o ../lib/random.o ../lib/simpio.o ../lib/strlib.o ../code/drawing.o ../code/function.o ../code/debug.o ../code/LinkList.o ../code/selected.o ../code/file.o
+LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib" -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc -mwindows -g3
+INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"../lib"
+CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++" -I"../lib"
+BIN      = 巨大程.exe
+CXXFLAGS = $(CXXINCS) -g3
+CFLAGS   = $(INCS) -g3
+RM       = rm.exe -f
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CC) $(LINKOBJ) -o $(BIN) $(LIBS)
+
+../code/main.o: ../code/main.c
+	$(CC) -c ../code/main.c -o ../code/main.o $(CFLAGS)
+
+../lib/exceptio.o: ../lib/exceptio.c
+	$(CC) -c ../lib/exceptio.c -o ../lib/exceptio.o $(CFLAGS)
+
+../lib/genlib.o: ../lib/genlib.c
+	$(CC) -c ../lib/genlib.c -o ../lib/genlib.o $(CFLAGS)
+
+../lib/graphics.o: ../lib/graphics.c
+	$(CC) -c ../lib/graphics.c -o ../lib/graphics.o $(CFLAGS)
+
+../lib/imgui.o: ../lib/imgui.c
+	$(CC) -c ../lib/imgui.c -o ../lib/imgui.o $(CFLAGS)
+
+../lib/linkedlist.o: ../lib/linkedlist.c
+	$(CC) -c ../lib/linkedlist.c -o ../lib/linkedlist.o $(CFLAGS)
+
+../lib/random.o: ../lib/random.c
+	$(CC) -c ../lib/random.c -o ../lib/random.o $(CFLAGS)
+
+../lib/simpio.o: ../lib/simpio.c
+	$(CC) -c ../lib/simpio.c -o ../lib/simpio.o $(CFLAGS)
+
+../lib/strlib.o: ../lib/strlib.c
+	$(CC) -c ../lib/strlib.c -o ../lib/strlib.o $(CFLAGS)
+
+../code/drawing.o: ../code/drawing.c
+	$(CC) -c ../code/drawing.c -o ../code/drawing.o $(CFLAGS)
+
+../code/function.o: ../code/function.c
+	$(CC) -c ../code/function.c -o ../code/function.o $(CFLAGS)
+
+../code/debug.o: ../code/debug.c
+	$(CC) -c ../code/debug.c -o ../code/debug.o $(CFLAGS)
+
+../code/LinkList.o: ../code/LinkList.c
+	$(CC) -c ../code/LinkList.c -o ../code/LinkList.o $(CFLAGS)
+
+../code/selected.o: ../code/selected.c
+	$(CC) -c ../code/selected.c -o ../code/selected.o $(CFLAGS)
+
+../code/file.o: ../code/file.c
+	$(CC) -c ../code/file.c -o ../code/file.o $(CFLAGS)
