@@ -65,7 +65,7 @@ void MouseEventProcess(int x, int y, int button, int event) {
 							insertPoint(1, 2, 1, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
 							insert_state = -1;
 							hasAdded = 0;
-							//dbgS("线段插入完成\n");
+							dbgS("线段插入完成\n");
 						}
 						else
 						{

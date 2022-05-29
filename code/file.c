@@ -50,6 +50,7 @@ void store()
 void read()
 {
 	FILE* fp;
+	char c;
 	Shape* temp=(Shape*)malloc(sizeof(Shape));
 //	head->next=end;
 //	end->before = head->next;
@@ -65,10 +66,11 @@ void read()
 //    struct shape *before;
 //    struct shape *next;
 //}Shape;
-	while(1)
+	while((c = fgetc(fp)) != EOF)
 	{
-		dbgS("准备读入状态\n");      
-		fscanf(fp,"%d %d %d",&temp->isChosen, &temp->isClicked, &temp->ty);
+		dbgS("准备读入状态\n");
+		temp->isChosen =  c+ '0';    
+		fscanf(fp," %d %d",&temp->isClicked, &temp->ty);
 		dbgI(temp->isChosen);dbgI(temp->isClicked);dbgI(temp->ty);dbgC('\n');
 		dbgS("状态读入完成\n");
 		fgetc(fp);
@@ -102,8 +104,7 @@ void read()
 		end->before = temp;
 		temp=(Shape*)malloc(sizeof(Shape));
 		dbgS("1 loop");
-		if(feof(fp)) break;
 	}
 	fclose("fp");
-	
+	display();
 }

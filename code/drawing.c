@@ -86,6 +86,7 @@ void drawtext()
 			SetPenColor("Shiningred");
 		}
 		drawLabel(0.7, 9.2 - count * 0.4, p->expression);
+		dbgS("表达式绘制完成\n");
 		SetPenColor("Salmon");
 		MovePen(0.5, 9.2 - count * 0.4-0.05);
 		DrawLine(3, 0);

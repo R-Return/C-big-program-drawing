@@ -41,7 +41,7 @@ void display()
 	}
 	if(pageid==2)
 	{
-		//dbgS("开始绘制窗口2\n");
+		dbgS("开始绘制窗口2\n");
 		DisplayClear();
 		SetPointSize(20);
 		setMenuColors("Lightblue", "Navy", "Lightblue", "Slategray", 1);
@@ -264,6 +264,7 @@ void display()
 			//绘制线段
 			else if(p->ty == 2)	
 			{
+				dbgS("开始绘制线段\n");
 				cp = p->pHead->next;
 				SetPenColor("Navy");
 				if(p->isChosen || p->isClicked == 1)
