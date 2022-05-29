@@ -33,7 +33,7 @@ void drawedge()
 	double i;
 	//dbgS("开始绘制边框\n");
 	//SetPenColor(Timecolor);
-	DrawRectangle(Left_x, Left_y, Right_x, Right_y);
+	
 	//dbgS("开始绘制坐标轴\n");
 	SetPenColor("Light Gray");
 	for(i = centerX; i <= Right_x; i += 0.5*scale)
@@ -62,8 +62,9 @@ void drawedge()
 	//dbgS("横坐标绘制完成\n");
 	MovePen(centerX, Left_y);
 	DrawLine(0,Right_y-Left_y);
-	MovePen(centerX+0.04, centerY-0.16);
+	MovePen(centerX+0.04, centerY-0.22);
 	DrawTextString("0");
+	DrawRectangle(Left_x, Left_y, Right_x, Right_y);
 	SetPenColor("Blue");
 	//dbgS("边框绘制完成\n");
 }
@@ -80,7 +81,14 @@ void drawtext()
 		if(p->ty == 3)
 			continue;
 		SetPenColor("Slategray");
+		if(p->isChosen || p->isClicked == 1)
+		{
+			SetPenColor("Shiningred");
+		}
 		drawLabel(0.7, 9.2 - count * 0.4, p->expression);
+		SetPenColor("Salmon");
+		MovePen(0.5, 9.2 - count * 0.4-0.05);
+		DrawLine(3, 0);
 		count ++;
 	} 
 	//dbgS("开始绘制输出框\n");

@@ -18,20 +18,22 @@ void display()
 	if(pageid==1)
 	{
 		//dbgS("开始绘制窗口1\n");
-		MovePen(5.2, 8);
-		SetPointSize(70);
-		SetPenColor("Navy");
-		DrawTextString("几何画板");
-		SetPointSize(25); 
 		DrawImage("..\\5.bmp", 0, 0, 800, 533, 0,0, PixelsX(GetWindowWidth()), PixelsY(GetWindowHeight()));
+		SetFont("楷体");
+		MovePen(4, 8.6);
+		SetPointSize(80);
+		SetPenColor("Navy");
+		DrawTextString("几 何 画 板");
+		SetPointSize(30); 
+		
 		setButtonColors("Lightblue", "Slategray", "Lightblue", "Slategray", 1);
-		if(button(GenUIID(0), 3, 5, 2.5, 1, "开始使用"))
+		if(button(GenUIID(0), 9.5, 5, 2.5, 1, "开始使用"))
 		{
 			dbgS("开始使用\n");
 			pageid=2;
 		}
 		setButtonColors("Lightblue", "Navy", "Lightblue", "Slategray", 1);
-		if(button(GenUIID(0), 9.5, 5, 2.5, 1 , "退出"))
+		if(button(GenUIID(0), 9.5, 3, 2.5, 1 , "退出"))
 		{
 			exit(-1);
 		}		
@@ -41,7 +43,7 @@ void display()
 	{
 		//dbgS("开始绘制窗口2\n");
 		DisplayClear();
-		SetPointSize(15);
+		SetPointSize(20);
 		setMenuColors("Lightblue", "Navy", "Lightblue", "Slategray", 1);
 		if(button(GenUIID(0), 0.2, 9.7, 1, 0.5, "放大"))
 		{
@@ -55,7 +57,8 @@ void display()
 				scale = 0.2;
 			}
 		}
-		if(button(GenUIID(0), 1.4, 10.1, 0.5, 0.5, "Left"))
+		SetPointSize(15); 
+		if(button(GenUIID(0), 1.5, 10.1, 0.6, 0.5, "Left"))
 		{
 			centerX-=0.02;
 			if(centerX <= Left_x)
@@ -63,7 +66,7 @@ void display()
 				centerX = Left_x;
 			}
 		}
-		if(button(GenUIID(0), 2.0, 10.6, 0.5, 0.5, "Up"))
+		if(button(GenUIID(0), 2.2, 10.7, 0.6, 0.5, "Up"))
 		{
 			centerY+=0.02;
 			if(centerY >= Right_y)
@@ -71,7 +74,7 @@ void display()
 				centerY = Right_y;
 			}
 		}
-		if(button(GenUIID(0), 2.6, 10.1, 0.5, 0.5, "Right"))
+		if(button(GenUIID(0), 2.9, 10.1, 0.6, 0.5, "Right"))
 		{
 			centerX+=0.02;
 			if(centerX >= Right_x)
@@ -79,7 +82,7 @@ void display()
 				centerX = Right_x;
 			}
 		}
-		if(button(GenUIID(0), 2.0, 9.6, 0.5, 0.5, "Down"))
+		if(button(GenUIID(0), 2.2, 9.55, 0.6, 0.5, "Down"))
 		{
 			centerY-=0.02;
 			if(centerY <= Left_y)
@@ -87,6 +90,15 @@ void display()
 				centerY = Left_y;
 			}
 		}
+		
+		MovePen(4.2, 11.6);
+		char s[10];
+		sprintf(s, "x %.2f", scale);
+		SetPenColor("Navy");
+		SetPointSize(30); 
+		DrawTextString(s);
+		SetPointSize(20); 
+		
 		static char * menuListFile[] = {"文件",
 		                                "打开   | Ctrl-O", // 快捷键必须采用[Ctrl-X]格式，放在字符串的结尾
 		                                "保存",
@@ -99,13 +111,15 @@ void display()
 		int selection  = menuList(GenUIID(0), 0, GetWindowHeight()-0.6, 1.5, 2.5, 0.6, menuListFile,sizeof(menuListFile)/sizeof(menuListFile[0]));
 		int selection2 = menuList(GenUIID(0), 1.5, GetWindowHeight()-0.6, 1.5, 2.5, 0.6, menuListTool,sizeof(menuListTool)/sizeof(menuListTool[0]));
 		drawedge();
+		if(selection==1) read();
 		if(selection==2) store();
+		if(selection==3) exit(-1);
 		if(selection2==1)
 		{
 			pageid=3;
 		}
 		setButtonColors("Lightblue", "Navy", "Lightblue", "Slategray", 1);
-		if(button(GenUIID(0), 4, 0.6, 1, 0.5, "点"))
+		if(button(GenUIID(0), 4, 0.6, 0.8, 0.5, "点"))
 		{
 			 
 			if(insert_state == 0)
@@ -117,28 +131,35 @@ void display()
 				insert_state = 0;
 			}
 		}
-		if(button(GenUIID(0), 5.8, 0.6, 1, 0.5, "直线"))
+		if(button(GenUIID(0), 5.2, 0.6, 0.8, 0.5, "直线"))
 		{
 			insert_state = 1; 
 		}
-		if(button(GenUIID(0), 7.8, 0.6, 1, 0.5, "线段"))
+		if(button(GenUIID(0), 6.4, 0.6, 0.8, 0.5, "线段"))
 		{
 			insert_state = 2;  
 		}
-		if(button(GenUIID(0), 9.8, 0.6, 1, 0.5, "多边形"))
+		if(button(GenUIID(0), 7.6, 0.6, 0.8, 0.5, "多边形"))
 		{
 			insert_state = 3; 
 		}
-		if(button(GenUIID(0), 11.8, 0.6, 1, 0.5, "圆"))
+		if(button(GenUIID(0), 8.8, 0.6, 0.8, 0.5, "圆"))
 		{
 			insert_state = 4; 
 		}
-		if(button(GenUIID(0), 13.8, 0.6, 1, 0.5, "函数"))
+		if(button(GenUIID(0), 10, 0.6, 0.8, 0.5, "函数"))
 		{
 			pageid = 3;
 		}
-		
+		setButtonColors("Salmon", "Shiningred", "Pink", "Shiningred", 1);
+		if(button(GenUIID(0), 11.4, 0.6, 0.8, 0.5, "清屏"))
+		{
+			head->next = end;
+			end->before = head;
+		}
+		setButtonColors("Lightblue", "Navy", "Lightblue", "Slategray", 1);
 		drawtext();
+		SetPointSize(15); 
 		SetPenColor("Slategray");
 		switch (insert_state) {
 			case 0:
@@ -160,6 +181,7 @@ void display()
 				drawLabel(4, 0.3, "点击相应的按钮进行绘制");
 				break;
 		}
+		SetPointSize(20); 
 		//DisplayClear();	
 		
 		//绘制
@@ -232,7 +254,7 @@ void display()
 							}
 							else DrawTo(i, cy);
 							d++;
-							dbgS("绘制直线次数：");dbgI(d);dbgC('\n');
+							//dbgS("绘制直线次数：");dbgI(d);dbgC('\n');
 						}
 					} 
 					

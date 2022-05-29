@@ -34,5 +34,6 @@ extern int insert_state;
 extern char str[MAX];
 extern double point_r;
 extern void store();
+extern void read();
 
 #endif //HEADER_H
