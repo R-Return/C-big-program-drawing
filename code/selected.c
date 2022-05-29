@@ -145,7 +145,7 @@ void MouseEventProcess(int x, int y, int button, int event) {
 						case 0:
 							Select_Point((mouse_x-centerX)/scale, (mouse_y-centerY)/scale, sh_chose->pHead);
 							break;
-						case 1:
+						case 2:
 							Select_Line((mouse_x-centerX)/scale, (mouse_y-centerY)/scale, sh_chose->pHead);
 							break;
 						case 3:
@@ -191,7 +191,7 @@ void Select_Point(double nowx, double nowy, struct Point *head) {
 //通过比较线段斜率与鼠标所在位置形成的斜率，是否在误差范围之内，来判断是否选中状态
 void Select_Line(double nowx, double nowy, struct Point *head) {
 	//dbgS("选中线段判断\n");
-	double slope, nowslope, error = 0.01;							//选取容许误差
+	double slope, nowslope, error = 0.001;							//选取容许误差
 	double x1, y1, x2, y2;												//线段两个端点的坐标
 	struct Point *p;
 	p = head->next;
@@ -207,7 +207,7 @@ void Select_Line(double nowx, double nowy, struct Point *head) {
 		{
 			slope = (y2 - y1) / (x2 - x1);									//当前线段的斜率
 			nowslope = (nowy - y1) / (nowx - x1);								//鼠标所在位置与端点形成斜率
-			if(nowslope <= slope + error && nowslope >= slope - error)
+			if((nowslope <= slope + error) || (nowslope >= slope - error))
 			{
 				chose = 1;
 			}

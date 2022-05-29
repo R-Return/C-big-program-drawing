@@ -184,7 +184,7 @@ void display()
 
 				point_r = 0.05;
 				//dbgS("点绘制完成\n");
-				SetPenColor("Blue");
+			//	SetPenColor("Blue");
 			}
 			//绘制直线
 			else if(p->ty == 1)	
@@ -204,6 +204,7 @@ void display()
 						point_r = 0.08;
 						SetPenColor("Shiningred");
 					}
+					point_r = 0.05;
 					DrawPoint(cp->x, cp->y);
 					DrawPoint(cp->next->x, cp->next->y);
 					if ((cp->y) == (cp->next->y)) {
@@ -242,6 +243,12 @@ void display()
 			else if(p->ty == 2)	
 			{
 				cp = p->pHead->next;
+				SetPenColor("Navy");
+				if(p->isChosen || p->isClicked == 1)
+				{
+					SetPenColor("Shiningred");
+					point_r = 0.08;
+				}
 				if(cp->next)
 				{
 					DrawPoint(cp->x, cp->y);
@@ -252,6 +259,7 @@ void display()
 				{
 					DrawPoint(cp->x, cp->y);
 				}
+				point_r = 0.05;
 				//dbgS("线段绘制完成\n");
 			}
 			//绘制多边形
@@ -259,6 +267,12 @@ void display()
 			{
 				
 				double hx, hy;
+				SetPenColor("Navy");
+				if(p->isChosen || p->isClicked == 1)
+				{
+					SetPenColor("Shiningred");
+					point_r = 0.08;
+				}
 //				if(p->pHead->connect == -1)
 //				{
 //					dbgS("准备绘制已成立的多边形\n");
@@ -328,6 +342,7 @@ void display()
 						}
 					}
 //				}
+			point_r = 0.05;
 				
 			}
 			//绘制圆
