@@ -41,7 +41,7 @@ void display()
 	}
 	if(pageid==2)
 	{
-		dbgS("开始绘制窗口2\n");
+		//dbgS("开始绘制窗口2\n");
 		DisplayClear();
 		SetPointSize(20);
 		setMenuColors("Lightblue", "Navy", "Lightblue", "Slategray", 1);
@@ -184,6 +184,7 @@ void display()
 		SetPointSize(20); 
 		//DisplayClear();	
 		
+		dbgS("开始绘制\n");
 		//绘制
 		Shape *p;
 		struct Point *cp;
@@ -205,7 +206,7 @@ void display()
 				DrawPoint(p->pHead->next->x, p->pHead->next->y);
 
 				point_r = 0.05;
-				//dbgS("点绘制完成\n");
+				dbgS("点绘制完成\n");
 			//	SetPenColor("Blue");
 			}
 			//绘制直线
