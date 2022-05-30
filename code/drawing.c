@@ -85,12 +85,14 @@ void drawtext()
 		{
 			SetPenColor("Shiningred");
 		}
-		drawLabel(0.7, 9.2 - count * 0.4, p->expression);
-		dbgS("表达式绘制完成\n");
+		if(p->ty == 4)SetPointSize(15);
+		drawLabel(0.6, 9.2 - count * 0.4, p->expression);
+		//dbgS("表达式绘制完成\n");
 		SetPenColor("Salmon");
 		MovePen(0.5, 9.2 - count * 0.4-0.05);
 		DrawLine(3, 0);
 		count ++;
+		SetPointSize(20);
 	} 
 	//dbgS("开始绘制输出框\n");
 }
@@ -131,27 +133,10 @@ void DrawTo(double x, double y)
 
 void DrawPoint(double x, double y)
 {
-	
-//	if()
-//	SetPenColor("Blue");
 	MovePen((x*scale+centerX) + point_r, (y*scale+centerY));
 	StartFilledRegion(1);
-//	MovePen((x+centerX)*scale + 0.01, (y+centerY)*scale);
-//	DrawArc(0.01, 0, 360);
-//	MovePen((x+centerX)*scale + 0.03, (y+centerY)*scale);
-//	DrawArc(0.03, 0, 360);
-	
 	DrawArc(point_r, 0, 360);
 	EndFilledRegion();
 	MovePen((x*scale+centerX), (y*scale+centerY));
 	//dbgS("点绘制完成\n");
 }
-
-//void DrawSegment(double a, double b, double c, double d)	//绘制一个端点加线段
-//{
-//	SetPenColor("Blue");
-////	MovePen((a+centerX)*scale, (b+centerY)*scale);
-//	DrawLine((c-a)*scale, (d-b)*scale);
-//	DrawPoint(c, d);
-//	//dbgS("线段绘制完成\n");
-//}

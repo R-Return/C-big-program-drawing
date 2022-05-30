@@ -77,10 +77,13 @@ void insertPoint(int i, int ty, int connect, double x, double y) //i控制插入状态
 		q = end->before;
 		if ((q->pHead->next->x) != (r->x) && (q->pHead->next->y) != (r->y)) {
 			//dbgS("准备计算斜率\n");
-			double slope;
+			double slope, b;
 			slope = (r->y - q->pHead->next->y) / (r->x - q->pHead->next->x);
+			b = r->y - slope * r->x;
 			//dbgS("斜率计算完成\n");
-			sprintf(a, "y = %.2f x + %.2f", slope, r->y - slope * r->x);
+			if(b > 0)sprintf(a, "y = %.2f x +%.2f", slope, b);
+			else if(b >= -0.01 && b <= 0.01)sprintf(a, "y = %.2f x", slope);
+			else if(b < 0)sprintf(a, "y = %.2f x %.2f", slope, b);
 		} else if ((q->pHead->next->x) == (r->x)) {
 			sprintf(a, "x = %.2f", r->x);
 		} else if ((q->pHead->next->y) == (r->y)) {
@@ -128,7 +131,14 @@ void insertCircle(int i, int confirm, double x, double y)
 	}
 	
 	if (i && confirm) {
-		sprintf(a, "(x %.2f)^2 + (y %.2f)^2 = %.2f", -1 * q->c.x, -1 * q->c.y, pow(q->c.r, 2));
+		if(q->c.x >= 0 && q->c.y >= 0)
+		sprintf(a, "(x+%.2f)^2+(y+%.2f)^2=%.2f", q->c.x, q->c.y, pow(q->c.r, 2));
+		else if(q->c.x >= 0 && q->c.y < 0)
+		sprintf(a, "(x+%.2f)^2+(y%.2f)^2=%.2f", q->c.x, q->c.y, pow(q->c.r, 2));
+		else if(q->c.x < 0 && q->c.y >= 0)
+		sprintf(a, "(x%.2f)^2+(y+%.2f)^2=%.2f", q->c.x, q->c.y, pow(q->c.r, 2));
+		else if(q->c.x < 0 && q->c.y < 0)
+		sprintf(a, "(x%.2f)^2+(y%.2f)^2=%.2f", q->c.x, q->c.y, pow(q->c.r, 2));
 		strcpy(q->expression, a);
 		dbgS(q->expression);
 		dbgC('\n');

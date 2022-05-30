@@ -8,8 +8,8 @@ int insert_state = -1;
 double Left_x = 4, Left_y = 1.5, Right_x = 14, Right_y = 11.5;
 double centerX, centerY, scale=1;
 char str[MAX] = "";
-char *Function_Color[]={"Dark Gray", "Red", "Green",  
-						"Cyan", "Blue", "Magenta"};
+char *Function_Color[]={"BlueGray", "FuncRed", "vividGreen",  
+						"FuncBlue",  "FuncOrange"};
 
 void display()
 {
@@ -186,6 +186,7 @@ void display()
 		
 		//dbgS("开始绘制\n");
 		//绘制
+		SetPenSize(2);
 		Shape *p;
 		struct Point *cp;
 		int FuncColor;
@@ -265,7 +266,7 @@ void display()
 			//绘制线段
 			else if(p->ty == 2)	
 			{
-				dbgS("开始绘制线段\n");
+				//dbgS("开始绘制线段\n");
 				cp = p->pHead->next;
 				SetPenColor("Navy");
 				if(p->isChosen || p->isClicked == 1)
@@ -292,58 +293,21 @@ void display()
 				
 				double hx, hy;
 				SetPenColor("Navy");
-				if(p->isChosen || p->isClicked == 1)
+				if(p->isChosen == 1 || p->isClicked == 1)
 				{
 					SetPenColor("Shiningred");
 					point_r = 0.08;
 				}
-//				if(p->pHead->connect == -1)
-//				{
-//					dbgS("准备绘制已成立的多边形\n");
-//					StartFilledRegion(0.5);
-//					dbgS("进入填充状态\n");
-//					for(cp = p->pHead->next; cp; cp = cp->next)
-//					{
-//						dbgS("-1进入绘制循环\n");
-//						dbgS("connect:");dbgI(cp->connect);dbgC('\n');
-//						if(cp->connect == 0)	
-//						{
-//							dbgS("-1准备绘制多边形头节点\n");
-//							hx = cp->x;
-//							hy = cp->y;
-//							MovePen(transferx(hx),transfery(hy));
-//						//	DrawPoint(cp->x, cp->y);
-//						//	dbgS("多边形头节点绘制完成\n");
-//						}
-//						else if(cp->connect == 1)
-//						{
-//							DrawTo(cp->x, cp->y);
-//						//	DrawPoint(cp->x, cp->y);
-//							dbgS("-1多边形中间节点绘制完成\n");
-//						}
-//						else if(cp->connect == 2)
-//						{
-//							DrawTo(cp->x, cp->y);
-//						//	DrawPoint(cp->x, cp->y);
-//							//dbgS("多边形头节点坐标：");dbgD(hx);dbgD(hy);dbgC('\n');
-//							DrawTo(hx, hy);
-//							dbgS("-1绘制封闭线\n");
-//							EndFilledRegion();
-//						}
-//					}
-//					
-//				}
-//				else
-//				{
+
 					for(cp = p->pHead->next; cp; cp = cp->next)
 					{
 						if(cp->connect == 0)	
 						{
-						//	dbgS("准备绘制多边形头节点\n");
+							//dbgS("准备绘制多边形头节点\n");
 							hx = cp->x;
 							hy = cp->y;
 							DrawPoint(cp->x, cp->y);
-						//	dbgS("多边形头节点绘制完成\n");
+							//dbgS("多边形头节点绘制完成\n");
 						}
 						else if(cp->connect == 1)
 						{
@@ -355,7 +319,7 @@ void display()
 						{
 							DrawTo(cp->x, cp->y);
 							DrawPoint(cp->x, cp->y);
-						//	dbgS("多边形待定中间节点绘制完成\n");
+							//dbgS("多边形待定中间节点绘制完成\n");
 						}
 						else if(cp->connect == 2)
 						{
@@ -365,22 +329,31 @@ void display()
 							DrawTo(hx, hy);
 						}
 					}
-//				}
 			point_r = 0.05;
 				
 			}
 			//绘制圆
 			else if(p->ty == 4)
 			{
+				SetPenColor("Navy");
+				if(p->isChosen || p->isClicked == 1)
+				{
+					SetPenColor("Shiningred");
+					point_r = 0.08;
+				}
+				DrawPoint(p->c.x, p->c.y);
 				MovePen(transferx(p->c.x + p->c.r * scale), transfery(p->c.y));
 				DrawArc(p->c.r * scale, 0, 360);
+				SetPenColor("Navy");
 				//dbgS("圆绘制完成\n");
+				point_r = 0.05;
 			}
 			//绘制函数
 			else if(p->ty == 5)
 			{
 				double x,y;
-				SetPenColor(Function_Color[FuncColor % 7]);
+				SetPenColor(Function_Color[FuncColor % 5]);
+				
 				int d = 1;
 				
 				for(cp = p->pHead->next; cp->next; cp = cp->next)
@@ -413,7 +386,8 @@ void display()
 			//绘制函数表达式
 //			MovePen(0.5,0.5);
 //			DrawTextString(fHead->next->func);
-		}//for
+		}//for-drawing
+		SetPenSize(1);
 		
 	}//if
 	if(pageid==3)
@@ -421,13 +395,14 @@ void display()
 		DisplayClear();	
 		//calculate();
 		setTextBoxColors("Rosered", "Rosered", "Salmon", "Rosered", 0);
-		textbox(GenUIID(0), 3.5, 8, 8, 1, str, sizeof(str));
-		
+		textbox(GenUIID(0), 3.5, 8, 8, 0.5, str, sizeof(str));
+		MovePen(3, 8.2);
+		DrawTextString("y = ");
 		SetPenColor("Navy");
 		drawLabel(2, 5,"仅支持一元函数，未知量请输入x");
 		drawLabel(2, 4.5,"支持常用的运算符输入，如： *   /   +   - ");
-		drawLabel(2, 4,"字符之间不能存在空格");
-		drawLabel(2, 3.5,"支持 π ,e，但 π 需要用Pi 或者 pi来表示");
+		drawLabel(2, 4,"支持 π ,e，但 π 需要用PI 或者 pi来表示");
+		drawLabel(2, 3.5,"字符之间不能存在空格");
 		drawLabel(2, 3,"不支持 * 省略，需要使用2*x，2*( )等");
 		if(button(GenUIID(0), 6.5, 6, 2, 1, "确认"))
 		{
@@ -466,6 +441,15 @@ void InitColor()
 	DefineColor("Pink", 0.98823, 0.70980, 0.62352);
 	DefineColor("Lightblue", 0.90588, 0.95686, 0.95294);
 	DefineColor("Shiningred", 0.890196, 0.145098, 0.2470588);
+	DefineColor("MildBlue", 0.537254, 0.717647, 0.9098039);
+	
+	//函数颜色
+	DefineColor("BlueGray", 0.2745, 0.384314, 0.466667);
+	DefineColor("FuncRed", 0.9411765, 0.133333, 0.172549);
+	DefineColor("VividGreen", 0.529412, 0.6, 0.168627);
+	DefineColor("FuncBlue", 0.30196, 0.61176, 0.63137);
+	DefineColor("FuncOrange", 0.898039, 0.5647059, 0.411765);
+	
 }
 
 void Main()

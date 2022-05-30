@@ -16,6 +16,7 @@ extern void Select_Point(double nowx, double nowy, struct Point *head) ;
 extern void Select_Line(double nowx, double nowy, struct Point *head);
 void Select_Segment(double nowx, double nowy, struct Point *head);
 extern void Select_Poly(double nowx, double nowy, struct Point *head);
+void Select_Circle(double nowx, double nowy, double x, double y, double r);
 extern double CalculateDistance_segement(void);
 extern double CalculateDistance_point(void);
 extern double CalculateDegree_point(void);

@@ -3,15 +3,15 @@
 #include <string.h>
 #include "LinkList.h"
 
-void MouseEventProcess(int x, int y, int button, int event);
-void Select_Point(double nowx, double nowy, struct Point *head) ;
-void Select_Line(double nowx, double nowy, struct Point *head);
-void Select_Poly(double nowx, double nowy, struct Point *head);
-double CalculateDistance_segement(void);
-double CalculateDistance_point(void);
-double CalculateDegree_point(void);
-double CalculateDegree_segement(void);
-double Calculatearea_polygon(void);
+//void MouseEventProcess(int x, int y, int button, int event);
+//void Select_Point(double nowx, double nowy, struct Point *head) ;
+//void Select_Line(double nowx, double nowy, struct Point *head);
+//void Select_Poly(double nowx, double nowy, struct Point *head);
+//double CalculateDistance_segement(void);
+//double CalculateDistance_point(void);
+//double CalculateDegree_point(void);
+//double CalculateDegree_segement(void);
+//double Calculatearea_polygon(void);
 int chose = 0;
 //#include "selected.h"
 
@@ -63,7 +63,7 @@ void MouseEventProcess(int x, int y, int button, int event) {
 							insertPoint(1, 1, 1, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
 							insert_state = -1;
 							hasAdded = 0;
-							dbgS("直线插入完成\n");
+							//dbgS("直线插入完成\n");
 						}
 						else
 						{
@@ -78,7 +78,7 @@ void MouseEventProcess(int x, int y, int button, int event) {
 							insertPoint(1, 2, 1, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
 							insert_state = -1;
 							hasAdded = 0;
-							dbgS("线段插入完成\n");
+							//dbgS("线段插入完成\n");
 						}
 						else
 						{
@@ -167,6 +167,9 @@ void MouseEventProcess(int x, int y, int button, int event) {
 						case 3:
 							Select_Poly((mouse_x-centerX)/scale, (mouse_y-centerY)/scale, sh_chose->pHead);
 							break;
+						case 4:
+							Select_Circle((mouse_x-centerX)/scale, (mouse_y-centerY)/scale, sh_chose->c.x, sh_chose->c.y, sh_chose->c.r);
+							break;
 						default:
 							break;
 					}
@@ -193,47 +196,15 @@ void Select_Point(double nowx, double nowy, struct Point *head) {
 		chose = 1;											
 	}
 	else chose = 0;
-	dbgS("选中点判断完成\n");
+	//dbgS("选中点判断完成\n");
 	
 }
 
 //选中直线判断
 //通过比较直线斜率与鼠标所在位置形成的斜率，是否在误差范围之内，来判断是否选中状态
 void Select_Line(double nowx, double nowy, struct Point *head) {
-	dbgS("选中直线判断\n");
-	double slope, nowslope, error = 0.001;							//选取容许误差
-	double x1, y1, x2, y2;												//线段两个端点的坐标
-	struct Point *p;
-	p = head->next;
-	x1 = p->x;
-	y1 = p->y;
-	if(p->next)
-	{
-		p = p->next;
-		x2 = p->x;
-		y2 = p->y;
-		//dbgS("坐标计算完成\n");
-		if(x1!= x2 && nowx != x1)
-		{
-			slope = (y2 - y1) / (x2 - x1);									//当前线段的斜率
-			nowslope = (nowy - y1) / (nowx - x1);								//鼠标所在位置与端点形成斜率
-			if((nowslope <= slope + error) || (nowslope >= slope - error))
-			{
-				chose = 1;
-			}
-			else chose = 0;
-		}
-	}
-//	else;
-	
-	dbgS("选中直线判断完成\n");
-}
-
-//选中线段判断
-//通过比较线段斜率与鼠标所在位置形成的斜率，是否在误差范围之内，来判断是否选中状态
-void Select_Segment(double nowx, double nowy, struct Point *head) {
-	dbgS("选中线段判断\n");
-	double slope, nowslope, error = 0.001;							//选取容许误差
+	//dbgS("选中直线判断\n");
+	double slope, nowslope, error = 0.05;							//选取容许误差
 	double x1, y1, x2, y2;												//线段两个端点的坐标
 	struct Point *p;
 	p = head->next;
@@ -249,7 +220,39 @@ void Select_Segment(double nowx, double nowy, struct Point *head) {
 		{
 			slope = (y2 - y1) / (x2 - x1);									//当前线段的斜率
 			nowslope = (nowy - y1) / (nowx - x1);								//鼠标所在位置与端点形成斜率
-			if(((nowslope <= slope + error) || (nowslope >= slope - error)) 
+			if((nowslope <= slope + error) && (nowslope >= slope - error))
+			{
+				chose = 1;
+			}
+			else chose = 0;
+		}
+	}
+//	else;
+	
+	//dbgS("选中直线判断完成\n");
+}
+
+//选中线段判断
+//通过比较线段斜率与鼠标所在位置形成的斜率，是否在误差范围之内，来判断是否选中状态
+void Select_Segment(double nowx, double nowy, struct Point *head) {
+	//dbgS("选中线段判断\n");
+	double slope, nowslope, error = 0.05;							//选取容许误差
+	double x1, y1, x2, y2;												//线段两个端点的坐标
+	struct Point *p;
+	p = head->next;
+	x1 = p->x;
+	y1 = p->y;
+	if(p->next != NULL)
+	{
+		p = p->next;
+		x2 = p->x;
+		y2 = p->y;
+		//dbgS("坐标计算完成\n");
+		if(x1!= x2 && nowx != x1)
+		{
+			slope = (y2 - y1) / (x2 - x1);									//当前线段的斜率
+			nowslope = (nowy - y1) / (nowx - x1);								//鼠标所在位置与端点形成斜率
+			if(((nowslope <= slope + error) && (nowslope >= slope - error)) 
 				&& (nowy - y2) * (nowy - y1) <= 0)
 			{
 				chose = 1;
@@ -259,7 +262,7 @@ void Select_Segment(double nowx, double nowy, struct Point *head) {
 	}
 //	else;
 	
-	dbgS("选中线段判断完成\n");
+	//dbgS("选中线段判断完成\n");
 }
 
 void Select_Poly(double nowx, double nowy, struct Point *head) {
@@ -274,16 +277,33 @@ void Select_Poly(double nowx, double nowy, struct Point *head) {
 		i++;
 	}
 	int j;
-	for( j = 0; j < i; j = j+2 )
+	for( j = 0; j < i-1; j = j+1 )
 	{
-		if( (( x[j] > nowx ) != ( x[j+1] > nowx)) 
-		   && ((nowx - x[j]) * (y[j+1] - y[j]) >= ( x[j+1] - x[j]) * (nowy - y[j])))
+		if( (( x[j] > nowx ) != ( x[j+1] > nowx))
+		   && (nowx > ( x[j+1] - x[j]) * (nowy - y[j]) / (y[j+1] - y[j]) + x[j]))
 		   count++;
 	}
+	if( (( x[j] > nowx ) != ( x[0] > nowx))
+		   && (nowx > ( x[0] - x[j]) * (nowy - y[j]) / (y[0] - y[j]) + x[j]))
+		   count++;
 	if( count % 2 != 0)
+	{
 		chose = 1;
+		dbgS("选中\n");
+	}
+		
 	else chose = 0;
 	//dbgS("选中多边形判断完成\n");
+}
+
+void Select_Circle(double nowx, double nowy, double x, double y, double r) {
+	//dbgS("选中圆判断\n");
+	double nowr;
+	nowr = pow(pow(nowx - x, 2) + pow(nowy - y, 2),0.5);
+	if( nowr <= r)
+		chose = 1;
+	else chose = 0;
+	//dbgS("选中圆判断完成\n");
 }
 
 double CalculateDistance_segement(void) {

@@ -11,5 +11,4 @@ double transferx(double x);
 double transfery(double y);
 void DrawTo(double x, double y);
 void DrawPoint(double x, double y);
-void DrawSegment(double a, double b, double c, double d);
 #endif //DRAWING_H
