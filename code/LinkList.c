@@ -81,9 +81,9 @@ void insertPoint(int i, int ty, int connect, double x, double y) //i控制插入状态
 			slope = (r->y - q->pHead->next->y) / (r->x - q->pHead->next->x);
 			b = r->y - slope * r->x;
 			//dbgS("斜率计算完成\n");
-			if(b > 0)sprintf(a, "y = %.2f x +%.2f", slope, b);
+			if(b > 0)sprintf(a, "y = %.2fx +%.2f", slope, b);
 			else if(b >= -0.01 && b <= 0.01)sprintf(a, "y = %.2f x", slope);
-			else if(b < 0)sprintf(a, "y = %.2f x %.2f", slope, b);
+			else if(b < 0)sprintf(a, "y = %.2fx %.2f", slope, b);
 		} else if ((q->pHead->next->x) == (r->x)) {
 			sprintf(a, "x = %.2f", r->x);
 		} else if ((q->pHead->next->y) == (r->y)) {

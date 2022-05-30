@@ -5,6 +5,8 @@
 double point_r = 0.05;
 int pageid=1;
 int insert_state = -1;
+int DisSeg = -1, DisPoint = -1, DegSeg = -1, AreaPoly = -1;
+int result_DisSeg, result_DisPoint, result_DegSeg, result_AreaPoly;
 double Left_x = 4, Left_y = 1.5, Right_x = 14, Right_y = 11.5;
 double centerX, centerY, scale=1;
 char str[MAX] = "";
@@ -106,6 +108,10 @@ void display()
 		                               };
 		static char * menuListTool[] = {"计算",
 		                                "函数",
+		                                "计算线段距离",
+		                                "计算两点距离",
+		                                "计算两线夹角",
+		                                "计算多边形面积",
 		                                "帮助 | Ctrl-T"
 		                               };
 		int selection  = menuList(GenUIID(0), 0, GetWindowHeight()-0.6, 1.5, 2.5, 0.6, menuListFile,sizeof(menuListFile)/sizeof(menuListFile[0]));
@@ -114,9 +120,22 @@ void display()
 		if(selection==1) read();
 		if(selection==2) store();
 		if(selection==3) exit(-1);
-		if(selection2==1)
+		if(selection2==1)pageid=3;
+		if(selection2==2)
 		{
-			pageid=3;
+			DisSeg = 0;
+		}
+		if(selection2==3)
+		{
+			DisPoint = 0;
+		}
+		if(selection2==4)
+		{
+			DegSeg = 0;
+		}
+		if(selection2==5)
+		{
+			AreaPoly = 0;
 		}
 		setButtonColors("Lightblue", "Navy", "Lightblue", "Slategray", 1);
 		if(button(GenUIID(0), 4, 0.6, 0.8, 0.5, "点"))
@@ -207,7 +226,7 @@ void display()
 				DrawPoint(p->pHead->next->x, p->pHead->next->y);
 
 				point_r = 0.05;
-				dbgS("点绘制完成\n");
+				//dbgS("点绘制完成\n");
 			//	SetPenColor("Blue");
 			}
 			//绘制直线

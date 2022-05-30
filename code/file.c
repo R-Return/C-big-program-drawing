@@ -21,8 +21,8 @@ void store()
 		fprintf(fp,"%d %d %d ",temp->isChosen,temp->isClicked,temp->ty); //status
 		fprintf(fp,"%s",temp->expression);
 		fputc('\n',fp);
-		dbgS("end 1");
-		if(temp->ty!=3)
+		dbgS("状态存入结束\n");
+		if(temp->ty!=4)
 		{
 			struct Point* ptemp=temp->pHead->next;
 			while(ptemp!=NULL)
@@ -30,12 +30,14 @@ void store()
 				fprintf(fp,"%f %f %d ",ptemp->x,ptemp->y,ptemp->connect);
 				
 				ptemp=ptemp->next;
-				dbgS("end 1");
+				dbgS("点存入结束\n");
 			}
 		}
-		if(temp->ty==3)
+		if(temp->ty==4)
 		{
+			dbgS("开始存圆\n");
 			fprintf(fp,"%f %f %f",temp->c.r,temp->c.x,temp->c.y);
+			dbgS("圆存入结束\n");
 		}
 		//*****
 
@@ -78,7 +80,7 @@ void read()
 		fgets(temp->expression,MAX,fp);
 //		fgetc(fp);
 		dbgS(temp->expression);dbgS("表达式读入完成\n");
-		if(temp->ty!=3)
+		if(temp->ty!=4)
 		{
 			struct Point *ptemp;
 			temp->pHead = malloc(sizeof(struct Point));
@@ -86,16 +88,17 @@ void read()
 			while(1)
 			{
 				ptemp=(struct Point*)malloc(sizeof(struct Point));
-				fscanf(fp,"%lf %lf %d ",&ptemp->x,&ptemp->y,&ptemp->connect);
+				fscanf(fp,"%lf %lf %d",&ptemp->x,&ptemp->y,&ptemp->connect);
 				dbgD(ptemp->x);dbgD(ptemp->y);dbgI(ptemp->connect);dbgC('\n');
 				if(fgetc(fp)=='#') break;
 				ptemp=ptemp->next;
 				dbgS("读入一个节点\n");
 			}
 		}
-		if(temp->ty==3)
+		if(temp->ty==4)
 		{
 			fscanf(fp,"%lf %lf %lf",&temp->c.r,&temp->c.x,&temp->c.y);
+			fgetc(fp);
 		}
 
 		temp->before=end->before;

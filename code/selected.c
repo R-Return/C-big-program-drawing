@@ -38,8 +38,36 @@ void MouseEventProcess(int x, int y, int button, int event) {
 							
 							if(sh_chose->isChosen == 1 && (insert_state == -1 || insert_state == 0))
 							{
-//								if(insert_state == 0) insert_state = -1;
+								if(insert_state == 0) insert_state = -1;
 								sh_chose->isClicked = -1 * (sh_chose->isClicked);
+								if(DisSeg == 0 && sh_chose->ty == 2)
+								{
+									result_DisSeg = CalculateDistance_segement();
+									DisSeg = -1;
+								}
+								else if(DisPoint != -1 &&sh_chose->ty == 0)
+								{
+									DisPoint ++;
+									if(DisPoint == 2)
+									{
+										result_DisPoint = CalculateDistance_point();
+										DisPoint = -1;
+									}
+								}
+								else if(DegSeg != -1 &&sh_chose->ty == 2)
+								{
+									DegSeg ++;
+									if(DegSeg == 2)
+									{
+										result_DegSeg = CalculateDegree_segement();
+										DegSeg = -1;
+									}
+								}
+								else if(AreaPoly == 0 && sh_chose->ty == 3)
+								{
+									result_DegSeg = Calculatearea_polygon();
+									AreaPoly = -1;
+								}
 							}
 						}
 					}
