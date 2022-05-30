@@ -184,7 +184,7 @@ void display()
 		SetPointSize(20); 
 		//DisplayClear();	
 		
-		dbgS("开始绘制\n");
+		//dbgS("开始绘制\n");
 		//绘制
 		Shape *p;
 		struct Point *cp;

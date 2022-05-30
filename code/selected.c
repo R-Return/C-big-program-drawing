@@ -22,7 +22,7 @@ void MouseEventProcess(int x, int y, int button, int event) {
 	mouse_x = ScaleXInches(x);
 	mouse_y = ScaleYInches(y);
 	
-		Shape *sh_chose;
+	Shape *sh_chose;
 		
 		//绘制点、线、多边形
 		switch(event)
@@ -31,7 +31,20 @@ void MouseEventProcess(int x, int y, int button, int event) {
 				if(mouse_x >= Left_x && mouse_x <= Right_x 
 					&& mouse_y >= Left_y && mouse_y <= Right_y)
 				{
-						if(insert_state == 0 && button == LEFT_BUTTON) 
+					if (button == LEFT_BUTTON )
+					{
+						for ( sh_chose = head->next; sh_chose != end; sh_chose = sh_chose->next ) 
+						{
+							
+							if(sh_chose->isChosen == 1 && (insert_state == -1 || insert_state == 0))
+							{
+//								if(insert_state == 0) insert_state = -1;
+								sh_chose->isClicked = -1 * (sh_chose->isClicked);
+							}
+						}
+					}
+						
+					if(insert_state == 0 && button == LEFT_BUTTON) 
 					{
 //						if(hasAdded == 1)
 //						{
@@ -114,12 +127,12 @@ void MouseEventProcess(int x, int y, int button, int event) {
 						}
 						
 					}
-					else ;
-					if (button == LEFT_BUTTON && chose)
-							sh_chose->isClicked = -sh_chose->isClicked;
+//					else ;
+					
+							
 				}
 				
-				else break;
+				break;
 			case MOUSEMOVE:
 				if(insert_state == 2 && hasAdded == 1)	//线段
 				{
@@ -145,14 +158,19 @@ void MouseEventProcess(int x, int y, int button, int event) {
 						case 0:
 							Select_Point((mouse_x-centerX)/scale, (mouse_y-centerY)/scale, sh_chose->pHead);
 							break;
-						case 2:
+						case 1:
 							Select_Line((mouse_x-centerX)/scale, (mouse_y-centerY)/scale, sh_chose->pHead);
+							break;
+						case 2:
+							Select_Segment((mouse_x-centerX)/scale, (mouse_y-centerY)/scale, sh_chose->pHead);
 							break;
 						case 3:
 							Select_Poly((mouse_x-centerX)/scale, (mouse_y-centerY)/scale, sh_chose->pHead);
 							break;
+						default:
+							break;
 					}
-					if (chose) {			//如果有选中的点或线 将struct中的chose变量置1
+					if (chose == 1) {			//如果有选中的点或线 将struct中的chose变量置1
 						sh_chose->isChosen = 1;
 					}
 					else sh_chose->isChosen = 0;
@@ -175,22 +193,14 @@ void Select_Point(double nowx, double nowy, struct Point *head) {
 		chose = 1;											
 	}
 	else chose = 0;
-	//dbgS("选中点判断完成\n");
-	/*struct Point *point_ptr;
-	for ( point_ptr = head; point_ptr != NULL; point_ptr = point_ptr->next)
-	{
-		d = pow( nowx - point_ptr->x, 2 ) + pow( nowy - point_ptr->y, 2);
-		if ( pow(d, 0.5) <= point_r )
-		{
-			point_ptr->chose = 1;
-		}
-	}*/
+	dbgS("选中点判断完成\n");
+	
 }
 
-//选中线段判断
-//通过比较线段斜率与鼠标所在位置形成的斜率，是否在误差范围之内，来判断是否选中状态
+//选中直线判断
+//通过比较直线斜率与鼠标所在位置形成的斜率，是否在误差范围之内，来判断是否选中状态
 void Select_Line(double nowx, double nowy, struct Point *head) {
-	//dbgS("选中线段判断\n");
+	dbgS("选中直线判断\n");
 	double slope, nowslope, error = 0.001;							//选取容许误差
 	double x1, y1, x2, y2;												//线段两个端点的坐标
 	struct Point *p;
@@ -216,7 +226,40 @@ void Select_Line(double nowx, double nowy, struct Point *head) {
 	}
 //	else;
 	
-	//dbgS("选中线段判断完成\n");
+	dbgS("选中直线判断完成\n");
+}
+
+//选中线段判断
+//通过比较线段斜率与鼠标所在位置形成的斜率，是否在误差范围之内，来判断是否选中状态
+void Select_Segment(double nowx, double nowy, struct Point *head) {
+	dbgS("选中线段判断\n");
+	double slope, nowslope, error = 0.001;							//选取容许误差
+	double x1, y1, x2, y2;												//线段两个端点的坐标
+	struct Point *p;
+	p = head->next;
+	x1 = p->x;
+	y1 = p->y;
+	if(p->next != NULL)
+	{
+		p = p->next;
+		x2 = p->x;
+		y2 = p->y;
+		//dbgS("坐标计算完成\n");
+		if(x1!= x2 && nowx != x1)
+		{
+			slope = (y2 - y1) / (x2 - x1);									//当前线段的斜率
+			nowslope = (nowy - y1) / (nowx - x1);								//鼠标所在位置与端点形成斜率
+			if(((nowslope <= slope + error) || (nowslope >= slope - error)) 
+				&& (nowy - y2) * (nowy - y1) <= 0)
+			{
+				chose = 1;
+			}
+			else chose = 0;
+		}
+	}
+//	else;
+	
+	dbgS("选中线段判断完成\n");
 }
 
 void Select_Poly(double nowx, double nowy, struct Point *head) {
