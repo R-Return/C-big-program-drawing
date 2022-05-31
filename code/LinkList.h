@@ -27,6 +27,7 @@ typedef struct shape{
     enum ShapeType ty;		// point, line, segment, poly, circle; function
     int isChosen;
     int isClicked;
+    int static_page;
     struct Point *pHead;		// point list, for point, line, segment, poly
     struct Circle c;
     char expression[MAX];

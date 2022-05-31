@@ -12,6 +12,7 @@ double centerX, centerY, scale=1;
 char str[MAX] = "";
 char *Function_Color[]={"BlueGray", "FuncRed", "vividGreen",  
 						"FuncBlue",  "FuncOrange"};
+int page = 1;
 
 void display()
 {
@@ -434,7 +435,18 @@ void display()
 		;
 	}
 	}
+	//绘制输出框
+	if(button(GenUIID(0), 0.1, 0.1, 1.5, 0.5, "上一页"))
+	{
+		page--;
+		if(page < 1)
+			page = 1;
+	}
 	
+	if(button(GenUIID(0), 1.7, 0.1, 1.5, 0.5, "下一页"))
+	{
+		page++;
+	}
 }
 
 void CharEventProcess(char ch)

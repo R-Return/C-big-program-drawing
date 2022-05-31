@@ -47,6 +47,8 @@ void insertPoint(int i, int ty, int connect, double x, double y) //i控制插入状态
 	    q->isClicked = -1;
 	    q->ty = ty;
 	    
+	    q->static_page = page;
+	    
         e = q->pHead;
     }
 //绘制动画

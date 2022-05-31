@@ -75,9 +75,12 @@ void drawtext()
 	SetPenColor("Salmon");
 	DrawRectangle(0.5, 1, 3.5, 9.5);
 	Shape *p;
-	int count = 0;
+	int count = 0, total = 0;
 	for(p = head->next;p != end; p = p->next)
-	{
+	{	
+	//	p->static_page = page;
+		if(p->static_page == page)
+		{
 		if(p->ty == 3)
 			continue;
 		SetPenColor("Slategray");
@@ -91,8 +94,18 @@ void drawtext()
 		SetPenColor("Salmon");
 		MovePen(0.5, 9.2 - count * 0.4-0.05);
 		DrawLine(3, 0);
-		count ++;
+		count++;
+		total++;
 		SetPointSize(20);
+		}
+		if ( count >  20 )
+		{ 
+			page++;
+		//	SetPenColor("White");
+		//	drawRectangle(0.51, 1.05, 2.98, 8.4, 1); 
+			count = 0;
+		}
+		//static_flag = 1;
 	} 
 	//dbgS("开始绘制输出框\n");
 }

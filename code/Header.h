@@ -37,5 +37,6 @@ extern char str[MAX];
 extern double point_r;
 extern void store();
 extern void read();
+extern int page;
 
 #endif //HEADER_H
