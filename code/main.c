@@ -409,6 +409,19 @@ void display()
 		}//for-drawing
 		SetPenSize(1);
 		
+		//绘制输出框
+	if(button(GenUIID(0), 0.1, 0.1, 1.5, 0.5, "上一页"))
+	{
+		page--;
+		if(page < 1)
+			page = 1;
+	}
+	
+	if(button(GenUIID(0), 1.7, 0.1, 1.5, 0.5, "下一页"))
+	{
+		page++;
+	}
+		
 	}//if
 	if(pageid==3)
 	{
@@ -435,18 +448,7 @@ void display()
 		;
 	}
 	}
-	//绘制输出框
-	if(button(GenUIID(0), 0.1, 0.1, 1.5, 0.5, "上一页"))
-	{
-		page--;
-		if(page < 1)
-			page = 1;
-	}
 	
-	if(button(GenUIID(0), 1.7, 0.1, 1.5, 0.5, "下一页"))
-	{
-		page++;
-	}
 }
 
 void CharEventProcess(char ch)
