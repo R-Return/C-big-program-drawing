@@ -117,6 +117,8 @@ void insertCircle(int i, int confirm, double x, double y)
 		q->isChosen = 0;
 		q->isClicked = -1;
 		q->ty = 4;
+		
+		q->c.static_page_c = page;
 	}
 	else
 	{

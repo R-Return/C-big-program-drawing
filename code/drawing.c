@@ -79,7 +79,7 @@ void drawtext()
 	for(p = head->next;p != end; p = p->next)
 	{	
 	//	p->static_page = page;
-		if(p->static_page == page)
+		if(p->static_page == page || p->c.static_page_c == page)
 		{
 		if(p->ty == 3)
 			continue;

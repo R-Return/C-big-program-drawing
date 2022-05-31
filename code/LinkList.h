@@ -19,6 +19,7 @@ struct Circle {
     double x;
 	double y;
 	double r;
+	int static_page_c;
 	int confirm;
 };
 
