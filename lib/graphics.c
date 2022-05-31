@@ -214,7 +214,7 @@ static int penSize = 1;
 static bool initialized = FALSE;
 static bool pauseOnExit = TRUE;
 
-static HWND consoleWindow, graphicsWindow;
+HWND consoleWindow, graphicsWindow;
 static HDC gdc, osdc,bgdc;
 static HBITMAP osBits,bgBits;
 static HPEN drawPen, erasePen, nullPen;

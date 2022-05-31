@@ -13,7 +13,7 @@ char str[MAX] = "";
 char *Function_Color[]={"BlueGray", "FuncRed", "vividGreen",  
 						"FuncBlue",  "FuncOrange"};
 int page = 1;
-
+extern HWND graphicsWindow;
 void display()
 {
 	int d;
@@ -119,7 +119,11 @@ void display()
 		int selection2 = menuList(GenUIID(0), 1.5, GetWindowHeight()-0.6, 1.5, 2.5, 0.6, menuListTool,sizeof(menuListTool)/sizeof(menuListTool[0]));
 		drawedge();
 		if(selection==1) read();
-		if(selection==2) store();
+		if(selection==2) 
+		{
+			store();
+			MessageBox(graphicsWindow, "存储完毕", "来自巨大程序的提示", MB_OK);
+		}
 		if(selection==3) exit(-1);
 		if(selection2==1)pageid=3;
 		if(selection2==2)
