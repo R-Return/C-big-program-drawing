@@ -93,6 +93,11 @@ void MouseEventProcess(int x, int y, int button, int event) {
 										if(temp->isClicked == 1) temp->isClicked = -1;
 									}
 								}
+								else if(delete_state == 1)
+								{
+									deleteList();
+									delete_state = 0;
+								}
 							}
 						}
 					}

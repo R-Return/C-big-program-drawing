@@ -207,14 +207,13 @@ void insertFunc(char a[])
 void deleteList(void)
 {
     dbgS("开始删除节点\n");
-	Shape *p = head;
+	Shape *p = head->next;
     while(p != end)
     {
 		if (p->isClicked == 1) 
 		{
 			p->before->next = p->next;
 			p->next->before = p->before;
-			break;
 		}
         p = p->next;
     }
