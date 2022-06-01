@@ -6,7 +6,7 @@ double point_r = 0.05;
 int pageid=1;
 int insert_state = -1;
 int DisSeg = -1, DisPoint = -1, DegSeg = -1, AreaPoly = -1;
-
+int delete_state = 0;
 double Left_x = 4, Left_y = 1.5, Right_x = 14, Right_y = 11.5;
 double centerX, centerY, scale=1;
 char str[MAX] = "";
@@ -101,47 +101,6 @@ void display()
 		DrawTextString(s);
 		SetPointSize(20); 
 		
-		static char * menuListFile[] = {"文件",
-		                                "打开   | Ctrl-O", // 快捷键必须采用[Ctrl-X]格式，放在字符串的结尾
-		                                "保存",
-		                                "退出   | Ctrl-E"
-		                               };
-		static char * menuListTool[] = {"计算",
-		                                "函数",
-		                                "计算线段距离",
-		                                "计算两点距离",
-		                                "计算两线夹角",
-		                                "计算多边形面积",
-		                                "帮助 | Ctrl-T"
-		                               };
-		int selection  = menuList(GenUIID(0), 0, GetWindowHeight()-0.6, 1.5, 2.5, 0.6, menuListFile,sizeof(menuListFile)/sizeof(menuListFile[0]));
-		int selection2 = menuList(GenUIID(0), 1.5, GetWindowHeight()-0.6, 1.5, 2.5, 0.6, menuListTool,sizeof(menuListTool)/sizeof(menuListTool[0]));
-		drawedge();
-		if(selection==1) read();
-		if(selection==2) 
-		{
-			store();
-			MessageBox(graphicsWindow, "存储完毕", "来自巨大程序的提示", MB_OK);
-		}
-		if(selection==3) exit(-1);
-		if(selection2==1)pageid=3;
-		if(selection2==2)
-		{
-			DisSeg = 0;
-			//MessageBox(graphicsWindow, "计算完毕", "来自巨大程序的提示", MB_OK);
-		}
-		if(selection2==3)
-		{
-			DisPoint = 0;
-		}
-		if(selection2==4)
-		{
-			DegSeg = 0;
-		}
-		if(selection2==5)
-		{
-			AreaPoly = 0;
-		}
 		setButtonColors("Lightblue", "Navy", "Lightblue", "Slategray", 1);
 		if(button(GenUIID(0), 4, 0.6, 0.8, 0.5, "点"))
 		{
@@ -181,6 +140,10 @@ void display()
 			head->next = end;
 			end->before = head;
 		}
+		if(button(GenUIID(0), 12.6, 0.6, 0.8, 0.5, "删除"))
+		{
+			delete_state = 1;
+		}
 		setButtonColors("Lightblue", "Navy", "Lightblue", "Slategray", 1);
 		SetPenColor("Salmon");
 		DrawRectangle(0.5, 1, 3.5, 9.5);
@@ -211,6 +174,7 @@ void display()
 		
 		//dbgS("开始绘制\n");
 		//绘制
+		drawedge();
 		SetPenSize(2);
 		Shape *p;
 		struct Point *cp;
@@ -430,18 +394,57 @@ void display()
 		SetPenSize(1);
 		
 		//绘制输出框
-	if(button(GenUIID(0), 0.1, 0.1, 1.5, 0.5, "上一页"))
-	{
-		page--;
-		if(page < 1)
-			page = 1;
-	}
-	
-	if(button(GenUIID(0), 1.7, 0.1, 1.5, 0.5, "下一页"))
-	{
-		page++;
-	}
+		if(button(GenUIID(0), 0.1, 0.1, 1.5, 0.5, "上一页"))
+		{
+			page--;
+			if(page < 1)
+				page = 1;
+		}
 		
+		if(button(GenUIID(0), 1.7, 0.1, 1.5, 0.5, "下一页"))
+		{
+			page++;
+		}
+		static char * menuListFile[] = {"文件",
+		                                "打开   | Ctrl-O", // 快捷键必须采用[Ctrl-X]格式，放在字符串的结尾
+		                                "保存",
+		                                "退出   | Ctrl-E"
+		                               };
+		static char * menuListTool[] = {"计算",
+		                                "函数",
+		                                "计算线段距离",
+		                                "计算两点距离",
+		                                "计算两线夹角",
+		                                "计算多边形面积",
+		                                "帮助 | Ctrl-T"
+		                               };
+		int selection  = menuList(GenUIID(0), 0, GetWindowHeight()-0.6, 1.5, 2.5, 0.6, menuListFile,sizeof(menuListFile)/sizeof(menuListFile[0]));
+		int selection2 = menuList(GenUIID(0), 1.5, GetWindowHeight()-0.6, 1.5, 2.5, 0.6, menuListTool,sizeof(menuListTool)/sizeof(menuListTool[0]));
+		if(selection==1) read();
+		if(selection==2) 
+		{
+			store();
+			MessageBox(graphicsWindow, "存储完毕", "来自巨大程序的提示", MB_OK);
+		}
+		if(selection==3) exit(-1);
+		if(selection2==1)pageid=3;
+		if(selection2==2)
+		{
+			DisSeg = 0;
+			//MessageBox(graphicsWindow, "计算完毕", "来自巨大程序的提示", MB_OK);
+		}
+		if(selection2==3)
+		{
+			DisPoint = 0;
+		}
+		if(selection2==4)
+		{
+			DegSeg = 0;
+		}
+		if(selection2==5)
+		{
+			AreaPoly = 0;
+		}
 	}//if
 	if(pageid==3)
 	{

@@ -36,7 +36,7 @@ void MouseEventProcess(int x, int y, int button, int event) {
 					{
 						for ( sh_chose = head->next; sh_chose != end; sh_chose = sh_chose->next ) 
 						{
-							
+							Shape *temp;
 							if(sh_chose->isChosen == 1 && (insert_state == -1 || insert_state == 0))
 							{
 								if(insert_state == 0) insert_state = -1;
@@ -45,8 +45,12 @@ void MouseEventProcess(int x, int y, int button, int event) {
 								{
 									result_DisSeg = CalculateDistance_segement();
 									DisSeg = -1;
-									sprintf(ts,"计算完毕 result is %f",result_DisSeg);
+									sprintf(ts,"计算完毕！线段长度为 %f",result_DisSeg);
 									MessageBox(graphicsWindow,ts, "来自巨大程序的提示", MB_OK);
+									for ( temp = head->next; temp != end; temp = temp->next )
+									{
+										if(temp->isClicked == 1) temp->isClicked = -1;
+									}
 								}
 								else if(DisPoint != -1 &&sh_chose->ty == 0)
 								{
@@ -55,27 +59,39 @@ void MouseEventProcess(int x, int y, int button, int event) {
 									{
 										result_DisPoint = CalculateDistance_point();
 										DisPoint = -1;
-										sprintf(ts,"计算完毕 result is %f",result_DisPoint);
+										sprintf(ts,"计算完毕！两点距离为 %f",result_DisPoint);
 										MessageBox(graphicsWindow,ts, "来自巨大程序的提示", MB_OK);
+										for ( temp = head->next; temp != end; temp = temp->next )
+										{
+											if(temp->isClicked == 1) temp->isClicked = -1;
+										}
 									}
 								}
-								else if(DegSeg != -1 &&sh_chose->ty == 2)
+								else if(DegSeg != -1 &&(sh_chose->ty == 2 || sh_chose->ty == 1))
 								{
 									DegSeg ++;
 									if(DegSeg == 2)
 									{
 										result_DegSeg = CalculateDegree_segement();
 										DegSeg = -1;
-										sprintf(ts,"计算完毕 result is %f",result_DegSeg);
+										sprintf(ts,"计算完毕！两线夹角为 %f",result_DegSeg);
 										MessageBox(graphicsWindow,ts, "来自巨大程序的提示", MB_OK);
+										for ( temp = head->next; temp != end; temp = temp->next )
+										{
+											if(temp->isClicked == 1) temp->isClicked = -1;
+										}
 									}
 								}
 								else if(AreaPoly == 0 && sh_chose->ty == 3)
 								{
-									result_DegSeg = Calculatearea_polygon();
+									result_AreaPoly = Calculatearea_polygon();
 									AreaPoly = -1;
-									sprintf(ts,"计算完毕 result is %f",result_DegSeg);
-										MessageBox(graphicsWindow,ts, "来自巨大程序的提示", MB_OK);
+									sprintf(ts,"计算完毕！多边形面积为 %f",result_AreaPoly);
+									MessageBox(graphicsWindow,ts, "来自巨大程序的提示", MB_OK);
+									for ( temp = head->next; temp != end; temp = temp->next )
+									{
+										if(temp->isClicked == 1) temp->isClicked = -1;
+									}
 								}
 							}
 						}
@@ -229,7 +245,7 @@ void Select_Point(double nowx, double nowy, struct Point *head) {
 	//dbgS("选中点判断\n");										//选中点的范围
 	double d; 															//鼠标与遍历到点的距离
 	d = pow( nowx - head->next->x, 2 ) + pow( nowy - head->next->y, 2);
-	if ( pow(d, 0.5) <= 0.05 ) {
+	if ( pow(d, 0.5) <= 0.1 ) {
 		chose = 1;											
 	}
 	else chose = 0;
@@ -241,7 +257,7 @@ void Select_Point(double nowx, double nowy, struct Point *head) {
 //通过比较直线斜率与鼠标所在位置形成的斜率，是否在误差范围之内，来判断是否选中状态
 void Select_Line(double nowx, double nowy, struct Point *head) {
 	//dbgS("选中直线判断\n");
-	double slope, nowslope, error = 0.05;							//选取容许误差
+	double slope, nowslope, error = 0.1;							//选取容许误差
 	double x1, y1, x2, y2;												//线段两个端点的坐标
 	struct Point *p;
 	p = head->next;
@@ -263,6 +279,7 @@ void Select_Line(double nowx, double nowy, struct Point *head) {
 			}
 			else chose = 0;
 		}
+		else if(x1==x2 && x1==nowx) chose = 1;
 	}
 //	else;
 	
@@ -273,7 +290,7 @@ void Select_Line(double nowx, double nowy, struct Point *head) {
 //通过比较线段斜率与鼠标所在位置形成的斜率，是否在误差范围之内，来判断是否选中状态
 void Select_Segment(double nowx, double nowy, struct Point *head) {
 	//dbgS("选中线段判断\n");
-	double slope, nowslope, error = 0.05;							//选取容许误差
+	double slope, nowslope, error = 0.1;							//选取容许误差
 	double x1, y1, x2, y2;												//线段两个端点的坐标
 	struct Point *p;
 	p = head->next;
@@ -348,7 +365,7 @@ double CalculateDistance_segement(void) {
 	Shape *sort;
 	double sum = 0;
 	double x1, y1, x2, y2;
-	for ( sort = head->next; sort; sort = sort->next ) {
+	for ( sort = head->next; sort != end; sort = sort->next ) {
 		struct Point *temp;
 		if (sort->isClicked == 1 && sort->ty == 2) {
 			temp = sort->pHead->next;
@@ -373,7 +390,7 @@ double CalculateDistance_point(void) {
 	double sum;
 	double x[2], y[2];
 	int count = 0;
-	for ( sort = head->next; sort; sort = sort->next ) {
+	for ( sort = head->next; sort != end; sort = sort->next ) {
 		struct Point *temp;
 		if (sort->isClicked == 1 && sort->ty == 0) {
 			temp = sort->pHead->next;
@@ -419,22 +436,25 @@ double CalculateDegree_segement(void) {
 	double k[2];
 	int count = 0;
 	double x1, y1, x2, y2;
-	for ( sort = head->next; sort; sort = sort->next ) {
+	for ( sort = head->next; sort != end; sort = sort->next ) {
 		struct Point *temp;
-		if ( sort->isClicked == 1 && sort->ty == 2) {
+		if ( sort->isClicked == 1 && (sort->ty == 2 || sort->ty == 1)) {
 			temp = sort->pHead->next;
 			x1 = temp->x;
 			y1 = temp->y;
 			temp = temp->next;
 			x2 = temp->x;
 			y2 = temp->y;
-			k[count] = (y2 - y1) / (x2 - x1);
+			if(x2 != x1)k[count] = atan((y2 - y1) / (x2 - x1)) *180 / Pi;
+			else k[count] = 90;
+			dbgD(k[count]);dbgC('\n');
 			count++;
 		}
 	}
-	if ( k[0] != 0 && k[1] != 0) {
-		int sum = fabs(atan(k[1]) * 180 / Pi - atan(k[0]) * 180 / Pi);
-	}
+	dbgD(k[1]-k[0]);
+	sum = fabs((k[1] - k[0]));
+	dbgD(sum);dbgC('\n');
+
 	dbgS("角度计算完成：");dbgD(sum);dbgC('\n');
 	return sum;
 }
@@ -445,7 +465,7 @@ double Calculatearea_polygon(void) {
 	double sum = 0;
 	double x[80], y[80];
 	int i;
-	for ( sort = head->next; sort; sort = sort->next ) {
+	for ( sort = head->next; sort != end; sort = sort->next ) {
 		struct Point *temp;
 		if ( sort->isClicked == 1 && sort->ty == 3 ) {
 			temp = sort->pHead->next;
