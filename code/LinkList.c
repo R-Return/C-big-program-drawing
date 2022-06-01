@@ -136,13 +136,13 @@ void insertCircle(int i, int confirm, double x, double y)
 	
 	if (i && confirm) {
 		if(q->c.x >= 0 && q->c.y >= 0)
-		sprintf(a, "(x+%.2f)^2+(y+%.2f)^2=%.2f", q->c.x, q->c.y, pow(q->c.r, 2));
+		sprintf(a, "(x-%.2f)^2+(y-%.2f)^2=%.2f", q->c.x, q->c.y, pow(q->c.r, 2));
 		else if(q->c.x >= 0 && q->c.y < 0)
-		sprintf(a, "(x+%.2f)^2+(y%.2f)^2=%.2f", q->c.x, q->c.y, pow(q->c.r, 2));
+		sprintf(a, "(x-%.2f)^2+(y+%.2f)^2=%.2f", q->c.x, -q->c.y, pow(q->c.r, 2));
 		else if(q->c.x < 0 && q->c.y >= 0)
-		sprintf(a, "(x%.2f)^2+(y+%.2f)^2=%.2f", q->c.x, q->c.y, pow(q->c.r, 2));
+		sprintf(a, "(x+%.2f)^2+(y-%.2f)^2=%.2f", -q->c.x, q->c.y, pow(q->c.r, 2));
 		else if(q->c.x < 0 && q->c.y < 0)
-		sprintf(a, "(x%.2f)^2+(y%.2f)^2=%.2f", q->c.x, q->c.y, pow(q->c.r, 2));
+		sprintf(a, "(x+%.2f)^2+(y+%.2f)^2=%.2f", -q->c.x, -q->c.y, pow(q->c.r, 2));
 		strcpy(q->expression, a);
 //		dbgS(q->expression);
 //		dbgC('\n');

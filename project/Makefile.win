@@ -1,4 +1,4 @@
-# Project: 巨大程
+# Project: 几何画板
 # Makefile created by Dev-C++ 5.15
 
 CPP      = g++.exe -D__DEBUG__
@@ -9,7 +9,7 @@ LINKOBJ  = ../code/main.o ../lib/exceptio.o ../lib/genlib.o ../lib/graphics.o ..
 LIBS     = -L"D:/Program Files/Dev-Cpp/TDM-GCC-64/lib" -L"D:/Program Files/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/lib" -static-libgcc -mwindows -g3
 INCS     = -I"D:/Program Files/Dev-Cpp/TDM-GCC-64/include" -I"D:/Program Files/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/include" -I"D:/Program Files/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include" -I"../lib"
 CXXINCS  = -I"D:/Program Files/Dev-Cpp/TDM-GCC-64/include" -I"D:/Program Files/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/include" -I"D:/Program Files/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include" -I"D:/Program Files/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include/c++" -I"../lib"
-BIN      = 巨大程.exe
+BIN      = 几何画板.exe
 CXXFLAGS = $(CXXINCS) -g3
 CFLAGS   = $(INCS) -g3
 RM       = del /q

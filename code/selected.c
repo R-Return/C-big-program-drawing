@@ -46,7 +46,7 @@ void MouseEventProcess(int x, int y, int button, int event) {
 									result_DisSeg = CalculateDistance_segement();
 									DisSeg = -1;
 									sprintf(ts,"计算完毕！线段长度为 %f",result_DisSeg);
-									MessageBox(graphicsWindow,ts, "来自巨大程序的提示", MB_OK);
+									MessageBox(graphicsWindow,ts, "计算结果", MB_OK);
 									for ( temp = head->next; temp != end; temp = temp->next )
 									{
 										if(temp->isClicked == 1) temp->isClicked = -1;
@@ -60,7 +60,7 @@ void MouseEventProcess(int x, int y, int button, int event) {
 										result_DisPoint = CalculateDistance_point();
 										DisPoint = -1;
 										sprintf(ts,"计算完毕！两点距离为 %f",result_DisPoint);
-										MessageBox(graphicsWindow,ts, "来自巨大程序的提示", MB_OK);
+										MessageBox(graphicsWindow,ts, "计算结果", MB_OK);
 										for ( temp = head->next; temp != end; temp = temp->next )
 										{
 											if(temp->isClicked == 1) temp->isClicked = -1;
@@ -75,7 +75,7 @@ void MouseEventProcess(int x, int y, int button, int event) {
 										result_DegSeg = CalculateDegree_segement();
 										DegSeg = -1;
 										sprintf(ts,"计算完毕！两线夹角为 %f",result_DegSeg);
-										MessageBox(graphicsWindow,ts, "来自巨大程序的提示", MB_OK);
+										MessageBox(graphicsWindow,ts, "计算结果", MB_OK);
 										for ( temp = head->next; temp != end; temp = temp->next )
 										{
 											if(temp->isClicked == 1) temp->isClicked = -1;
@@ -87,7 +87,7 @@ void MouseEventProcess(int x, int y, int button, int event) {
 									result_AreaPoly = Calculatearea_polygon();
 									AreaPoly = -1;
 									sprintf(ts,"计算完毕！多边形面积为 %f",result_AreaPoly);
-									MessageBox(graphicsWindow,ts, "来自巨大程序的提示", MB_OK);
+									MessageBox(graphicsWindow,ts, "计算结果", MB_OK);
 									for ( temp = head->next; temp != end; temp = temp->next )
 									{
 										if(temp->isClicked == 1) temp->isClicked = -1;
@@ -96,7 +96,6 @@ void MouseEventProcess(int x, int y, int button, int event) {
 								else if(delete_state == 1)
 								{
 									deleteList();
-									delete_state = 0;
 								}
 							}
 						}

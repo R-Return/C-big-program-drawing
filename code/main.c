@@ -137,15 +137,18 @@ void display()
 		setButtonColors("Salmon", "Shiningred", "Pink", "Shiningred", 1);
 		if(button(GenUIID(0), 11.4, 0.6, 0.8, 0.5, "清屏"))
 		{
+			if(delete_state == 1) delete_state = 0;
 			head->next = end;
 			end->before = head;
 		}
 		if(button(GenUIID(0), 12.6, 0.6, 0.8, 0.5, "删除"))
 		{
-			delete_state = 1;
+			if(delete_state == 0)delete_state = 1;
+			else delete_state = 0;
 		}
 		if(button(GenUIID(0), 13.8, 0.6, 0.8, 0.5, "撤销"))
 		{
+			if(delete_state == 1) delete_state = 0;
 			if(r_end->before->ty == 0)
 			{
 				end->before->before->next = end;
@@ -157,11 +160,11 @@ void display()
 			{
 				Shape *del;
 				del = r_end->before->deletedShape;
+				del->isClicked = -1;
 				end->before->next = del;
 				del->before = end->before;
 				del->next = end;
 				end->before = del;
-				del->isClicked = -1;
 				
 				r_end->before->before->next = r_end;
 				r_end->before = r_end->before->before;
@@ -355,7 +358,7 @@ void display()
 					point_r = 0.08;
 				}
 				DrawPoint(p->c.x, p->c.y);
-				MovePen(transferx(p->c.x + p->c.r * scale), transfery(p->c.y));
+				MovePen(transferx(p->c.x) + p->c.r * scale, transfery(p->c.y));
 				DrawArc(p->c.r * scale, 0, 360);
 				SetPenColor("Navy");
 				//dbgS("圆绘制完成\n");
@@ -451,14 +454,13 @@ void display()
 		if(selection==2) 
 		{
 			store();
-			MessageBox(graphicsWindow, "存储完毕", "来自巨大程序的提示", MB_OK);
+			MessageBox(graphicsWindow, "存储完毕", "来自几何画板的提示", MB_OK);
 		}
 		if(selection==3) exit(-1);
 		if(selection2==1)pageid=3;
 		if(selection2==2)
 		{
 			DisSeg = 0;
-			//MessageBox(graphicsWindow, "计算完毕", "来自巨大程序的提示", MB_OK);
 		}
 		if(selection2==3)
 		{
@@ -483,7 +485,7 @@ void display()
 		DrawTextString("y = ");
 		SetPenColor("Navy");
 		drawLabel(2, 5,"仅支持一元函数，未知量请输入x");
-		drawLabel(2, 4.5,"支持常用的运算符输入，如： *   /   +   - ");
+		drawLabel(2, 4.5,"支持常用的运算符输入，如： * / + - ^ ");
 		drawLabel(2, 4,"支持 π ,e，但 π 需要用PI 或者 pi来表示");
 		drawLabel(2, 3.5,"字符之间不能存在空格");
 		drawLabel(2, 3,"不支持 * 省略，需要使用2*x，2*( )等");
