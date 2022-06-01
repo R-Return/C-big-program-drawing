@@ -6,14 +6,13 @@ double point_r = 0.05;
 int pageid=1;
 int insert_state = -1;
 int DisSeg = -1, DisPoint = -1, DegSeg = -1, AreaPoly = -1;
-int result_DisSeg, result_DisPoint, result_DegSeg, result_AreaPoly;
+double result_DisSeg, result_DisPoint, result_DegSeg, result_AreaPoly;
 double Left_x = 4, Left_y = 1.5, Right_x = 14, Right_y = 11.5;
 double centerX, centerY, scale=1;
 char str[MAX] = "";
 char *Function_Color[]={"BlueGray", "FuncRed", "vividGreen",  
 						"FuncBlue",  "FuncOrange"};
 int page = 1;
-extern HWND graphicsWindow;
 void display()
 {
 	int d;
@@ -129,6 +128,8 @@ void display()
 		if(selection2==2)
 		{
 			DisSeg = 0;
+			result_DisSeg;
+			//MessageBox(graphicsWindow, "计算完毕", "来自巨大程序的提示", MB_OK);
 		}
 		if(selection2==3)
 		{

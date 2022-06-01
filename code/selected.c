@@ -14,7 +14,7 @@
 //double Calculatearea_polygon(void);
 int chose = 0;
 //#include "selected.h"
-
+char ts[100]={'\0'}; 
 void MouseEventProcess(int x, int y, int button, int event) {
 	double mouse_x = 0, mouse_y = 0;
 	static int hasAdded = 0;
@@ -44,6 +44,8 @@ void MouseEventProcess(int x, int y, int button, int event) {
 								{
 									result_DisSeg = CalculateDistance_segement();
 									DisSeg = -1;
+									sprintf(ts,"计算完毕 result is %f",result_DisSeg);
+									MessageBox(graphicsWindow,ts, "来自巨大程序的提示", MB_OK);
 								}
 								else if(DisPoint != -1 &&sh_chose->ty == 0)
 								{
@@ -52,6 +54,8 @@ void MouseEventProcess(int x, int y, int button, int event) {
 									{
 										result_DisPoint = CalculateDistance_point();
 										DisPoint = -1;
+										sprintf(ts,"计算完毕 result is %f",result_DisPoint);
+										MessageBox(graphicsWindow,ts, "来自巨大程序的提示", MB_OK);
 									}
 								}
 								else if(DegSeg != -1 &&sh_chose->ty == 2)
@@ -61,12 +65,16 @@ void MouseEventProcess(int x, int y, int button, int event) {
 									{
 										result_DegSeg = CalculateDegree_segement();
 										DegSeg = -1;
+										sprintf(ts,"计算完毕 result is %f",result_DegSeg);
+										MessageBox(graphicsWindow,ts, "来自巨大程序的提示", MB_OK);
 									}
 								}
 								else if(AreaPoly == 0 && sh_chose->ty == 3)
 								{
 									result_DegSeg = Calculatearea_polygon();
 									AreaPoly = -1;
+									sprintf(ts,"计算完毕 result is %f",result_DegSeg);
+										MessageBox(graphicsWindow,ts, "来自巨大程序的提示", MB_OK);
 								}
 							}
 						}
