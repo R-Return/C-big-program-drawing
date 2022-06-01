@@ -30,32 +30,64 @@ void FillRectangle(double px,double py,double qx,double qy){
 
 void drawedge()
 {
-	double i;
-	//dbgS("开始绘制边框\n");
+	int i;
+	char a[5];
 	//SetPenColor(Timecolor);
-	
 	//dbgS("开始绘制坐标轴\n");
 	SetPenColor("Light Gray");
-	for(i = centerX; i <= Right_x; i += 0.5*scale)
+	for(i = 1; centerX + i * 0.5 * scale <= Right_x; i ++)
 	{
-		MovePen(i, Left_y);
+		MovePen(centerX + i * 0.5 * scale, Left_y);
 		DrawLine(0,Right_y-Left_y);
+		if( i%2 == 0 && centerX + i * 0.5 * scale + 0.08 <= Right_x)
+		{
+			SetPenColor("Gray");
+			MovePen(centerX + i * 0.5 * scale + 0.04, centerY - 0.22);
+			sprintf(a, "%d",i/2);
+			DrawTextString(a);
+			SetPenColor("Light Gray");
+		}
 	}
-	for(i = centerX; i >= Left_x; i -= 0.5*scale)
+	for(i = 1; centerX - i * 0.5 * scale >= Left_x; i ++)
 	{
-		MovePen(i, Left_y);
+		MovePen(centerX - i * 0.5 * scale, Left_y);
 		DrawLine(0,Right_y-Left_y);
+		if( i%2 == 0)
+		{
+			SetPenColor("Gray");
+			MovePen(centerX - i * 0.5 * scale + 0.04, centerY - 0.22);
+			sprintf(a, "-%d",i/2);
+			DrawTextString(a);
+			SetPenColor("Light Gray");
+		}
 	}
-	for(i = centerY; i <= Right_y; i += 0.5*scale)
+	for(i = 1; centerY + i * 0.5 * scale <= Right_y; i ++)
 	{
-		MovePen(Left_x, i);
-		DrawLine(Right_x-Left_x,0);
+		MovePen(Left_x, centerY + i * 0.5 * scale);
+		DrawLine(Right_y-Left_y,0);
+		if( i%2 == 0)
+		{
+			SetPenColor("Gray");
+			MovePen(centerX + 0.04, centerY + i * 0.5 * scale - 0.22);
+			sprintf(a, "%d",i/2);
+			DrawTextString(a);
+			SetPenColor("Light Gray");
+		}
 	}
-	for(i = centerY; i >= Left_y; i -= 0.5*scale)
+	for(i = 1; centerY - i * 0.5 * scale >= Left_y; i ++)
 	{
-		MovePen(Left_x, i);
-		DrawLine(Right_x-Left_x,0);
+		MovePen(Left_x, centerY - i * 0.5 * scale);
+		DrawLine(Right_y-Left_y,0);
+		if( i%2 == 0 &&  centerY - i * 0.5 * scale - 0.22>= Left_y)
+		{
+			SetPenColor("Gray");
+			MovePen(centerX + 0.04, centerY - i * 0.5 * scale - 0.22);
+			sprintf(a, "-%d",i/2);
+			DrawTextString(a);
+			SetPenColor("Light Gray");
+		}
 	}
+	//dbgS("开始绘制边框\n");
 	SetPenColor("Black");
 	MovePen(Left_x, centerY);
 	DrawLine(Right_x-Left_x,0);
@@ -69,46 +101,46 @@ void drawedge()
 	//dbgS("边框绘制完成\n");
 }
 
-void drawtext()
-{
-	//dbgS("开始绘制输出框\n");
-	SetPenColor("Salmon");
-	DrawRectangle(0.5, 1, 3.5, 9.5);
-	Shape *p;
-	int count = 0, total = 0;
-	for(p = head->next;p != end; p = p->next)
-	{	
-	//	p->static_page = page;
-		if(p->static_page == page || p->c.static_page_c == page)
-		{
-		if(p->ty == 3)
-			continue;
-		SetPenColor("Slategray");
-		if(p->isChosen || p->isClicked == 1)
-		{
-			SetPenColor("Shiningred");
-		}
-		if(p->ty == 4)SetPointSize(15);
-		drawLabel(0.6, 9.2 - count * 0.4, p->expression);
-		//dbgS("表达式绘制完成\n");
-		SetPenColor("Salmon");
-		MovePen(0.5, 9.2 - count * 0.4-0.05);
-		DrawLine(3, 0);
-		count++;
-		total++;
-		SetPointSize(20);
-		}
-		if ( count >  20 )
-		{ 
-			page++;
-		//	SetPenColor("White");
-		//	drawRectangle(0.51, 1.05, 2.98, 8.4, 1); 
-			count = 0;
-		}
-		//static_flag = 1;
-	} 
-	//dbgS("开始绘制输出框\n");
-}
+//void drawtext()
+//{
+//	//dbgS("开始绘制输出框\n");
+//	SetPenColor("Salmon");
+//	DrawRectangle(0.5, 1, 3.5, 9.5);
+//	Shape *p;
+//	int count = 0, total = 0;
+//	for(p = head->next;p != end; p = p->next)
+//	{	
+//	//	p->static_page = page;
+//		if(p->static_page == page || p->c.static_page_c == page)
+//		{
+//		if(p->ty == 3)
+//			continue;
+//		SetPenColor("Slategray");
+//		if(p->isChosen || p->isClicked == 1)
+//		{
+//			SetPenColor("Shiningred");
+//		}
+//		if(p->ty == 4)SetPointSize(15);
+//		drawLabel(0.6, 9.2 - count * 0.4, p->expression);
+//		//dbgS("表达式绘制完成\n");
+//		SetPenColor("Salmon");
+//		MovePen(0.5, 9.2 - count * 0.4-0.05);
+//		DrawLine(3, 0);
+//		count++;
+//		total++;
+//		SetPointSize(20);
+//		}
+//		if ( count >  20 )
+//		{ 
+//			page++;
+//		//	SetPenColor("White");
+//		//	drawRectangle(0.51, 1.05, 2.98, 8.4, 1); 
+//			count = 0;
+//		}
+//		//static_flag = 1;
+//	} 
+//	//dbgS("开始绘制输出框\n");
+//}
 
 //double transfer(char *a,double x)
 //{

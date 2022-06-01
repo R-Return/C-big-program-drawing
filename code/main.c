@@ -6,7 +6,7 @@ double point_r = 0.05;
 int pageid=1;
 int insert_state = -1;
 int DisSeg = -1, DisPoint = -1, DegSeg = -1, AreaPoly = -1;
-double result_DisSeg, result_DisPoint, result_DegSeg, result_AreaPoly;
+
 double Left_x = 4, Left_y = 1.5, Right_x = 14, Right_y = 11.5;
 double centerX, centerY, scale=1;
 char str[MAX] = "";
@@ -49,44 +49,44 @@ void display()
 		setMenuColors("Lightblue", "Navy", "Lightblue", "Slategray", 1);
 		if(button(GenUIID(0), 0.2, 9.7, 1, 0.5, "放大"))
 		{
-			scale += 0.02;
+			scale += 0.05;
 		}
 		if(button(GenUIID(0), 0.2, 10.5, 1, 0.5, "缩小"))
 		{
-			scale-=0.02;
+			scale-=0.05;
 			if(scale <= 0.2)
 			{
 				scale = 0.2;
 			}
 		}
 		SetPointSize(15); 
-		if(button(GenUIID(0), 1.5, 10.1, 0.6, 0.5, "Left"))
+		if(button(GenUIID(0), 1.8, 10.1, 0.5, 0.5, "←"))
 		{
-			centerX-=0.02;
+			centerX-=0.1;
 			if(centerX <= Left_x)
 			{
 				centerX = Left_x;
 			}
 		}
-		if(button(GenUIID(0), 2.2, 10.7, 0.6, 0.5, "Up"))
+		if(button(GenUIID(0), 2.4, 10.7, 0.5, 0.5, "↑"))
 		{
-			centerY+=0.02;
+			centerY+=0.1;
 			if(centerY >= Right_y)
 			{
 				centerY = Right_y;
 			}
 		}
-		if(button(GenUIID(0), 2.9, 10.1, 0.6, 0.5, "Right"))
+		if(button(GenUIID(0), 3, 10.1, 0.5, 0.5, "→"))
 		{
-			centerX+=0.02;
+			centerX+=0.1;
 			if(centerX >= Right_x)
 			{
 				centerX = Right_x;
 			}
 		}
-		if(button(GenUIID(0), 2.2, 9.55, 0.6, 0.5, "Down"))
+		if(button(GenUIID(0), 2.4, 9.55, 0.5, 0.5, "↓"))
 		{
-			centerY-=0.02;
+			centerY-=0.1;
 			if(centerY <= Left_y)
 			{
 				centerY = Left_y;
@@ -128,7 +128,6 @@ void display()
 		if(selection2==2)
 		{
 			DisSeg = 0;
-			result_DisSeg;
 			//MessageBox(graphicsWindow, "计算完毕", "来自巨大程序的提示", MB_OK);
 		}
 		if(selection2==3)
@@ -183,7 +182,8 @@ void display()
 			end->before = head;
 		}
 		setButtonColors("Lightblue", "Navy", "Lightblue", "Slategray", 1);
-		drawtext();
+		SetPenColor("Salmon");
+		DrawRectangle(0.5, 1, 3.5, 9.5);
 		SetPointSize(15); 
 		SetPenColor("Slategray");
 		switch (insert_state) {
@@ -216,6 +216,7 @@ void display()
 		struct Point *cp;
 		int FuncColor;
 		int opposite = 0;
+		int count = 0;
 		FuncColor = 0;
 		for(p = head->next;p != end; p = p->next)
 		{
@@ -407,10 +408,24 @@ void display()
 				SetPenColor("Blue");
 				//dbgS("绘制完成次数：");dbgI(d);dbgC('\n');
 			}//if 函数绘制结束
-			
-			//绘制函数表达式
-//			MovePen(0.5,0.5);
-//			DrawTextString(fHead->next->func);
+			count++;
+			if(count > 20*(page - 1) && count <= 20*page)
+			{
+				if(p->ty == 3)
+					continue;
+				SetPenColor("Slategray");
+				if(p->isChosen || p->isClicked == 1)
+				{
+					SetPenColor("Shiningred");
+				}
+				if(p->ty == 4)SetPointSize(15);
+				drawLabel(0.6, 9.6 - (count-20*(page - 1)) * 0.4, p->expression);
+				//dbgS("表达式绘制完成\n");
+				SetPenColor("Salmon");
+				MovePen(0.5, 9.6 - (count-20*(page - 1)) * 0.4-0.05);
+				DrawLine(3, 0);
+				SetPointSize(20);
+			}
 		}//for-drawing
 		SetPenSize(1);
 		

@@ -13,6 +13,7 @@
 //double CalculateDegree_segement(void);
 //double Calculatearea_polygon(void);
 int chose = 0;
+double result_DisSeg, result_DisPoint, result_DegSeg, result_AreaPoly;
 //#include "selected.h"
 char ts[100]={'\0'}; 
 void MouseEventProcess(int x, int y, int button, int event) {
@@ -141,7 +142,7 @@ void MouseEventProcess(int x, int y, int button, int event) {
 					else if(insert_state == 3 && button == RIGHT_BUTTON)
 					{
 						//dbgS("准备插入多边形尾端点\n");
-						insertPoint(0, 3, 2, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
+						insertPoint(1, 3, 2, (mouse_x-centerX)/scale, (mouse_y-centerY)/scale);
 						insert_state = -1;
 						hasAdded = 0;
 						//dbgS("多边形尾端点插入完成\n");

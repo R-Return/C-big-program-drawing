@@ -47,8 +47,6 @@ void insertPoint(int i, int ty, int connect, double x, double y) //i¿ØÖÆ²åÈë×´Ì¬
 	    q->isClicked = -1;
 	    q->ty = ty;
 	    
-	    q->static_page = page;
-	    
         e = q->pHead;
     }
 //»æÖÆ¶¯»­
@@ -118,7 +116,6 @@ void insertCircle(int i, int confirm, double x, double y)
 		q->isClicked = -1;
 		q->ty = 4;
 		
-		q->c.static_page_c = page;
 	}
 	else
 	{

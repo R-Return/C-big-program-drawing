@@ -32,7 +32,6 @@ extern double Left_x, Left_y, Right_x, Right_y;
 extern double centerX, centerY, scale;
 extern int insert_state;
 extern int DisSeg, DisPoint, DegSeg, AreaPoly;
-extern double result_DisSeg, result_DisPoint, result_DegSeg, result_AreaPoly;
 extern char str[MAX];
 extern double point_r;
 extern void store();
