@@ -348,7 +348,7 @@ void Select_Poly(double nowx, double nowy, struct Point *head) {
 	if( count % 2 != 0)
 	{
 		chose = 1;
-		dbgS("选中\n");
+//		dbgS("选中\n");
 	}
 		
 	else chose = 0;
@@ -366,7 +366,7 @@ void Select_Circle(double nowx, double nowy, double x, double y, double r) {
 }
 
 double CalculateDistance_segement(void) {
-	dbgS("开始计算线段长度\n");
+//	dbgS("开始计算线段长度\n");
 	Shape *sort;
 	double sum = 0;
 	double x1, y1, x2, y2;
@@ -383,14 +383,14 @@ double CalculateDistance_segement(void) {
 			break;
 		}
 	}
-	dbgS("线段距离计算完成，距离为：");dbgD(sum);dbgC('\n');
+//	dbgS("线段距离计算完成，距离为：");dbgD(sum);dbgC('\n');
 	return sum;
 }
 
 // 如果sum返回的值不等于0 代表已经选中两个点 并计算距离 （timer时间显示后） 这时将选中参数全部置1 为下一次计算做准备
 // 以下三个函数用相同的方法
 double CalculateDistance_point(void) {
-	dbgS("开始计算两点距离\n");
+//	dbgS("开始计算两点距离\n");
 	Shape *sort;
 	double sum;
 	double x[2], y[2];
@@ -407,7 +407,7 @@ double CalculateDistance_point(void) {
 	if (x[0] != 0 && x[1] != 0) {
 		sum = pow(pow(x[1] - x[0], 2) + pow(y[1] - y[0], 2), 0.5);
 	}
-	dbgS("两点距离计算完成，距离为：");dbgD(sum);dbgC('\n');
+//	dbgS("两点距离计算完成，距离为：");dbgD(sum);dbgC('\n');
 	return sum;
 }
 
@@ -435,7 +435,7 @@ double CalculateDistance_point(void) {
 //}
 
 double CalculateDegree_segement(void) {
-	dbgS("开始计算角度\n");
+//	dbgS("开始计算角度\n");
 	Shape *sort;
 	double sum = 0;
 	double k[2];
@@ -452,20 +452,20 @@ double CalculateDegree_segement(void) {
 			y2 = temp->y;
 			if(x2 != x1)k[count] = atan((y2 - y1) / (x2 - x1)) *180 / Pi;
 			else k[count] = 90;
-			dbgD(k[count]);dbgC('\n');
+//			dbgD(k[count]);dbgC('\n');
 			count++;
 		}
 	}
-	dbgD(k[1]-k[0]);
+//	dbgD(k[1]-k[0]);
 	sum = fabs((k[1] - k[0]));
-	dbgD(sum);dbgC('\n');
+//	dbgD(sum);dbgC('\n');
 
-	dbgS("角度计算完成：");dbgD(sum);dbgC('\n');
+//	dbgS("角度计算完成：");dbgD(sum);dbgC('\n');
 	return sum;
 }
 
 double Calculatearea_polygon(void) {
-	dbgS("开始计算多边形面积\n");
+//	dbgS("开始计算多边形面积\n");
 	Shape *sort;
 	double sum = 0;
 	double x[80], y[80];
@@ -487,6 +487,6 @@ double Calculatearea_polygon(void) {
 	}
 	sum = sum + x[i] * y[0] - x[0] * y[i];
 	sum = 0.5 * fabs(sum);
-	dbgS("多边形面积计算完成：");dbgD(sum);dbgC('\n');
+//	dbgS("多边形面积计算完成：");dbgD(sum);dbgC('\n');
 	return sum;
 }

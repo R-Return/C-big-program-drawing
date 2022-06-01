@@ -70,8 +70,8 @@ void insertPoint(int i, int ty, int connect, double x, double y) //i控制插入状态
 	if (ty == 0) {
 		sprintf(a, "(%.2f , %.2f)", x, y);
 		strcpy(q->expression, a);
-		dbgS(q->expression);
-		dbgC('\n');
+//		dbgS(q->expression);
+//		dbgC('\n');
 	} else if ((ty == 2 || ty == 1)&& connect == 1) {
 		//dbgS("准备计算表达式\n");
 		q = end->before;
@@ -90,9 +90,12 @@ void insertPoint(int i, int ty, int connect, double x, double y) //i控制插入状态
 			sprintf(a, "y = %.2f", r->y);
 		}
 		strcpy(q->expression, a);
-		dbgS(q->expression);
-		dbgC('\n');
+//		dbgS(q->expression);
+//		dbgC('\n');
 	}
+	if(ty == 0)Add_Shape(q);
+	else if((ty == 1 || ty == 2) && connect == 1)Add_Shape(q);
+	else if(ty == 3 && connect == 2)Add_Shape(q);
 	//dbgS("点节点插入完成\n");
 }
 
@@ -141,8 +144,9 @@ void insertCircle(int i, int confirm, double x, double y)
 		else if(q->c.x < 0 && q->c.y < 0)
 		sprintf(a, "(x%.2f)^2+(y%.2f)^2=%.2f", q->c.x, q->c.y, pow(q->c.r, 2));
 		strcpy(q->expression, a);
-		dbgS(q->expression);
-		dbgC('\n');
+//		dbgS(q->expression);
+//		dbgC('\n');
+		Add_Shape(q);
 	}
 	//dbgS("圆节点插入完成\n");
 }
@@ -154,7 +158,7 @@ void insertFunc(char a[])
 	tmp = strlen(a);
 	a[tmp] = '#';
 	a[tmp + 1] = '\0'; 
-	dbgS("当前函数式为：");dbgS(a);dbgC('\n');
+//	dbgS("当前函数式为：");dbgS(a);dbgC('\n');
     double y;
 	int d = 1, interrupt = 0;
 	double j;
@@ -200,13 +204,13 @@ void insertFunc(char a[])
 	p->expression[4] = '\0';
 	a[strlen(a) - 1] = '\0';
 	strcat( p->expression, a );
-	
-    dbgS("函数插入完成\n");
+	Add_Shape(p);
+//    dbgS("函数插入完成\n");
 }
 
 void deleteList(void)
 {
-    dbgS("开始删除节点\n");
+//    dbgS("开始删除节点\n");
 	Shape *p = head->next;
     while(p != end)
     {
@@ -214,8 +218,10 @@ void deleteList(void)
 		{
 			p->before->next = p->next;
 			p->next->before = p->before;
+			Del_Shape(p);
+			break;
 		}
         p = p->next;
     }
-    dbgS("节点删除完成\n");
+//    dbgS("节点删除完成\n");
 }

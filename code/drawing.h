@@ -6,7 +6,7 @@
 void DrawRectangle(double px, double py, double qx, double qy);
 void FillRectangle(double px, double py, double qx, double qy);
 void drawedge();
-//double transfer(char* a,double x);
+int inDraw(double x, double y);
 double transferx(double x);
 double transfery(double y);
 void DrawTo(double x, double y);

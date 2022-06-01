@@ -2,33 +2,41 @@
 #define HISTORY_H
 
 #include "Header.h"
+#include "LinkList.h"
+
+
 enum ActionType {
-    add, modify, move, del
+    add, del
 };
 
 typedef struct record {
     enum ActionType ty; 			// add, modify, move, del
 
     // add
-    Shape *addedShape;
-    struct Function *addedFunc;
-
-    // modify
-    struct Point *modifiedPoint;
-    double mpOldX, mpOldY;
-
-    struct Func *modifiedFunc;
-    struct Func *oldFunc;
-
-    // move
-    Shape *movedShape;
-    double deltaX, deltaY;
+    struct shape *addedShape;
+//    struct Function *addedFunc;
+//
+//    // modify
+//    struct Point *modifiedPoint;
+//    double mpOldX, mpOldY;
+//
+//    struct Func *modifiedFunc;
+//    struct Func *oldFunc;
+//
+//    // move
+//    Shape *movedShape;
+//    double deltaX, deltaY;
 
     // del
-    Shape *deletedShape;
-    struct Func *deletedFunc;
+    struct shape *deletedShape;
+//    struct Func *deletedFunc;
 
-    struct record *next;
+    struct record *before;
+	struct record *next;
 }Record;
 
+extern Record *r_head, *r_end;
+void initRecordList(void);
+void Add_Shape(struct shape *p);
+void Del_Shape(struct shape *p);
 #endif	//HISTORY_H

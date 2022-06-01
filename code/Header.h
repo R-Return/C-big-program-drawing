@@ -24,7 +24,7 @@
 #include "function.h"
 #include "drawing.h"
 #include "LinkList.h"
-//#include "history.h"
+#include "history.h"
 #include "selected.h"
 #define MAX 100	//函数字符串最大长度
 

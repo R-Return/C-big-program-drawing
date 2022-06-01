@@ -11,12 +11,12 @@ void DrawRectangle(double px,double py,double qx,double qy){
 	//dbgS("矩形绘制完成\n");
 }
 void FillRectangle(double px,double py,double qx,double qy){
-	dbgS("开始绘制填充矩形\n");
+//	dbgS("开始绘制填充矩形\n");
 	MovePen(px,py);
 	StartFilledRegion(1);
 	DrawRectangle(px,py,qx,qy);
 	EndFilledRegion();
-	dbgS("填充矩形绘制完成\n");
+//	dbgS("填充矩形绘制完成\n");
 }
 //void calculate()
 
@@ -101,61 +101,13 @@ void drawedge()
 	//dbgS("边框绘制完成\n");
 }
 
-//void drawtext()
-//{
-//	//dbgS("开始绘制输出框\n");
-//	SetPenColor("Salmon");
-//	DrawRectangle(0.5, 1, 3.5, 9.5);
-//	Shape *p;
-//	int count = 0, total = 0;
-//	for(p = head->next;p != end; p = p->next)
-//	{	
-//	//	p->static_page = page;
-//		if(p->static_page == page || p->c.static_page_c == page)
-//		{
-//		if(p->ty == 3)
-//			continue;
-//		SetPenColor("Slategray");
-//		if(p->isChosen || p->isClicked == 1)
-//		{
-//			SetPenColor("Shiningred");
-//		}
-//		if(p->ty == 4)SetPointSize(15);
-//		drawLabel(0.6, 9.2 - count * 0.4, p->expression);
-//		//dbgS("表达式绘制完成\n");
-//		SetPenColor("Salmon");
-//		MovePen(0.5, 9.2 - count * 0.4-0.05);
-//		DrawLine(3, 0);
-//		count++;
-//		total++;
-//		SetPointSize(20);
-//		}
-//		if ( count >  20 )
-//		{ 
-//			page++;
-//		//	SetPenColor("White");
-//		//	drawRectangle(0.51, 1.05, 2.98, 8.4, 1); 
-//			count = 0;
-//		}
-//		//static_flag = 1;
-//	} 
-//	//dbgS("开始绘制输出框\n");
-//}
+int inDraw(double x, double y)
+{
+	if(x >= Left_x && x <= Right_x && y >= Left_y && y <= Right_y)
+	return 1;
+	else return 0;
+}
 
-//double transfer(char *a,double x)
-//{
-//	dbgS("当前函数：");dbgS(a);dbgS("现在传入x：");dbgD(x);dbgC('\n');
-//	double y, Function_y;
-//	static double Function_origion_y;
-//	Function_y = calculate(a,((x-centerX)/scale));
-//	dbgS("Function_y的值为：");dbgD(Function_y);dbgC('\n');
-//	if(x <= 3.03) Function_origion_y = Function_y;
-//	if(Function_y*Function_origion_y < -100) change = 1;
-//	Function_origion_y = Function_y;
-////	y = scale*(Function_y+centerY);
-////	dbgS("y的值为：");dbgD(y);dbgC('\n');
-//	return y;
-//}
 double transferx(double x)
 {
 	//dbgS("现在传入x：");dbgD(x);

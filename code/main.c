@@ -144,6 +144,29 @@ void display()
 		{
 			delete_state = 1;
 		}
+		if(button(GenUIID(0), 13.8, 0.6, 0.8, 0.5, "撤销"))
+		{
+			if(r_end->before->ty == 0)
+			{
+				end->before->before->next = end;
+				end->before = end->before->before;
+				r_end->before->before->next = r_end;
+				r_end->before = r_end->before->before;
+			}
+			else if(r_end->before->ty == 1)
+			{
+				Shape *del;
+				del = r_end->before->deletedShape;
+				end->before->next = del;
+				del->before = end->before;
+				del->next = end;
+				end->before = del;
+				del->isClicked = -1;
+				
+				r_end->before->before->next = r_end;
+				r_end->before = r_end->before->before;
+			}
+		}
 		setButtonColors("Lightblue", "Navy", "Lightblue", "Slategray", 1);
 		SetPenColor("Salmon");
 		DrawRectangle(0.5, 1, 3.5, 9.5);
@@ -185,7 +208,7 @@ void display()
 		for(p = head->next;p != end; p = p->next)
 		{
 			//绘制点
-			if(p->ty == 0)
+			if(p->ty == 0 && inDraw(transferx(p->pHead->next->x), transfery(p->pHead->next->y)))
 			{
 				SetPenColor("Navy");
 				if(p->isChosen || p->isClicked == 1)
@@ -394,14 +417,18 @@ void display()
 		SetPenSize(1);
 		
 		//绘制输出框
-		if(button(GenUIID(0), 0.1, 0.1, 1.5, 0.5, "上一页"))
+		if(button(GenUIID(0), 0.5, 0.3, 0.5, 0.5, "<<"))
 		{
 			page--;
 			if(page < 1)
 				page = 1;
 		}
-		
-		if(button(GenUIID(0), 1.7, 0.1, 1.5, 0.5, "下一页"))
+		SetPenColor("Slategray");
+		MovePen(1.5, 0.4);
+		char info[10];
+		sprintf(info, "第 %d 页", page);
+		DrawTextString(info);
+		if(button(GenUIID(0), 3, 0.3, 0.5, 0.5, ">>"))
 		{
 			page++;
 		}
@@ -527,5 +554,6 @@ void Main()
 	display();
 	//初始化链表
 	initLinkList();
+	initRecordList();
 }
 
