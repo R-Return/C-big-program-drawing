@@ -1,9 +1,6 @@
 #ifndef HEADER_H
 #define HEADER_H
 
-//void calculate();
-//void drawedge();
-
 #include <stdio.h>
 #include <windows.h>
 #include <winuser.h>

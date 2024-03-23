@@ -338,11 +338,11 @@ void Select_Poly(double nowx, double nowy, struct Point *head) {
 	for( j = 0; j < i-1; j = j+1 )
 	{
 		if( (( x[j] > nowx ) != ( x[j+1] > nowx))
-		   && (nowx > ( x[j+1] - x[j]) * (nowy - y[j]) / (y[j+1] - y[j]) + x[j]))
+		   && (nowx < ( x[j+1] - x[j]) * (nowy - y[j]) / (y[j+1] - y[j]) + x[j]))
 		   count++;
 	}
 	if( (( x[j] > nowx ) != ( x[0] > nowx))
-		   && (nowx > ( x[0] - x[j]) * (nowy - y[j]) / (y[0] - y[j]) + x[j]))
+		   && (nowx <= ( x[0] - x[j]) * (nowy - y[j]) / (y[0] - y[j]) + x[j]))
 		   count++;
 	if( count % 2 != 0)
 	{

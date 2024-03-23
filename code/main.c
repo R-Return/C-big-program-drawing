@@ -398,7 +398,7 @@ void display()
 				SetPenColor("Blue");
 				//dbgS("绘制完成次数：");dbgI(d);dbgC('\n');
 			}//if 函数绘制结束
-			count++;
+			if(p->ty != 3)count++;
 			if(count > 20*(page - 1) && count <= 20*page)
 			{
 				if(p->ty == 3)
